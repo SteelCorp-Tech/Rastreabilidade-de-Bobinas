@@ -1,0 +1,28 @@
+:root {
+  --petroleo-900: #00212b;
+  --petroleo-800: #07303c;
+  --petroleo-700: #0e3f4d;
+  --teal-600: #276c7a;
+  --teal-500: #348493;
+  --teal-100: #dbeaed;
+  --laranja-500: #f08a3e;
+  --laranja-100: #fdeadb;
+  --gelo: #f1f4f4;
+  --branco: #ffffff;
+  --borda: #dde4e6;
+  --texto: #0b2a33;
+  --texto-suave: #5d7480;
+  --vermelho-600: #c0392b;
+  --vermelho-100: #f8dcd8;
+  --verde-600: #2f8f5b;
+  --verde-100: #d9efe3;
+
+  --raio: 10px;
+  --sombra: 0 1px 2px rgba(0, 33, 43, 0.06);
+  --alvo-toque: 48px;
+  --menu-largura: 260px;
+  --menu-largura-recolhido: 72px;
+
+  --fonte: 'Montserrat', system-ui, sans-serif;
+  --fonte-mono: 'JetBrains Mono', ui-monospace, Consolas, monospace;
+}
