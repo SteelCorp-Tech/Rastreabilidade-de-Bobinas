@@ -27,3 +27,4 @@ scripts/           geração do seed a partir do Excel
 ## Estado atual
 
 - Incremento 0 (fundação): shell no visual do SteelApps, seletor de perfil simulado com menu por permissão. As telas dos módulos são provisórias.
+- Incremento 1 (domínio): regras puras em `src/domain/` (plano de corte, CUB, mãe, entrega, uso, bloqueio, balanço de massa, rastreabilidade, auditoria) e `commands.js`, que aplica permissão, regra e AuditLog sobre o estado inteiro. `acceptance.test.js` percorre os 7 critérios de aceite só com o domínio.

@@ -18,6 +18,9 @@ Decisões do projeto, com motivo e data. Atualize junto com o `CLAUDE.md`.
 | Seletor de perfil no **rodapé do menu**, como no portal. | Espelha o padrão do SteelApps (CLAUDE.md dizia "no topo"). |
 | Prestador de slitagem nos dados: **SENASERV** (lote LS, OP SENASERV, NF SENASERV). Catálogo = aba CÓD MICROSYS. Perfiladeiras: FRAMECAD 90, FRAMECAD 150, PINNACLE X3. | Vindo do Excel real. |
 | Identidade visual derivada do print do SteelApps: petróleo `#00212B`, teal `#276C7A`, laranja `#F08A3E`, gelo `#F1F4F4`, Montserrat e JetBrains Mono. Vermelho `#C0392B` só para "bloqueado". | Print enviado pelo dono do produto. |
+| Campos das entidades em `snake_case` (como no CLAUDE.md e no glossário); funções e parâmetros em `camelCase`. | Casa com o modelo do cliente e com o futuro backend. |
+| Domínio é um conjunto de comandos puros `(state, input, ctx) → {state, result}`; a persistência só chama isso dentro da trava entre abas. | Testável sem navegador e trocável por backend. |
+| Lote do prestador é único entre as mães. | Chave da Qualidade; no Excel real nenhum lote tem mais de um fornecedor. |
 
 ## Em aberto (padrão adotado até decidirem)
 
