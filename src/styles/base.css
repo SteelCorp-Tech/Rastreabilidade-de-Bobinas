@@ -184,21 +184,40 @@ h2.sub { margin-top: 22px; font-size: 17px; }
 .res-table { min-width: 460px; }
 .stripbar { min-width: 0; }
 
-/* etiquetas */
-.label-area.a4 { display: grid; grid-template-columns: repeat(2, 95mm); gap: 5mm; justify-content: start; }
+/* etiquetas: modelo da etiqueta do Excel (logo, símbolo de fundo, CUB e lote em destaque, campos em dois blocos) */
+.label-area.a4 { display: grid; grid-template-columns: repeat(2, 89mm); gap: 3mm; justify-content: start; }
 .label-area.thermal { display: grid; grid-template-columns: 100mm; gap: 5mm; }
-.label { display: flex; gap: 3mm; width: 95mm; height: 56mm; padding: 3.5mm; border: 1px solid #222; border-radius: 1.5mm; background: #fff; color: #000; overflow: hidden; break-inside: avoid; }
-.label-area.thermal .label { width: 100mm; height: 50mm; padding: 3mm; }
-.label.leftover { border: 2px dashed #222; }
-.l-main { flex: 1; min-width: 0; }
-.l-cub { font-size: 14pt; font-weight: 700; letter-spacing: -.01em; line-height: 1.1; }
-.l-tag { display: inline-block; margin-top: 1mm; padding: 0 2mm; border: 1px solid #000; font-size: 8pt; font-weight: 700; }
-.l-fields { display: grid; grid-template-columns: auto 1fr; gap: .4mm 3mm; margin: 2mm 0 0; font-size: 7.5pt; line-height: 1.25; }
-.l-fields dt { color: #444; font-size: 6.5pt; letter-spacing: .04em; align-self: center; white-space: nowrap; }
-.l-fields dd { margin: 0; font-weight: 600; overflow-wrap: anywhere; }
-.l-side { display: flex; flex-direction: column; align-items: center; justify-content: space-between; }
-.l-side svg { width: 27mm; height: 27mm; }
-.l-weight { font-size: 11pt; font-weight: 700; text-align: center; margin-top: 2mm; }
+.label { position: relative; display: flex; flex-direction: column; width: 89mm; height: 66mm; padding: 3.5mm 4mm; border: 1px solid #222; border-radius: 1.5mm; background: #fff; color: #00212b; overflow: hidden; break-inside: avoid; }
+.label.leftover { border: 2px dashed #00212b; }
+.l-watermark { position: absolute; left: 3mm; top: 14mm; width: 40mm; opacity: .07; pointer-events: none; }
+.l-top { position: relative; display: flex; align-items: center; justify-content: space-between; height: 8mm; }
+.l-logo { height: 7mm; width: auto; }
+.l-tag { padding: .3mm 2mm; border: 1px solid #00212b; font-size: 8pt; font-weight: 700; letter-spacing: .04em; }
+.l-head { position: relative; display: flex; justify-content: space-between; align-items: flex-start; gap: 3mm; margin-top: 1.5mm; }
+.l-id { min-width: 0; }
+.l-cub { font-family: "Montserrat", system-ui, sans-serif; font-weight: 800; font-size: 17pt; letter-spacing: -.02em; line-height: 1.05; white-space: nowrap; }
+.l-lot { margin-top: 2mm; font-size: 15pt; font-weight: 800; line-height: 1.1; }
+.l-lot .l-k { font-size: 7.5pt; font-weight: 500; margin-right: 1mm; }
+.l-qr { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+.l-qr svg { width: 24mm; height: 24mm; }
+.l-weight { margin-top: 1mm; font-family: "JetBrains Mono", monospace; font-size: 10pt; font-weight: 700; }
+.l-cols { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 0 4mm; margin-top: auto; }
+.l-col { display: flex; flex-direction: column; gap: 1.6mm; min-width: 0; }
+.l-field { display: flex; flex-direction: row; align-items: baseline; gap: 1.5mm; line-height: 1.15; min-width: 0; }
+.l-k { font-size: 6.5pt; font-weight: 500; letter-spacing: .03em; color: #31515c; white-space: nowrap; }
+.l-v { font-family: "Montserrat", system-ui, sans-serif; font-weight: 800; font-size: 9.5pt; overflow-wrap: anywhere; min-width: 0; }
+.label-area.thermal .label { width: 100mm; height: 50mm; padding: 2.5mm 3.5mm; }
+.label-area.thermal .l-watermark { top: 9mm; width: 30mm; }
+.label-area.thermal .l-top { height: 5.5mm; }
+.label-area.thermal .l-logo { height: 5mm; }
+.label-area.thermal .l-head { margin-top: .5mm; }
+.label-area.thermal .l-cub { font-size: 14pt; }
+.label-area.thermal .l-lot { margin-top: 1mm; font-size: 11pt; }
+.label-area.thermal .l-qr svg { width: 17mm; height: 17mm; }
+.label-area.thermal .l-weight { font-size: 8pt; }
+.label-area.thermal .l-col { gap: .6mm; }
+.label-area.thermal .l-v { font-size: 8pt; }
+.label-area.thermal .l-k { font-size: 5.5pt; }
 .label-select { display: flex; align-items: center; gap: 8px; font-size: 13px; margin-bottom: 6px; }
 .label-pick { position: relative; }
 .label-pick > input { position: absolute; top: 6px; left: 6px; width: 20px; min-height: 20px; z-index: 1; }

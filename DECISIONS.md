@@ -34,6 +34,7 @@ Decisões do projeto, com motivo e data. Atualize junto com o `CLAUDE.md`.
 | Bloqueio de lote: bloqueia a mãe e todos os CUBs com saldo; CUB em uso bloqueia ao fechar o uso (a sobra volta `BLOCKED`); liberar o lote só desfaz o que o lote bloqueou. Motivo obrigatório em ambos. | Pergunta em aberto 5; CLAUDE.md 5.2 e 7.9. |
 | Dossiês (lote e obra) e recall exportam CSV no padrão Excel pt-BR (`;`, vírgula decimal, BOM). | Quem recebe a auditoria abre no Excel. |
 | "Simular evento da FVM" reaproveita os comandos de bloqueio e liberação com o motivo "Evento FVM (simulado) nº …". | CLAUDE.md 8.6c; só demonstração. |
+| Etiqueta redesenhada no **modelo da etiqueta do Excel** (aba "Gerador de etiqueta"): logo SteelCorp no topo, símbolo como marca d'água, CUB e lote em destaque, campos em dois blocos (esquerda: código Microsys, galvanização, dimensão, data de recebimento; direita: fornecedor, NF fornecedor, NF prestador, certificado). O Excel **não tem QR**; o QR do CUB e o peso medido foram encaixados no layout. Logos copiados do próprio Excel (`src/assets/`). | Pedido do dono do produto em 20/10/2026: continuidade visual com a etiqueta de hoje. |
 
 ## Em aberto (padrão adotado até decidirem)
 

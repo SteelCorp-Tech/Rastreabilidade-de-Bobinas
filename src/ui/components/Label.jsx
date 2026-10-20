@@ -1,29 +1,52 @@
 import { QRCodeSVG } from 'qrcode.react'
+import logo from '../../assets/steelcorp-logo.png'
+import symbol from '../../assets/steelcorp-symbol.png'
 import { fmtDate, fmtKg } from '../format.js'
 
-/** Uma etiqueta de CUB. O QR carrega o CUB. `label` vem de buildLabel (domínio). */
+const Field = ({ k, v }) => (
+  <div className="l-field">
+    <span className="l-k">{k}:</span>
+    <b className="l-v">{v}</b>
+  </div>
+)
+
+/**
+ * Uma etiqueta de CUB, no modelo da etiqueta do Excel ("Gerador de etiqueta"): logo no topo, símbolo de fundo,
+ * CUB e lote em destaque, campos em dois blocos. O QR carrega o CUB; o peso medido vai abaixo do QR.
+ * `label` vem de buildLabel (domínio).
+ */
 export function Label({ label }) {
   const leftover = label.kind === 'LEFTOVER'
   return (
     <div className={'label' + (leftover ? ' leftover' : '')}>
-      <div className="l-main">
-        <div className="l-cub mono">{label.cub}</div>
-        {leftover && <div className="l-tag">SOBRA · {fmtDate(label.date)}</div>}
-        <dl className="l-fields">
-          <dt>LOTE</dt><dd className="mono">LS {label.lot}</dd>
-          <dt>CÓD. MICROSYS</dt><dd className="mono">{label.material || '—'}</dd>
-          <dt>FORN.</dt><dd>{label.supplier}</dd>
-          <dt>GALV.</dt><dd className="mono">{label.galvanization}</dd>
-          <dt>DIM. (E X L)</dt><dd className="mono">{label.dimension}</dd>
-          <dt>NF FORN.</dt><dd className="mono">{label.supplier_invoice || '—'}</dd>
-          <dt>NF PRESTADOR</dt><dd className="mono">{label.slitter_invoice || '—'}</dd>
-          <dt>RECEB.</dt><dd className="mono">{fmtDate(label.received_date)}</dd>
-          <dt>CERT. QUAL.</dt><dd className="mono">{label.certificate || '—'}</dd>
-        </dl>
+      <img className="l-watermark" src={symbol} alt="" />
+      <div className="l-top">
+        <img className="l-logo" src={logo} alt="Grupo SteelCorp" />
+        {leftover && <span className="l-tag">SOBRA · {fmtDate(label.date)}</span>}
       </div>
-      <div className="l-side">
-        <QRCodeSVG value={label.qr} size={104} level="M" marginSize={0} />
-        <div className="l-weight mono">{fmtKg(label.weight)}</div>
+      <div className="l-head">
+        <div className="l-id">
+          <div className="l-cub">{label.cub}</div>
+          <div className="l-lot"><span className="l-k">LOTE:</span> LS <b>{label.lot}</b></div>
+        </div>
+        <div className="l-qr">
+          <QRCodeSVG value={label.qr} size={104} level="M" marginSize={0} />
+          <div className="l-weight">{fmtKg(label.weight)}</div>
+        </div>
+      </div>
+      <div className="l-cols">
+        <div className="l-col">
+          <Field k="CÓD MICROSYS" v={label.material || '—'} />
+          <Field k="GALV." v={label.galvanization} />
+          <Field k="DIM. (E X L)" v={label.dimension} />
+          <Field k="DATA RECEB." v={fmtDate(label.received_date)} />
+        </div>
+        <div className="l-col">
+          <Field k="FORN." v={label.supplier} />
+          <Field k="NF FORN." v={label.supplier_invoice || '—'} />
+          <Field k="NF PRESTADOR" v={label.slitter_invoice || '—'} />
+          <Field k="CERT. QUAL." v={label.certificate || '—'} />
+        </div>
       </div>
     </div>
   )
