@@ -14,6 +14,12 @@ import { blockCoil, closeUse, openUse, unblockCoil } from './coil.js'
  *
  * @typedef {Object} State
  * @property {import('./config.js').Config} config
+ * @property {{id: string, name: string, active: boolean}[]} suppliers
+ * @property {{id: string, name: string, active: boolean}[]} mills
+ * @property {{id: string, name: string, active: boolean}[]} projects
+ * @property {{id: string, name: string, active: boolean}[]} machines
+ * @property {{id: string, code: string, galvanization: string, thickness: number, width: number}[]} materials
+ * @property {Object<string, number>} cub_floor  Maior sequencial já usado fora do sistema, por ano.
  * @property {import('./motherCoil.js').MotherCoil[]} motherCoils
  * @property {object[]} cuttingPlans
  * @property {import('./delivery.js').Delivery[]} deliveries
@@ -26,7 +32,12 @@ import { blockCoil, closeUse, openUse, unblockCoil } from './coil.js'
 
 /** @returns {State} */
 export function emptyState(config = DEFAULT_CONFIG) {
-  return { config: { ...config }, motherCoils: [], cuttingPlans: [], deliveries: [], coils: [], uses: [], auditLog: [] }
+  return {
+    config: { ...config },
+    suppliers: [], mills: [], projects: [], machines: [], materials: [],
+    cub_floor: {},
+    motherCoils: [], cuttingPlans: [], deliveries: [], coils: [], uses: [], auditLog: [],
+  }
 }
 
 function authorize(ctx, action) {

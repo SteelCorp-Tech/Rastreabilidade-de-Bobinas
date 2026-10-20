@@ -60,6 +60,16 @@ button { cursor: pointer; }
 .pending-card svg { color: var(--laranja-500); }
 .pending-card b { display: block; }
 .pending-card small { color: var(--texto-suave); }
+.pending-card { text-decoration: none; color: inherit; }
+.panel { padding: 24px; max-width: 640px; }
+.panel h2 { margin-bottom: 8px; }
+.muted { color: var(--texto-suave); }
+.stat-list { list-style: none; padding: 0; margin: 16px 0 20px; }
+.stat-list li { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--borda); }
+.btn { min-height: var(--alvo-toque); padding: 0 20px; border-radius: 10px; border: 0; background: var(--teal-600); color: #fff; font-weight: 600; }
+.btn:hover:not(:disabled) { background: var(--teal-500); }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.ok-msg { color: var(--verde-600); font-weight: 600; }
 .badge { display: inline-block; font-family: var(--fonte-mono); font-size: 11px; padding: 2px 8px; border-radius: 99px; background: var(--teal-100); color: var(--teal-600); }
 .placeholder { padding: 40px; text-align: center; color: var(--texto-suave); }
 .placeholder .badge { margin-bottom: 12px; }

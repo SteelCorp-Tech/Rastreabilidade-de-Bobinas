@@ -23,3 +23,10 @@ describe('CUB', () => {
     expect(() => generateCubs([], 2026, 0)).toThrow()
   })
 })
+
+describe('CUB: piso de numeração (etiquetas físicas do Excel)', () => {
+  it('começa depois do maior número já emitido fora do sistema', () => {
+    expect(nextCubSeq([], 2026, 575)).toBe(576)
+    expect(generateCubs([{ cub: 'CUB-2026-00010' }], 2026, 2, undefined, 575)).toEqual(['CUB-2026-00576', 'CUB-2026-00577'])
+  })
+})

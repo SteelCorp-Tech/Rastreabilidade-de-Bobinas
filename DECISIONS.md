@@ -21,6 +21,9 @@ Decisões do projeto, com motivo e data. Atualize junto com o `CLAUDE.md`.
 | Campos das entidades em `snake_case` (como no CLAUDE.md e no glossário); funções e parâmetros em `camelCase`. | Casa com o modelo do cliente e com o futuro backend. |
 | Domínio é um conjunto de comandos puros `(state, input, ctx) → {state, result}`; a persistência só chama isso dentro da trava entre abas. | Testável sem navegador e trocável por backend. |
 | Lote do prestador é único entre as mães. | Chave da Qualidade; no Excel real nenhum lote tem mais de um fornecedor. |
+| Seed = lotes do controle 2026 que constam na aba de estoque (têm peso e largura da mãe), mais os lotes ainda no prestador. Pesos dos CUBs estimados pela fórmula do plano de corte (marcados `received_weight_estimated`); usos sem OP viram "SEM OP" e perfiladeira "N/D". | O Excel não tem peso da mãe para 20 dos 49 lotes, e os pesos por CUB são rateio. |
+| Piso de numeração `cub_floor` (2026: 575): o sistema emite CUBs a partir do 576. | Os CUBs físicos do Excel (inclusive de lotes fora do seed) já estão colados nas tiras; não podem se repetir. |
+| Restaurar dados de exemplo preserva o AuditLog e registra `seed.restore`. | Auditoria só cresce. |
 
 ## Em aberto (padrão adotado até decidirem)
 

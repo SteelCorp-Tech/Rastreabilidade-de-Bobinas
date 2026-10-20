@@ -45,7 +45,7 @@ export function buildDelivery({ delivery: d, lines }, state, config, actor, now)
   }
 
   const year = yearInSaoPaulo(now)
-  const cubs = generateCubs(state.coils, year, lines.length, config)
+  const cubs = generateCubs(state.coils, year, lines.length, config, state.cub_floor?.[year] ?? 0)
   const deliveryId = `dl-${state.deliveries.length + 1}`
   const receivedDate = d.received_date ?? dateInSaoPaulo(now)
 

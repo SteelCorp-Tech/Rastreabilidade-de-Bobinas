@@ -2,6 +2,8 @@ import { Link } from 'react-router'
 import Icon from '../components/Icon.jsx'
 import { MODULES } from './modules.js'
 import { useProfile } from './ProfileContext.jsx'
+import { useStore } from './StoreContext.jsx'
+import { certificatePendencies } from '../../domain/traceability.js'
 
 function saudacao(d) {
   const h = Number(new Intl.DateTimeFormat('pt-BR', { hour: 'numeric', hour12: false, timeZone: 'America/Sao_Paulo' }).format(d))
@@ -18,6 +20,8 @@ function dataExtenso(d) {
 
 export default function Home() {
   const { canView } = useProfile()
+  const { state } = useStore()
+  const pendencies = certificatePendencies(state).length
   const now = new Date()
   const tiles = MODULES.filter((m) => m.view !== 'home' && canView(m.view))
   const groups = [...new Set(tiles.map((m) => m.group))]
@@ -29,13 +33,13 @@ export default function Home() {
           <div className="eyebrow">{dataExtenso(now)}</div>
           <h1>{saudacao(now)}, Gustavo.</h1>
         </div>
-        <div className="card pending-card">
+        <Link to="/bobinas-mae" className="card pending-card">
           <Icon name="alert" size={28} />
           <div>
-            <b>Pendências de certificado</b>
-            <small>Disponível quando houver dados (incremento 2)</small>
+            <b>{pendencies} bobinas mãe sem certificado</b>
+            <small>Pendências de certificado</small>
           </div>
-        </div>
+        </Link>
       </div>
 
       {groups.map((g) => (

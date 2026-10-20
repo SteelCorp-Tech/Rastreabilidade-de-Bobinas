@@ -18,10 +18,11 @@ export function parseCub(cub) {
 /**
  * Próximo sequencial do ano: maior número já emitido + 1. Considera TODOS os CUBs
  * (inclusive consumidos), por isso um número nunca volta.
+ * `floor` é o maior número já emitido fora do sistema (etiquetas físicas do Excel).
  * @param {{cub: string}[]} coils
  */
-export function nextCubSeq(coils, year) {
-  let max = 0
+export function nextCubSeq(coils, year, floor = 0) {
+  let max = floor
   for (const c of coils) {
     const p = parseCub(c.cub)
     if (p && p.year === year && p.seq > max) max = p.seq
@@ -30,8 +31,8 @@ export function nextCubSeq(coils, year) {
 }
 
 /** Gera `count` CUBs consecutivos. @param {{cub: string}[]} coils */
-export function generateCubs(coils, year, count, fmt) {
+export function generateCubs(coils, year, count, fmt, floor = 0) {
   ensure(Number.isInteger(count) && count > 0, 'CUB_COUNT_INVALID', 'A quantidade de CUBs deve ser um inteiro positivo.')
-  const start = nextCubSeq(coils, year)
+  const start = nextCubSeq(coils, year, floor)
   return Array.from({ length: count }, (_, i) => formatCub(year, start + i, fmt))
 }
