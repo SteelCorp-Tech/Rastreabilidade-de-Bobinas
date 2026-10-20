@@ -40,7 +40,7 @@ export function emptyState(config = DEFAULT_CONFIG) {
   }
 }
 
-function authorize(ctx, action) {
+export function authorize(ctx, action) {
   if (!can(ctx.role, action)) {
     throw new DomainError('FORBIDDEN', `O perfil ${ctx.role} não tem permissão para esta ação (${action}).`)
   }
@@ -53,7 +53,7 @@ const find = (list, id, code, msg) => {
   ensure(x, code, msg)
   return x
 }
-const audit = (state, ctx, entry) => ({ ...state, auditLog: appendAudit(state.auditLog, { actor: actorOf(ctx), ...entry }, ctx.now) })
+export const audit = (state, ctx, entry) => ({ ...state, auditLog: appendAudit(state.auditLog, { actor: actorOf(ctx), ...entry }, ctx.now) })
 
 export function registerMotherCoil(state, input, ctx) {
   authorize(ctx, 'motherCoil.create')

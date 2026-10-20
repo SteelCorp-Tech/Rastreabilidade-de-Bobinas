@@ -24,6 +24,8 @@ Decisões do projeto, com motivo e data. Atualize junto com o `CLAUDE.md`.
 | Seed = lotes do controle 2026 que constam na aba de estoque (têm peso e largura da mãe), mais os lotes ainda no prestador. Pesos dos CUBs estimados pela fórmula do plano de corte (marcados `received_weight_estimated`); usos sem OP viram "SEM OP" e perfiladeira "N/D". | O Excel não tem peso da mãe para 20 dos 49 lotes, e os pesos por CUB são rateio. |
 | Piso de numeração `cub_floor` (2026: 575): o sistema emite CUBs a partir do 576. | Os CUBs físicos do Excel (inclusive de lotes fora do seed) já estão colados nas tiras; não podem se repetir. |
 | Restaurar dados de exemplo preserva o AuditLog e registra `seed.restore`. | Auditoria só cresce. |
+| Cadastros só se inativam (nunca se apagam); nome único sem diferenciar maiúsculas; catálogo único por (espessura, largura, galvanização). Edição: Suprimentos e Administrador; configurações: só Administrador. | CLAUDE.md 8.3 e 8.2. |
+| Configuração `label_layout` (A4 2 colunas ou térmica 100×50 mm). | Pergunta em aberto 6: o padrão é A4 como a planilha de hoje. |
 
 ## Em aberto (padrão adotado até decidirem)
 

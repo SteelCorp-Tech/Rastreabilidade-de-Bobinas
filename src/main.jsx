@@ -14,7 +14,10 @@ import ModulePage from './ui/app/ModulePage.jsx'
 import { ProfileProvider } from './ui/app/ProfileContext.jsx'
 import { StoreProvider } from './ui/app/StoreContext.jsx'
 import SettingsPage from './ui/app/SettingsPage.jsx'
+import RegistryPage from './ui/pages/RegistryPage.jsx'
 import { MODULES } from './ui/app/modules.js'
+
+const PAGES = { settings: <SettingsPage />, registry: <RegistryPage /> }
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -25,7 +28,7 @@ createRoot(document.getElementById('root')).render(
           <Route element={<Layout />}>
             <Route index element={<Home />} />
             {MODULES.filter((m) => m.view !== 'home').map((m) => (
-              <Route key={m.path} path={m.path} element={m.view === 'settings' ? <SettingsPage /> : <ModulePage module={m} />} />
+              <Route key={m.path} path={m.path} element={PAGES[m.view] ?? <ModulePage module={m} />} />
             ))}
           </Route>
         </Routes>
