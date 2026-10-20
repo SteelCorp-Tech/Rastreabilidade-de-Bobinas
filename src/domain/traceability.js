@@ -109,5 +109,55 @@ export function searchAll(state, query) {
   for (const u of state.uses) {
     if ([u.production_order, u.project].some(hit)) out.push({ type: 'use', id: u.id, label: `OP ${u.production_order} · ${u.project}` })
   }
+  for (const p of new Set(state.uses.map((u) => u.project))) {
+    if (hit(p)) out.push({ type: 'project', id: p, label: p })
+  }
   return out
+}
+
+/**
+ * Rastreabilidade por obra: de quais bobinas mães, lotes e certificados saiu o aço que foi para a obra.
+ * @param {import('./commands.js').State} state
+ */
+export function recallByProject(state, project) {
+  const key = String(project).trim().toLowerCase()
+  const uses = state.uses.filter((u) => u.project.trim().toLowerCase() === key)
+  if (!uses.length) return null
+  const rows = uses.map((u) => {
+    const coil = state.coils.find((c) => c.id === u.coil)
+    const mother = state.motherCoils.find((m) => m.id === coil.mother_coil)
+    return { use: u, coil, mother }
+  })
+  const lots = new Map()
+  for (const { coil, mother, use } of rows) {
+    if (!lots.has(mother.id)) lots.set(mother.id, { mother_coil: mother, cubs: new Set(), consumption: 0 })
+    const l = lots.get(mother.id)
+    l.cubs.add(coil.cub)
+    l.consumption += use.consumption ?? 0
+  }
+  return {
+    project: uses[0].project,
+    rows,
+    lots: [...lots.values()].map((l) => ({ ...l, cubs: [...l.cubs] })),
+    total_consumption: uses.reduce((s, u) => s + (u.consumption ?? 0), 0),
+    certificates: [...new Set(rows.map((r) => r.mother.certificate_number).filter(Boolean))],
+    production_orders: [...new Set(uses.map((u) => u.production_order))],
+  }
+}
+
+/** Balanço de massa de todas as mães com CUBs recebidos. */
+export function massBalanceReport(state) {
+  const received = state.motherCoils.filter((m) => state.coils.some((c) => c.mother_coil === m.id))
+  const all = summarize(state, received)
+  return all.balances.map((b) => {
+    const coils = state.coils.filter((c) => c.mother_coil === b.mother_coil)
+    return { ...b, cubs: coils.length, estimated: coils.some((c) => c.received_weight_estimated) }
+  })
+}
+
+/** Nomes de obra distintos (sem diferenciar maiúsculas) que aparecem nos usos. */
+export function projectNames(state) {
+  const byKey = new Map()
+  for (const u of state.uses) if (!byKey.has(u.project.trim().toLowerCase())) byKey.set(u.project.trim().toLowerCase(), u.project)
+  return [...byKey.values()].sort((a, b) => a.localeCompare(b, 'pt-BR'))
 }

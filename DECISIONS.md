@@ -31,6 +31,9 @@ Decisões do projeto, com motivo e data. Atualize junto com o `CLAUDE.md`.
 | Posição no estoque editável por Almoxarifado e Produção (`stock.locate`), com auditoria. | CLAUDE.md 7.5. |
 | Uso: ler um CUB em uso leva direto ao passo 2; CUB bloqueado, consumido ou enviado é recusado com o motivo. Última perfiladeira usada fica lembrada no tablet (`bobinas:v1:last-use`). Diferença de espessura além de ±0,05 mm só alerta (não bloqueia). | Poucos toques no chão de fábrica; a regra de recusa é do domínio. |
 | Câmera: `barcode-detector` (leitor nativo do navegador quando existe; senão ZXing-WASM local, ~0,9 MB, só carregado quando precisa). `dev:https` para testar a câmera no tablet. | Safari/iPad não tem leitor nativo; sem CDN, funciona offline. |
+| Bloqueio de lote: bloqueia a mãe e todos os CUBs com saldo; CUB em uso bloqueia ao fechar o uso (a sobra volta `BLOCKED`); liberar o lote só desfaz o que o lote bloqueou. Motivo obrigatório em ambos. | Pergunta em aberto 5; CLAUDE.md 5.2 e 7.9. |
+| Dossiês (lote e obra) e recall exportam CSV no padrão Excel pt-BR (`;`, vírgula decimal, BOM). | Quem recebe a auditoria abre no Excel. |
+| "Simular evento da FVM" reaproveita os comandos de bloqueio e liberação com o motivo "Evento FVM (simulado) nº …". | CLAUDE.md 8.6c; só demonstração. |
 
 ## Em aberto (padrão adotado até decidirem)
 

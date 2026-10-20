@@ -26,9 +26,15 @@ import DeliveryForm from './ui/pages/DeliveryForm.jsx'
 import DeliveryDetail from './ui/pages/DeliveryDetail.jsx'
 import StockPage from './ui/pages/StockPage.jsx'
 import CoilUsePage from './ui/pages/CoilUsePage.jsx'
+import SearchPage from './ui/pages/SearchPage.jsx'
+import CoilSheet from './ui/pages/CoilSheet.jsx'
+import RecallPage from './ui/pages/RecallPage.jsx'
+import BlocksPage from './ui/pages/BlocksPage.jsx'
+import AuditPage from './ui/pages/AuditPage.jsx'
+import { LotDossier, ProjectDossier } from './ui/pages/Dossier.jsx'
 import { MODULES } from './ui/app/modules.js'
 
-const PAGES = { settings: <SettingsPage />, registry: <RegistryPage />, motherCoils: <MotherCoilsPage />, cuttingPlans: <CuttingPlansPage />, deliveries: <DeliveriesPage />, stock: <StockPage />, coilUse: <CoilUsePage /> }
+const PAGES = { settings: <SettingsPage />, registry: <RegistryPage />, motherCoils: <MotherCoilsPage />, cuttingPlans: <CuttingPlansPage />, deliveries: <DeliveriesPage />, stock: <StockPage />, coilUse: <CoilUsePage />, search: <SearchPage />, reports: <RecallPage />, blocks: <BlocksPage />, audit: <AuditPage /> }
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -44,6 +50,9 @@ createRoot(document.getElementById('root')).render(
             <Route path="/bobinas-mae/nova" element={<MotherCoilForm />} />
             <Route path="/bobinas-mae/:id" element={<MotherCoilDetail />} />
             <Route path="/planos-de-corte/:id" element={<CuttingPlanEditor />} />
+            <Route path="/cub/:cub" element={<CoilSheet />} />
+            <Route path="/dossie/lote/:lot" element={<LotDossier />} />
+            <Route path="/dossie/obra/:project" element={<ProjectDossier />} />
             <Route path="/recebimento/nova" element={<DeliveryForm />} />
             <Route path="/recebimento/:id" element={<DeliveryDetail />} />
           </Route>
