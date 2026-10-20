@@ -15,9 +15,12 @@ import { ProfileProvider } from './ui/app/ProfileContext.jsx'
 import { StoreProvider } from './ui/app/StoreContext.jsx'
 import SettingsPage from './ui/app/SettingsPage.jsx'
 import RegistryPage from './ui/pages/RegistryPage.jsx'
+import MotherCoilsPage from './ui/pages/MotherCoilsPage.jsx'
+import MotherCoilForm from './ui/pages/MotherCoilForm.jsx'
+import MotherCoilDetail from './ui/pages/MotherCoilDetail.jsx'
 import { MODULES } from './ui/app/modules.js'
 
-const PAGES = { settings: <SettingsPage />, registry: <RegistryPage /> }
+const PAGES = { settings: <SettingsPage />, registry: <RegistryPage />, motherCoils: <MotherCoilsPage /> }
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -30,6 +33,8 @@ createRoot(document.getElementById('root')).render(
             {MODULES.filter((m) => m.view !== 'home').map((m) => (
               <Route key={m.path} path={m.path} element={PAGES[m.view] ?? <ModulePage module={m} />} />
             ))}
+            <Route path="/bobinas-mae/nova" element={<MotherCoilForm />} />
+            <Route path="/bobinas-mae/:id" element={<MotherCoilDetail />} />
           </Route>
         </Routes>
       </HashRouter>

@@ -74,3 +74,7 @@ export async function ensureSeedAttachments(ref) {
   const blob = buildModelPdf(['CERTIFICADO DE QUALIDADE - MODELO', 'Arquivo de exemplo do prototipo de rastreabilidade.', 'Em producao, aqui fica o certificado emitido pela usina.'])
   await putAttachment(blob, { id: ref.id, name: ref.name })
 }
+
+export async function deleteAttachment(id) {
+  await tx('readwrite', (s) => s.delete(id))
+}
