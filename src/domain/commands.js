@@ -77,12 +77,25 @@ export function attachCertificate(state, { mother_coil_id, number, file }, ctx) 
   return { state: next, result: after }
 }
 
-/** Salva o plano de corte; se já existe plano, cria nova versão e marca a anterior como substituída. */
+/**
+ * Salva o plano de corte. Se o plano vigente é rascunho, atualiza o rascunho; se já foi enviado
+ * (ou não há plano), cria uma nova versão e marca a anterior como substituída.
+ */
 export function savePlan(state, { mother_coil_id, lines, expected_delivery_date }, ctx) {
   authorize(ctx, 'cuttingPlan.edit')
   const mc = find(state.motherCoils, mother_coil_id, 'MOTHER_NOT_FOUND', 'Bobina mãe não encontrada.')
   const result = calcCuttingPlan({ mother_width: mc.width, net_weight: mc.net_weight, weight_limit: state.config.weight_limit, lines })
   const previous = state.cuttingPlans.filter((p) => p.mother_coil === mc.id)
+  const active = previous.filter((p) => p.status !== 'SUPERSEDED').sort((a, b) => b.version - a.version)[0]
+
+  if (active?.status === 'DRAFT') {
+    const updated = { ...active, lines, result, expected_delivery_date: expected_delivery_date ?? '', updated_by: ctx.user, updated_at: ctx.now.toISOString() }
+    const next = audit({ ...state, cuttingPlans: replace(state.cuttingPlans, active.id, updated) }, ctx, {
+      action: 'cuttingPlan.save', entity: 'CuttingPlan', entity_id: active.id, before: active, after: updated,
+    })
+    return { state: next, result: updated }
+  }
+
   const plan = {
     id: `plan-${state.cuttingPlans.length + 1}`,
     mother_coil: mc.id,

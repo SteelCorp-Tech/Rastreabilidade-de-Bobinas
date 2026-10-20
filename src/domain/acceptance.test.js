@@ -241,10 +241,14 @@ describe('invariantes (CLAUDE.md 5.2)', () => {
     expect(codeOf(() => registerMotherCoil(emptyState(), lote8948, ctx('AUDITOR')))).toBe('FORBIDDEN')
   })
 
-  it('nova versão do plano substitui a anterior', () => {
+  it('salvar de novo um rascunho o atualiza; depois de enviado, cria nova versão e substitui a anterior', () => {
     let s = registerMotherCoil(emptyState(), lote8948, ALMOX).state
     s = savePlan(s, { mother_coil_id: 'mc-1', lines: [{ strip_count: 7, strip_width: 166 }] }, PCP).state
     s = savePlan(s, { mother_coil_id: 'mc-1', lines: [{ strip_count: 6, strip_width: 166 }] }, PCP).state
+    expect(s.cuttingPlans.map((p) => [p.version, p.status, p.result.total_cubs])).toEqual([[1, 'DRAFT', 12]])
+    s = markPlanSent(s, { plan_id: 'plan-1' }, PCP).state
+    s = savePlan(s, { mother_coil_id: 'mc-1', lines: [{ strip_count: 7, strip_width: 166 }] }, PCP).state
     expect(s.cuttingPlans.map((p) => [p.version, p.status])).toEqual([[1, 'SUPERSEDED'], [2, 'DRAFT']])
+    expect(s.auditLog.filter((x) => x.action === 'cuttingPlan.save')).toHaveLength(3)
   })
 })

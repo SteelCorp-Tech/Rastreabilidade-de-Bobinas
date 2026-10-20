@@ -8,6 +8,7 @@ import '@fontsource/montserrat/700.css'
 import '@fontsource/jetbrains-mono/400.css'
 import './styles/tokens.css'
 import './styles/base.css'
+import './styles/print.css'
 import Layout from './ui/app/Layout.jsx'
 import Home from './ui/app/Home.jsx'
 import ModulePage from './ui/app/ModulePage.jsx'
@@ -18,9 +19,11 @@ import RegistryPage from './ui/pages/RegistryPage.jsx'
 import MotherCoilsPage from './ui/pages/MotherCoilsPage.jsx'
 import MotherCoilForm from './ui/pages/MotherCoilForm.jsx'
 import MotherCoilDetail from './ui/pages/MotherCoilDetail.jsx'
+import CuttingPlansPage from './ui/pages/CuttingPlansPage.jsx'
+import CuttingPlanEditor from './ui/pages/CuttingPlanEditor.jsx'
 import { MODULES } from './ui/app/modules.js'
 
-const PAGES = { settings: <SettingsPage />, registry: <RegistryPage />, motherCoils: <MotherCoilsPage /> }
+const PAGES = { settings: <SettingsPage />, registry: <RegistryPage />, motherCoils: <MotherCoilsPage />, cuttingPlans: <CuttingPlansPage /> }
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -35,6 +38,7 @@ createRoot(document.getElementById('root')).render(
             ))}
             <Route path="/bobinas-mae/nova" element={<MotherCoilForm />} />
             <Route path="/bobinas-mae/:id" element={<MotherCoilDetail />} />
+            <Route path="/planos-de-corte/:id" element={<CuttingPlanEditor />} />
           </Route>
         </Routes>
       </HashRouter>

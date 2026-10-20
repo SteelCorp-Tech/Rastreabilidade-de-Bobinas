@@ -1,0 +1,19 @@
+/* O que só aparece no papel: folhas de plano, etiquetas e dossiês. */
+.print-only { display: none; }
+
+@media print {
+  @page { margin: 14mm; }
+  body { background: #fff; font-size: 12pt; }
+  .sidebar, .no-print { display: none !important; }
+  .shell { display: block; }
+  .main { padding: 0; }
+  .print-only { display: block; }
+  .print-sheet h1 { font-size: 22pt; margin-bottom: 2mm; }
+  .print-sheet h2 { font-size: 13pt; margin: 8mm 0 3mm; }
+  .print-kv, .print-table { width: 100%; border-collapse: collapse; margin-bottom: 4mm; }
+  .print-kv th { text-align: left; font-weight: 600; width: 22%; padding: 2mm 3mm 2mm 0; font-family: var(--fonte); font-size: 10pt; letter-spacing: 0; text-transform: none; color: #333; border: 0; white-space: normal; }
+  .print-kv td { padding: 2mm 3mm 2mm 0; border: 0; }
+  .print-table th, .print-table td { border: 1px solid #999; padding: 2mm 3mm; text-align: left; font-size: 11pt; }
+  .print-table th { font-family: var(--fonte); text-transform: none; letter-spacing: 0; font-weight: 600; background: #eee; color: #000; }
+  .stripbar { border: 1px solid #555; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+}

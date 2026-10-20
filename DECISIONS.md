@@ -26,6 +26,7 @@ Decisões do projeto, com motivo e data. Atualize junto com o `CLAUDE.md`.
 | Restaurar dados de exemplo preserva o AuditLog e registra `seed.restore`. | Auditoria só cresce. |
 | Cadastros só se inativam (nunca se apagam); nome único sem diferenciar maiúsculas; catálogo único por (espessura, largura, galvanização). Edição: Suprimentos e Administrador; configurações: só Administrador. | CLAUDE.md 8.3 e 8.2. |
 | Configuração `label_layout` (A4 2 colunas ou térmica 100×50 mm). | Pergunta em aberto 6: o padrão é A4 como a planilha de hoje. |
+| Plano de corte: salvar um **rascunho** o atualiza no lugar; só um plano **enviado** gera nova versão (a anterior vira "Substituído"). | Evita dezenas de versões por edição; versões marcam o que foi realmente enviado ao prestador. |
 
 ## Em aberto (padrão adotado até decidirem)
 

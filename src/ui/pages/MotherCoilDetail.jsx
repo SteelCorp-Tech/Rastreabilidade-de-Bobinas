@@ -125,6 +125,7 @@ export default function MotherCoilDetail() {
             ) : (
               <p className="muted">Ainda sem plano de corte.</p>
             )}
+            <Link to={`/planos-de-corte/${mc.id}`} className="link">Abrir plano de corte</Link>
           </div>
         </div>
       </div>
