@@ -17,3 +17,14 @@
   .print-table th { font-family: var(--fonte); text-transform: none; letter-spacing: 0; font-weight: 600; background: #eee; color: #000; }
   .stripbar { border: 1px solid #555; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
 }
+
+@page thermal { size: 100mm 50mm; margin: 0; }
+@media print {
+  .label-area { margin: 0; }
+  .label-area.a4 { gap: 4mm; }
+  .label-area.thermal { page: thermal; display: block; }
+  .label-area.thermal .label { break-after: page; border-radius: 0; border: 0; }
+  .label-pick > input { display: none; }
+  .label-pick.off { display: none; }
+  .label { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+}

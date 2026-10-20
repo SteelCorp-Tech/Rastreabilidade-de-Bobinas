@@ -254,3 +254,17 @@ export function unblockLot(state, { slitter_lot, reason }, ctx) {
   })
   return { state: next, result: { released_cubs: released } }
 }
+
+/** Posição do CUB no estoque (rua, prateleira…). Não vale para CUB consumido ou enviado. */
+export function setStorageLocation(state, { cub, location }, ctx) {
+  authorize(ctx, 'stock.locate')
+  const coil = state.coils.find((c) => c.cub === cub)
+  ensure(coil, 'COIL_NOT_FOUND', `CUB ${cub} não encontrado.`)
+  ensure(coil.status !== 'CONSUMED' && coil.status !== 'RETURNED', 'LOCATE_NOT_APPLICABLE', `${cub} não está mais em estoque.`)
+  const after = { ...coil, storage_location: String(location ?? '').trim() }
+  const next = audit({ ...state, coils: replace(state.coils, coil.id, after) }, ctx, {
+    action: 'coil.locate', entity: 'Coil', entity_id: coil.id,
+    before: { storage_location: coil.storage_location }, after: { storage_location: after.storage_location },
+  })
+  return { state: next, result: after }
+}

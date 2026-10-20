@@ -27,6 +27,8 @@ Decisões do projeto, com motivo e data. Atualize junto com o `CLAUDE.md`.
 | Cadastros só se inativam (nunca se apagam); nome único sem diferenciar maiúsculas; catálogo único por (espessura, largura, galvanização). Edição: Suprimentos e Administrador; configurações: só Administrador. | CLAUDE.md 8.3 e 8.2. |
 | Configuração `label_layout` (A4 2 colunas ou térmica 100×50 mm). | Pergunta em aberto 6: o padrão é A4 como a planilha de hoje. |
 | Plano de corte: salvar um **rascunho** o atualiza no lugar; só um plano **enviado** gera nova versão (a anterior vira "Substituído"). | Evita dezenas de versões por edição; versões marcam o que foi realmente enviado ao prestador. |
+| Etiqueta mantém os campos da etiqueta de hoje (CUB, lote LS, código Microsys, fornecedor, galvanização, dimensão, NF fornecedor, NF prestador, data, certificado) e acrescenta QR (o CUB) e peso medido. Sobra: mesma etiqueta com "SOBRA", novo peso e data. | Continuidade com o chão de fábrica; CLAUDE.md 8.4. |
+| Posição no estoque editável por Almoxarifado e Produção (`stock.locate`), com auditoria. | CLAUDE.md 7.5. |
 
 ## Em aberto (padrão adotado até decidirem)
 

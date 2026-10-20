@@ -21,9 +21,13 @@ import MotherCoilForm from './ui/pages/MotherCoilForm.jsx'
 import MotherCoilDetail from './ui/pages/MotherCoilDetail.jsx'
 import CuttingPlansPage from './ui/pages/CuttingPlansPage.jsx'
 import CuttingPlanEditor from './ui/pages/CuttingPlanEditor.jsx'
+import DeliveriesPage from './ui/pages/DeliveriesPage.jsx'
+import DeliveryForm from './ui/pages/DeliveryForm.jsx'
+import DeliveryDetail from './ui/pages/DeliveryDetail.jsx'
+import StockPage from './ui/pages/StockPage.jsx'
 import { MODULES } from './ui/app/modules.js'
 
-const PAGES = { settings: <SettingsPage />, registry: <RegistryPage />, motherCoils: <MotherCoilsPage />, cuttingPlans: <CuttingPlansPage /> }
+const PAGES = { settings: <SettingsPage />, registry: <RegistryPage />, motherCoils: <MotherCoilsPage />, cuttingPlans: <CuttingPlansPage />, deliveries: <DeliveriesPage />, stock: <StockPage /> }
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -39,6 +43,8 @@ createRoot(document.getElementById('root')).render(
             <Route path="/bobinas-mae/nova" element={<MotherCoilForm />} />
             <Route path="/bobinas-mae/:id" element={<MotherCoilDetail />} />
             <Route path="/planos-de-corte/:id" element={<CuttingPlanEditor />} />
+            <Route path="/recebimento/nova" element={<DeliveryForm />} />
+            <Route path="/recebimento/:id" element={<DeliveryDetail />} />
           </Route>
         </Routes>
       </HashRouter>

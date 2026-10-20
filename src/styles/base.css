@@ -183,3 +183,34 @@ h2.sub { margin-top: 22px; font-size: 17px; }
 .results { overflow-x: auto; }
 .res-table { min-width: 460px; }
 .stripbar { min-width: 0; }
+
+/* etiquetas */
+.label-area.a4 { display: grid; grid-template-columns: repeat(2, 95mm); gap: 5mm; justify-content: start; }
+.label-area.thermal { display: grid; grid-template-columns: 100mm; gap: 5mm; }
+.label { display: flex; gap: 3mm; width: 95mm; height: 56mm; padding: 3.5mm; border: 1px solid #222; border-radius: 1.5mm; background: #fff; color: #000; overflow: hidden; break-inside: avoid; }
+.label-area.thermal .label { width: 100mm; height: 50mm; padding: 3mm; }
+.label.leftover { border: 2px dashed #222; }
+.l-main { flex: 1; min-width: 0; }
+.l-cub { font-size: 14pt; font-weight: 700; letter-spacing: -.01em; line-height: 1.1; }
+.l-tag { display: inline-block; margin-top: 1mm; padding: 0 2mm; border: 1px solid #000; font-size: 8pt; font-weight: 700; }
+.l-fields { display: grid; grid-template-columns: auto 1fr; gap: .4mm 3mm; margin: 2mm 0 0; font-size: 7.5pt; line-height: 1.25; }
+.l-fields dt { color: #444; font-size: 6.5pt; letter-spacing: .04em; align-self: center; white-space: nowrap; }
+.l-fields dd { margin: 0; font-weight: 600; overflow-wrap: anywhere; }
+.l-side { display: flex; flex-direction: column; align-items: center; justify-content: space-between; }
+.l-side svg { width: 27mm; height: 27mm; }
+.l-weight { font-size: 11pt; font-weight: 700; text-align: center; margin-top: 2mm; }
+.label-select { display: flex; align-items: center; gap: 8px; font-size: 13px; margin-bottom: 6px; }
+.label-pick { position: relative; }
+.label-pick > input { position: absolute; top: 6px; left: 6px; width: 20px; min-height: 20px; z-index: 1; }
+.label-pick.off .label { opacity: .35; }
+
+/* recebimento e estoque */
+.row-between { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.prefill { display: flex; gap: 12px; margin: 12px 0 8px; flex-wrap: wrap; }
+.prefill select { flex: 1; min-width: 260px; }
+.lines-table.recv td, .lines-table.recv th { padding-right: 10px; }
+.lines-table.recv select, .lines-table.recv input { min-width: 90px; }
+.lines-table.recv td:nth-child(2) select { min-width: 210px; }
+.link.loc { padding: 4px 6px; min-height: 32px; font-weight: 500; }
+.loc-input { min-height: 36px; width: 150px; }
+tfoot td { padding: 12px 16px; border-top: 1px solid var(--borda); background: #f7fafa; }

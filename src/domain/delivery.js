@@ -112,3 +112,13 @@ export function buildDelivery({ delivery: d, lines }, state, config, actor, now)
   }
   return { delivery, coils }
 }
+
+/**
+ * Linhas esperadas na entrega, derivadas do plano de corte: uma por CUB previsto, com o peso estimado
+ * (referência; o peso real é medido na balança).
+ * @param {{lines: {strip_width: number}[], result: import('./cuttingPlan.js').PlanResult}} plan
+ * @returns {{width: number, estimated_weight: number}[]}
+ */
+export function expectedRowsFromPlan(plan) {
+  return plan.result.lines.flatMap((l) => Array.from({ length: l.cubs }, () => ({ width: l.strip_width, estimated_weight: l.coil_weight })))
+}

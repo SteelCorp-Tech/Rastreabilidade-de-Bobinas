@@ -27,6 +27,7 @@ export const PERMISSIONS = {
   'cuttingPlan.edit': ['PCP'],
   'delivery.receive': ['ALMOXARIFADO'],
   'label.print': ['ALMOXARIFADO', 'PRODUCAO'],
+  'stock.locate': ['ALMOXARIFADO', 'PRODUCAO'],
   'coilUse.open': ['PRODUCAO'],
   'coilUse.close': ['PRODUCAO'],
   'block.manage': ['QUALIDADE'],
