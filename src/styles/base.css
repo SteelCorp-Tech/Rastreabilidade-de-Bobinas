@@ -214,3 +214,39 @@ h2.sub { margin-top: 22px; font-size: 17px; }
 .link.loc { padding: 4px 6px; min-height: 32px; font-weight: 500; }
 .loc-input { min-height: 36px; width: 150px; }
 tfoot td { padding: 12px 16px; border-top: 1px solid var(--borda); background: #f7fafa; }
+
+/* uso de bobina (tablet): alvos grandes, poucos campos */
+.btn.big { min-height: 60px; font-size: 18px; padding: 0 28px; border-radius: 12px; }
+.big-input { min-height: 60px; font-size: 22px; }
+select.big-input { font-size: 18px; }
+.btn.go { background: var(--teal-600); }
+.btn.danger { color: var(--vermelho-600); border-color: #e7b9b3; }
+.scan-panel h2 { margin-bottom: 14px; }
+.scan-input { min-height: 68px; font-size: 24px; letter-spacing: .02em; border: 2px solid var(--teal-600); margin-bottom: 14px; }
+.big-err { font-size: 17px; padding: 14px 18px; }
+.coil-card { background: var(--petroleo-900); color: #fff; border-radius: var(--raio); padding: 18px 22px; margin-bottom: 16px; }
+.cc-cub { font-size: 30px; font-weight: 700; margin-bottom: 10px; }
+.cc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.cc-grid .eyebrow { color: #7fa3ad; display: block; margin-bottom: 4px; }
+.cc-grid b { font-size: 17px; }
+.machines { display: flex; gap: 12px; flex-wrap: wrap; margin: 8px 0 22px; }
+.machine { flex: 1; min-width: 160px; min-height: 64px; font-size: 18px; font-weight: 600; border-radius: 12px; border: 2px solid var(--borda); background: #fff; color: var(--petroleo-900); }
+.machine.on { border-color: var(--teal-600); background: var(--teal-100); color: var(--teal-600); }
+.delta { background: var(--gelo); border-radius: 10px; padding: 12px 16px; display: flex; flex-direction: column; justify-content: center; gap: 4px; min-height: 60px; }
+.delta b { font-size: 26px; color: var(--petroleo-900); }
+.delta.off { background: var(--laranja-100); }
+.delta.off b, .delta.off small { color: #a85a14; }
+.warn-box { background: var(--laranja-100); color: #7a430e; border-radius: 10px; padding: 14px 18px; margin: 14px 0; font-weight: 500; }
+.actions-row.two-big { flex-wrap: wrap; margin-top: 18px; }
+.actions-row.two-big .btn { flex: 1; min-width: 240px; }
+.scrap { max-width: 260px; margin-top: 4px; }
+.done { text-align: center; }
+.done .big-text { font-size: 34px; font-weight: 700; margin: 6px 0 4px; }
+.done .label-area { justify-content: center; margin: 18px 0; }
+.use-page .btn.big.go { width: 100%; margin-top: 14px; }
+.scanner { position: fixed; inset: 0; background: rgba(0,33,43,.88); display: grid; place-items: center; z-index: 50; padding: 20px; }
+.scanner-box { background: var(--petroleo-900); border-radius: 16px; padding: 18px; width: min(560px, 100%); display: flex; flex-direction: column; gap: 14px; position: relative; }
+.scanner-box video { width: 100%; border-radius: 10px; background: #000; aspect-ratio: 4/3; object-fit: cover; }
+.scanner-frame { position: absolute; left: 50%; top: 38%; width: 52%; aspect-ratio: 1; transform: translate(-50%, -50%); border: 3px solid var(--laranja-500); border-radius: 14px; pointer-events: none; }
+.scanner-msg { color: #cfe0e5; text-align: center; margin: 0; font-size: 16px; }
+@media (max-width: 1100px) { .cc-grid { grid-template-columns: 1fr 1fr; } }

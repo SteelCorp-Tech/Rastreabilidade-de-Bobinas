@@ -11,6 +11,7 @@ npm install
 npm run dev        # http://localhost:5173
 npm test           # testes de domínio (Vitest)
 npm run build      # gera dist/ (site estático, funciona em subpasta)
+npm run dev:https  # dev em HTTPS (certificado de teste), para a câmera de um tablet na rede local
 npm run preview    # serve o dist/ para conferir
 ```
 
@@ -33,3 +34,4 @@ scripts/           geração do seed a partir do Excel
 - Incremento 4 (bobinas mãe): lista com filtros (inclui "Sem certificado"), cadastro com anexo do certificado e da NF (IndexedDB) e ficha com histórico e a ação "Anexar ou substituir certificado" (auditada).
 - Incremento 5 (plano de corte): lista de planos, editor com cálculo em tempo real e barra de tiras/refilo, versões e folha de impressão (`print.css`). Salvar um rascunho o atualiza; depois de enviado, salvar cria nova versão.
 - Incremento 6 (recebimento, etiquetas e estoque): entrega com contagem declarada (ou justificativa), pré-preenchimento pelo plano, código ERP sugerido pelo catálogo, CUBs gerados e etiquetas com QR (A4 2 colunas ou térmica 100×50 mm); estoque com filtros, saldo por código ERP e posição editável.
+- Incremento 7 (uso de bobina, tablet): leitura do CUB por leitor físico (campo com foco automático) ou pela câmera (`barcode-detector`: leitor nativo quando existe, senão ZXing em WebAssembly servido pelo próprio app), passo 1 (OP, obra, perfiladeira, espessura medida e diferença) e passo 2 (peso da sobra; sobra com etiqueta ou consumida). A câmera exige HTTPS (ou localhost).

@@ -63,7 +63,7 @@ export function assertCanEnterStock(c) {
 }
 
 /** Mensagem do motivo pelo qual o CUB não pode abrir uso. */
-function refusalMessage(coil) {
+export function refusalMessage(coil) {
   switch (coil.status) {
     case 'BLOCKED':
       return `${coil.cub} está bloqueado${coil.block_reason ? `: ${coil.block_reason}` : ''}.`

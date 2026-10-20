@@ -29,6 +29,8 @@ Decisões do projeto, com motivo e data. Atualize junto com o `CLAUDE.md`.
 | Plano de corte: salvar um **rascunho** o atualiza no lugar; só um plano **enviado** gera nova versão (a anterior vira "Substituído"). | Evita dezenas de versões por edição; versões marcam o que foi realmente enviado ao prestador. |
 | Etiqueta mantém os campos da etiqueta de hoje (CUB, lote LS, código Microsys, fornecedor, galvanização, dimensão, NF fornecedor, NF prestador, data, certificado) e acrescenta QR (o CUB) e peso medido. Sobra: mesma etiqueta com "SOBRA", novo peso e data. | Continuidade com o chão de fábrica; CLAUDE.md 8.4. |
 | Posição no estoque editável por Almoxarifado e Produção (`stock.locate`), com auditoria. | CLAUDE.md 7.5. |
+| Uso: ler um CUB em uso leva direto ao passo 2; CUB bloqueado, consumido ou enviado é recusado com o motivo. Última perfiladeira usada fica lembrada no tablet (`bobinas:v1:last-use`). Diferença de espessura além de ±0,05 mm só alerta (não bloqueia). | Poucos toques no chão de fábrica; a regra de recusa é do domínio. |
+| Câmera: `barcode-detector` (leitor nativo do navegador quando existe; senão ZXing-WASM local, ~0,9 MB, só carregado quando precisa). `dev:https` para testar a câmera no tablet. | Safari/iPad não tem leitor nativo; sem CDN, funciona offline. |
 
 ## Em aberto (padrão adotado até decidirem)
 

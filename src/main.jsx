@@ -25,9 +25,10 @@ import DeliveriesPage from './ui/pages/DeliveriesPage.jsx'
 import DeliveryForm from './ui/pages/DeliveryForm.jsx'
 import DeliveryDetail from './ui/pages/DeliveryDetail.jsx'
 import StockPage from './ui/pages/StockPage.jsx'
+import CoilUsePage from './ui/pages/CoilUsePage.jsx'
 import { MODULES } from './ui/app/modules.js'
 
-const PAGES = { settings: <SettingsPage />, registry: <RegistryPage />, motherCoils: <MotherCoilsPage />, cuttingPlans: <CuttingPlansPage />, deliveries: <DeliveriesPage />, stock: <StockPage /> }
+const PAGES = { settings: <SettingsPage />, registry: <RegistryPage />, motherCoils: <MotherCoilsPage />, cuttingPlans: <CuttingPlansPage />, deliveries: <DeliveriesPage />, stock: <StockPage />, coilUse: <CoilUsePage /> }
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
