@@ -12,7 +12,7 @@ npm run dev        # http://localhost:5173
 npm test           # testes de domínio (Vitest)
 npm run build      # gera dist/ (site estático, funciona em subpasta)
 npm run dev:https  # dev em HTTPS (certificado de teste), para a câmera de um tablet na rede local
-npm run preview    # serve o dist/ para conferir
+npm run preview    # serve o dist/ (build final, sem atualização a quente) em http://localhost:4173
 ```
 
 ## Estrutura
