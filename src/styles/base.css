@@ -315,6 +315,11 @@ select.big-input { font-size: 18px; }
 .fit-page > * { flex: none; }
 .fit-page > .seg { align-self: flex-start; }
 .fit-page .tab-body { display: flex; flex-direction: column; }
+.fit-form { display: flex; flex-direction: column; flex: 1 1 0; min-height: 0; }
+.fit-form > * { flex: none; }
+.fit-form > .recv-card { flex: 1 1 0; min-height: 0; display: flex; flex-direction: column; }
+.recv-card > * { flex: none; }
+.recv-card > .fill { flex: 1 1 0; min-height: 120px; }
 .fit-page > .tab-body, .fit-page > .fill { flex: 1 1 0; min-height: 0; }
 .tab-body > * { flex: none; }
 .tab-body > .seg { align-self: flex-start; }
@@ -353,3 +358,12 @@ th.sorted .th-btn .si { opacity: 1; color: var(--teal-600); }
 .topbar-right { display: flex; align-items: center; gap: 8px; }
 .theme-btn { width: 36px; height: 36px; display: grid; place-items: center; border: 0; border-radius: 50%; background: none; color: var(--texto-suave); }
 .theme-btn:hover { background: var(--gelo); color: var(--titulo); }
+
+/* Registrar entrega: cartões compactos para a tabela de bobinas ganhar altura */
+.fit-form .panel { padding: 16px 20px; }
+.fit-form .panel h2 { margin-bottom: 0; }
+.fit-form .fields { margin: 10px 0 0; gap: 12px; }
+.fit-form .fields.three { grid-template-columns: 1fr 1fr 1.3fr 1fr 1.7fr; align-items: end; }
+.fit-form .panel.mt { margin-top: 12px; }
+@media (max-width: 1280px) { .fit-form .fields.three { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.fit-page.tall { min-height: 760px; }

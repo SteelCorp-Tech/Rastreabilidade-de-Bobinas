@@ -92,14 +92,14 @@ export default function DeliveryForm() {
   }
 
   return (
-    <>
+    <div className="fit-page tall">
       <div className="page-head">
         <div>
           <div className="eyebrow">Operação · <Link to="/recebimento">Recebimento</Link></div>
           <h1>Registrar entrega</h1>
         </div>
       </div>
-      <form onSubmit={submit}>
+      <form onSubmit={submit} className="fit-form">
         <div className="card panel wide">
           <h2>Nota do prestador</h2>
           <div className="fields three">
@@ -111,7 +111,7 @@ export default function DeliveryForm() {
           </div>
         </div>
 
-        <div className="card panel wide mt">
+        <div className="card panel wide mt recv-card">
           <div className="row-between">
             <h2>Bobinas recebidas</h2>
             <span className={'badge ' + (matches ? 'ok' : 'warn')}>{filled.length} lançadas de {Number.isInteger(declared) ? declared : '—'} declaradas</span>
@@ -124,7 +124,7 @@ export default function DeliveryForm() {
             <button type="button" className="btn ghost" onClick={fillFromPlan} disabled={!planLot}>Pré-preencher</button>
           </div>
           {note && <p className="muted small">{note}</p>}
-          <div className="table-wrap">
+          <div className="table-wrap fill">
             <table className="lines-table recv">
               <thead><tr><th>#</th><th>Lote (LS)</th><th>Largura (mm)</th><th>Peso medido (kg)</th><th>Código ERP</th><th>Posição</th><th /></tr></thead>
               <tbody>
@@ -178,6 +178,6 @@ export default function DeliveryForm() {
           <Link to="/recebimento" className="btn ghost link-btn">Cancelar</Link>
         </div>
       </form>
-    </>
+    </div>
   )
 }
