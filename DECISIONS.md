@@ -51,3 +51,4 @@ Decisões do projeto, com motivo e data. Atualize junto com o `CLAUDE.md`.
 5. Lote bloqueado com CUB montado: o uso aberto termina e a sobra volta `BLOCKED`.
 6. Etiqueta: A4 com 2 colunas, e térmica 100×50 mm como opção.
 7. Nomes reais de obras e fornecedores dentro do JS publicado: ok só se o portal for interno.
+8. Dois planos de corte para a mesma bobina mãe (duas passadas, cada uma com uma parte do peso) — 21/10/2026. Hoje há um plano vigente por mãe; versões são só histórico. Nada foi alterado. A proposta (várias passadas por mãe, cada uma com nome, peso em kg, linhas, status e versões; refilo e balanço somando as passadas; soma dos pesos ≤ peso líquido) aguarda validação com a operação. Perguntas: (a) dividir por kg ou por %; (b) enviar as passadas juntas ou cada uma separada.

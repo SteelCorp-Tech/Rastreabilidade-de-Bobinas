@@ -177,7 +177,7 @@ h2.sub { margin-top: 22px; font-size: 17px; }
 .metrics .hl b { color: #a85a14; }
 .metrics small { color: #a85a14; }
 .res-table th, .res-table td { font-size: 12.5px; }
-.sticky-actions { position: sticky; bottom: 0; background: linear-gradient(to top, var(--gelo) 70%, transparent); padding: 18px 0 10px; flex-wrap: wrap; }
+.sticky-actions { position: sticky; bottom: 0; z-index: 5; background: var(--gelo); border-top: 1px solid var(--borda); box-shadow: 0 -6px 12px -8px rgba(0, 33, 43, .25); margin-top: 16px; padding: 12px 0; flex-wrap: wrap; }
 @media (max-width: 1100px) { .metrics { grid-template-columns: 1fr 1fr; } }
 .grid-2 > * { min-width: 0; }
 .results { overflow-x: auto; }
