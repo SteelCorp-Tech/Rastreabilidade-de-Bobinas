@@ -173,7 +173,7 @@ export default function DeliveryForm() {
         </div>
 
         {error && <div className="err" role="alert">{error}</div>}
-        <div className="actions-row sticky-actions">
+        <div className="actions-row mt">
           <button className="btn" disabled={busy || !filled.length}>Registrar entrega e gerar CUBs</button>
           <Link to="/recebimento" className="btn ghost link-btn">Cancelar</Link>
         </div>
