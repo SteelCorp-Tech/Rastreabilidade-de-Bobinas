@@ -55,7 +55,7 @@ function SimpleRegistry({ kind }) {
       )}
       {error && <div className="err" role="alert">{error}</div>}
       <input className="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Buscar…" aria-label="Buscar" />
-      <div className="card table-wrap">
+      <div className="card table-wrap fill">
         <table>
           <thead><tr><th>Nome</th><th>Código externo</th><th>Situação</th>{editable && <th />}</tr></thead>
           <tbody>
@@ -132,7 +132,7 @@ function Catalog() {
         <select value={galv} onChange={(e) => setGalv(e.target.value)} aria-label="Galvanização"><option value="">Todas as galvanizações</option>{galvs.map((g) => <option key={g}>{g}</option>)}</select>
         <select value={thick} onChange={(e) => setThick(e.target.value)} aria-label="Espessura"><option value="">Todas as espessuras</option>{thicks.map((t) => <option key={t} value={t}>{fmtThickness(t)} mm</option>)}</select>
       </div>
-      <div className="card table-wrap">
+      <div className="card table-wrap fill">
         <table>
           <thead><tr><th>Código ERP</th><th>Espessura</th><th>Largura</th><th>Galvanização</th><th>Situação</th>{editable && <th />}</tr></thead>
           <tbody>
@@ -165,7 +165,7 @@ export default function RegistryPage() {
   const [tab, setTab] = useState('suppliers')
   const options = TABS.map((t) => ({ ...t, count: state[t.value].length }))
   return (
-    <>
+    <div className="fit-page">
       <div className="page-head">
         <div>
           <div className="eyebrow">Sistema</div>
@@ -175,6 +175,6 @@ export default function RegistryPage() {
       </div>
       <Seg options={options} value={tab} onChange={setTab} label="Cadastros" />
       <div className="tab-body">{tab === 'materials' ? <Catalog /> : <SimpleRegistry key={tab} kind={tab} />}</div>
-    </>
+    </div>
   )
 }

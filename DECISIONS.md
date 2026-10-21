@@ -36,6 +36,7 @@ Decisões do projeto, com motivo e data. Atualize junto com o `CLAUDE.md`.
 | "Simular evento da FVM" reaproveita os comandos de bloqueio e liberação com o motivo "Evento FVM (simulado) nº …". | CLAUDE.md 8.6c; só demonstração. |
 | Etiqueta redesenhada no **modelo da etiqueta do Excel** (aba "Gerador de etiqueta"): logo SteelCorp no topo, símbolo como marca d'água, CUB e lote em destaque, campos em dois blocos (esquerda: código Microsys, galvanização, dimensão, data de recebimento; direita: fornecedor, NF fornecedor, NF prestador, certificado). O Excel **não tem QR**; o QR do CUB e o peso medido foram encaixados no layout. Logos copiados do próprio Excel (`src/assets/`). | Pedido do dono do produto em 20/10/2026: continuidade visual com a etiqueta de hoje. |
 | Layout de altura fixa: a janela não rola; só a área de conteúdo (`.main`) rola, o menu fica parado e a rolagem volta ao topo ao trocar de tela. Na impressão o layout volta a fluir normalmente. | Pedido do dono do produto em 21/10/2026. |
+| Telas de lista (Bobinas mãe, Plano de corte, Recebimento, Estoque, Cadastros, Auditoria, Balanço e Pendências do Recall): título, abas e filtros ficam parados e a **tabela** ocupa o resto da janela, com rolagem própria e cabeçalho fixo (classes `fit-page` e `fill`). Telas com várias seções (ficha, dossiê, levantamento do Recall) rolam a área de conteúdo inteira. | Pedido do dono do produto em 21/10/2026. |
 
 ## Em aberto (padrão adotado até decidirem)
 

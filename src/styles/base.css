@@ -300,3 +300,17 @@ select.big-input { font-size: 18px; }
 .chain .arrow { display: none; }
 .chain .link-card { max-width: none; min-width: 0; }
 @media (max-width: 1100px) { .chain { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* telas de lista: a tabela ocupa só o espaço até o fim da janela e rola por dentro; título, abas e filtros ficam parados */
+.main:has(> .fit-page) { overflow: hidden; display: flex; flex-direction: column; padding-bottom: 20px; }
+.fit-page { display: flex; flex-direction: column; flex: 1 1 0; min-height: 0; }
+.fit-page > * { flex: none; }
+.fit-page > .seg { align-self: flex-start; }
+.fit-page .tab-body { display: flex; flex-direction: column; }
+.fit-page > .tab-body, .fit-page > .fill { flex: 1 1 0; min-height: 0; }
+.tab-body > * { flex: none; }
+.tab-body > .seg { align-self: flex-start; }
+.tab-body > .fill { flex: 1 1 0; min-height: 0; }
+.fill { overflow: auto; }
+.fill thead th { position: sticky; top: 0; z-index: 1; background: #fff; box-shadow: 0 1px 0 var(--borda); }
+.fill tfoot td { position: sticky; bottom: 0; }

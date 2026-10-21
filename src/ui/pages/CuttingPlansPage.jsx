@@ -42,7 +42,7 @@ export default function CuttingPlansPage() {
     .sort((a, b) => (b.m.received_at ?? '').localeCompare(a.m.received_at ?? ''))
 
   return (
-    <>
+    <div className="fit-page">
       <div className="page-head">
         <div>
           <div className="eyebrow">Operação</div>
@@ -51,7 +51,7 @@ export default function CuttingPlansPage() {
       </div>
       <Seg options={options} value={filter} onChange={setFilter} label="Filtro" />
       <div className="filters"><input className="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Lote ou fornecedor…" aria-label="Buscar" /></div>
-      <div className="card table-wrap">
+      <div className="card table-wrap fill">
         <table>
           <thead>
             <tr><th>Lote</th><th>Fornecedor</th><th>Material</th><th>Peso líquido</th><th>Plano</th><th>CUBs previstos</th><th>Refilo</th><th>Situação da mãe</th></tr>
@@ -73,6 +73,6 @@ export default function CuttingPlansPage() {
           </tbody>
         </table>
       </div>
-    </>
+    </div>
   )
 }

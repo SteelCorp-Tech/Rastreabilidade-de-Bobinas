@@ -24,7 +24,7 @@ export default function AuditPage() {
     .slice().reverse()
 
   return (
-    <>
+    <div className="fit-page">
       <div className="page-head">
         <div>
           <div className="eyebrow">Sistema</div>
@@ -38,7 +38,7 @@ export default function AuditPage() {
         <select value={action} onChange={(e) => setAction(e.target.value)} aria-label="Ação"><option value="">Todas as ações</option>{actions.map((a) => <option key={a} value={a}>{auditLabel(a)}</option>)}</select>
         <select value={role} onChange={(e) => setRole(e.target.value)} aria-label="Perfil"><option value="">Todos os perfis</option>{roles.map((r) => <option key={r}>{r}</option>)}</select>
       </div>
-      <div className="card table-wrap">
+      <div className="card table-wrap fill">
         <table>
           <thead><tr><th>Quando</th><th>Quem</th><th>Ação</th><th>Alvo</th><th>Motivo</th><th /></tr></thead>
           <tbody>
@@ -61,6 +61,6 @@ export default function AuditPage() {
         </table>
       </div>
       <p className="muted foot">{rows.length} de {state.auditLog.length} eventos{rows.length > 300 ? ' (mostrando os 300 mais recentes)' : ''}</p>
-    </>
+    </div>
   )
 }

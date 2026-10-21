@@ -54,7 +54,7 @@ export default function MotherCoilsPage() {
     .sort((a, b) => (b.received_at ?? '').localeCompare(a.received_at ?? ''))
 
   return (
-    <>
+    <div className="fit-page">
       <div className="page-head">
         <div>
           <div className="eyebrow">Operação</div>
@@ -64,7 +64,7 @@ export default function MotherCoilsPage() {
       </div>
       <Seg options={options} value={filter} onChange={setFilter} label="Filtro" />
       <div className="filters"><input className="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Lote, fornecedor, NF, certificado…" aria-label="Buscar" /></div>
-      <div className="card table-wrap">
+      <div className="card table-wrap fill">
         <table>
           <thead>
             <tr><th>Lote</th><th>Fornecedor</th><th>Material</th><th>Peso líquido</th><th>NF fornecedor</th><th>Certificado</th><th>Situação</th><th>CUBs</th></tr>
@@ -87,6 +87,6 @@ export default function MotherCoilsPage() {
         </table>
       </div>
       <p className="muted foot">{rows.length} de {state.motherCoils.length}</p>
-    </>
+    </div>
   )
 }

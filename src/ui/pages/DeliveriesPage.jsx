@@ -17,7 +17,7 @@ export default function DeliveriesPage() {
     .sort((a, b) => (b.received_date + b.id).localeCompare(a.received_date + a.id))
 
   return (
-    <>
+    <div className="fit-page">
       <div className="page-head">
         <div>
           <div className="eyebrow">Operação</div>
@@ -26,7 +26,7 @@ export default function DeliveriesPage() {
         {can('delivery.receive') && <Link to="/recebimento/nova" className="btn link-btn">Registrar entrega</Link>}
       </div>
       <div className="filters"><input className="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="NF do prestador, lote ou FVM…" aria-label="Buscar" /></div>
-      <div className="card table-wrap">
+      <div className="card table-wrap fill">
         <table>
           <thead><tr><th>NF do prestador</th><th>Recebida em</th><th>Lotes</th><th>CUBs</th><th>Peso medido</th><th>FVM</th></tr></thead>
           <tbody>
@@ -44,6 +44,6 @@ export default function DeliveriesPage() {
           </tbody>
         </table>
       </div>
-    </>
+    </div>
   )
 }

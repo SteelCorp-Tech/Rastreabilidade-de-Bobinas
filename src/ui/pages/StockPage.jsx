@@ -40,7 +40,7 @@ function Balance() {
   const rows = stockBalanceByMaterial(state)
   const total = rows.reduce((s, r) => s + r.available_weight, 0)
   return (
-    <div className="card table-wrap">
+    <div className="card table-wrap fill">
       <table>
         <thead><tr><th>Código ERP</th><th>Material</th><th>Disponível</th><th>Peso disponível</th><th>Bloqueado</th><th>Em uso</th></tr></thead>
         <tbody>
@@ -91,7 +91,7 @@ export default function StockPage() {
     .sort((a, b) => a.cub.localeCompare(b.cub))
 
   return (
-    <>
+    <div className="fit-page">
       <div className="page-head">
         <div>
           <div className="eyebrow">Operação</div>
@@ -108,7 +108,7 @@ export default function StockPage() {
             <select value={galv} onChange={(e) => setGalv(e.target.value)} aria-label="Galvanização"><option value="">Todas as galvanizações</option>{galvs.map((g) => <option key={g}>{g}</option>)}</select>
             <select value={thick} onChange={(e) => setThick(e.target.value)} aria-label="Espessura"><option value="">Todas as espessuras</option>{thicks.map((t) => <option key={t} value={t}>{fmtThickness(t)} mm</option>)}</select>
           </div>
-          <div className="card table-wrap">
+          <div className="card table-wrap fill">
             <table>
               <thead><tr><th>CUB</th><th>Lote</th><th>Código ERP</th><th>Material</th><th>Peso atual</th><th>Posição</th><th>Última obra</th><th>Situação</th></tr></thead>
               <tbody>
@@ -131,6 +131,6 @@ export default function StockPage() {
           <p className="muted foot">{rows.length} CUBs{rows.length > 300 ? ' (mostrando 300; refine os filtros)' : ''}</p>
         </>
       )}
-    </>
+    </div>
   )
 }

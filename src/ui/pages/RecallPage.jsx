@@ -108,7 +108,7 @@ function Balance() {
     <>
       <p className="muted">Peso líquido da mãe contra a soma dos CUBs recebidos mais o refilo do plano. Tolerância: {fmtPct(tol)} (Configurações). {out ? <b>{out} de {rows.length} lotes fora da tolerância.</b> : 'Todos dentro da tolerância.'}</p>
       <div className="actions-row no-print-row"><button className="btn ghost" onClick={() => downloadCsv('balanco-de-massa.csv', toCsv(BALANCE_COLUMNS, balanceRows(rows)))}>Exportar CSV</button></div>
-      <div className="card table-wrap"><table>
+      <div className="card table-wrap fill"><table>
         <thead><tr><th>Lote</th><th>CUBs</th><th>Peso líquido</th><th>CUBs (kg)</th><th>Refilo</th><th>Diferença</th><th>Base</th><th /></tr></thead>
         <tbody>
           {rows.map((b) => (
@@ -135,7 +135,7 @@ function Pendencies() {
   return (
     <>
       <p className="muted">Bobinas mãe sem número de certificado ou sem arquivo anexado. {rows.length} no total.</p>
-      <div className="card table-wrap"><table>
+      <div className="card table-wrap fill"><table>
         <thead><tr><th>Lote</th><th>Fornecedor</th><th>NF fornecedor</th><th>CUBs afetados</th><th>Número</th><th>Arquivo</th><th /></tr></thead>
         <tbody>
           {rows.map((m) => (
@@ -163,7 +163,7 @@ export default function RecallPage() {
     { value: 'pend', label: 'Pendências de certificado', count: certificatePendencies(state).length },
   ]
   return (
-    <>
+    <div className={tab === 'recall' ? undefined : 'fit-page'}>
       <div className="page-head">
         <div>
           <div className="eyebrow">Qualidade</div>
@@ -172,6 +172,6 @@ export default function RecallPage() {
       </div>
       <Seg options={options} value={tab} onChange={go} label="Relatórios" />
       <div className="tab-body">{tab === 'balance' ? <Balance /> : tab === 'pend' ? <Pendencies /> : <Recall />}</div>
-    </>
+    </div>
   )
 }
