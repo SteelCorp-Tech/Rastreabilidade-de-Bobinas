@@ -4,6 +4,8 @@ import Icon from '../components/Icon.jsx'
 import { ROLES } from '../../domain/permissions.js'
 import { MODULES } from './modules.js'
 import { useProfile } from './ProfileContext.jsx'
+import logo from '../../assets/steelcorp-logo.png'
+import symbol from '../../assets/steelcorp-symbol.png'
 
 function ProfileCard() {
   const { role, setRole, roleLabel } = useProfile()
@@ -30,12 +32,8 @@ function ProfileCard() {
         </div>
       )}
       <button className="profile-btn" onClick={() => setOpen((v) => !v)} aria-expanded={open}>
+        <span className="profile-meta">Gustavo Oliveira · {roleLabel}</span>
         <span className="avatar">{roleLabel.slice(0, 2).toUpperCase()}</span>
-        <span className="profile-meta">
-          <b>Gustavo Oliveira</b>
-          <small>{roleLabel}</small>
-        </span>
-        <Icon name="updown" size={16} />
       </button>
     </div>
   )
@@ -63,20 +61,18 @@ export default function Layout() {
   }, [navigate])
   const items = MODULES.filter((m) => canView(m.view))
   const groups = [...new Set(items.map((m) => m.group))]
+  const current = MODULES.filter((m) => (m.path === '/' ? pathname === '/' : pathname.startsWith(m.path))).sort((a, b) => b.path.length - a.path.length)[0]
+  const title = current?.label ?? 'Bobinas'
 
   return (
     <div className="shell">
       <aside className={'sidebar' + (collapsed ? ' collapsed' : '')}>
         <div className="brand">
-          <b className="brand-full">
-            Steel<span>Corp</span>
-          </b>
-          <b className="brand-short">
-            S<span>C</span>
-          </b>
-          <small>BOBINAS</small>
+          <img className="brand-full" src={logo} alt="Grupo SteelCorp" />
+          <img className="brand-short" src={symbol} alt="SteelCorp" />
         </div>
         <nav className="nav" aria-label="Módulos">
+          <div className="nav-group nav-title">Rastreabilidade · Bobinas</div>
           {groups.map((g) => (
             <div key={g ?? 'topo'}>
               {g && <div className="nav-group">{g}</div>}
@@ -95,11 +91,16 @@ export default function Layout() {
           <Icon name="chevrons" />
           <span>{collapsed ? 'Expandir menu' : 'Recolher menu'}</span>
         </button>
-        <ProfileCard />
       </aside>
-      <main className="main" ref={mainRef}>
-        <Outlet />
-      </main>
+      <div className="workspace">
+        <header className="topbar">
+          <b>{title}</b>
+          <ProfileCard />
+        </header>
+        <main className="main" ref={mainRef}>
+          <Outlet />
+        </main>
+      </div>
     </div>
   )
 }

@@ -42,6 +42,12 @@ Decisões do projeto, com motivo e data. Atualize junto com o `CLAUDE.md`.
 | Manual do usuário em HTML e PDF, com 65 prints gerados por script (setas numeradas desenhadas sobre a tela real, legenda vinda do mesmo roteiro). Janela de captura 1280 × 800. | Pedido do dono do produto em 21/10/2026: manual completo com prints e setas. |
 | Ajustes de layout feitos ao montar o manual: resultado do plano de corte e tabelas de lista passam a caber em janelas de ~1280 px (sem esconder colunas nem quebrar CUB e material em várias linhas). | O manual revelou conteúdo cortado em 1280 px. |
 
+### 21/10/2026 — Novo padrão visual dos apps (referência: app "GT Tecnologia")
+- Menu lateral claro (branco) com o logo do Grupo SteelCorp, rótulo de seção, item ativo em cinza com barra escura à esquerda e "Recolher menu" no rodapé; barra superior com o título da tela e o seletor de perfil (antes no rodapé do menu); fundo branco; cartões em cinza-gelo, sem borda e sem sombra.
+- Fonte: Inter quando instalada, senão a do sistema (sem adicionar dependência). Etiquetas continuam em Montserrat.
+- Sem botão "Sair": o protótipo não tem login.
+- Os prints do manual do usuário ainda mostram o visual anterior; regerar com `npm run manual:capture`, `manual:build` e `manual:pdf`.
+
 ## Em aberto (padrão adotado até decidirem)
 
 1. Nome do produto: "Bobinas" ao lado da marca SteelCorp.

@@ -4,9 +4,9 @@
 @media print {
   @page { margin: 14mm; }
   body { background: #fff; font-size: 12pt; }
-  .sidebar, .no-print { display: none !important; }
+  .sidebar, .topbar, .no-print { display: none !important; }
   html, body, #root { height: auto; }
-  .shell { display: block; height: auto; overflow: visible; }
+  .shell, .workspace { display: block; height: auto; overflow: visible; }
   .main { padding: 0; height: auto; overflow: visible; }
   .print-only { display: block; }
   .print-sheet h1 { font-size: 22pt; margin-bottom: 2mm; }
