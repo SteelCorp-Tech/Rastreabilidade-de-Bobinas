@@ -176,12 +176,14 @@ h2.sub { margin-top: 22px; font-size: 17px; }
 .metrics .hl { background: var(--laranja-100); }
 .metrics .hl b { color: #a85a14; }
 .metrics small { color: #a85a14; }
-.res-table th, .res-table td { padding: 8px 10px; font-size: 13.5px; }
+.res-table th, .res-table td { font-size: 12.5px; }
 .sticky-actions { position: sticky; bottom: 0; background: linear-gradient(to top, var(--gelo) 70%, transparent); padding: 18px 0 10px; flex-wrap: wrap; }
 @media (max-width: 1100px) { .metrics { grid-template-columns: 1fr 1fr; } }
 .grid-2 > * { min-width: 0; }
 .results { overflow-x: auto; }
-.res-table { min-width: 460px; }
+.res-table { min-width: 0; table-layout: auto; }
+.res-table th { letter-spacing: .04em; padding: 8px 6px; font-size: 10px; }
+.res-table td { padding: 8px 6px; }
 .stripbar { min-width: 0; }
 
 /* etiquetas: modelo da etiqueta do Excel (logo, símbolo de fundo, CUB e lote em destaque, campos em dois blocos) */
@@ -322,3 +324,22 @@ select.big-input { font-size: 18px; }
 .th-btn:hover .si { opacity: .8; }
 th.sorted .th-btn { color: var(--petroleo-900); font-weight: 600; }
 th.sorted .th-btn .si { opacity: 1; color: var(--teal-600); }
+
+/* plano de corte: resultado cabe em larguras de ~1280 px */
+.metrics { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.metrics > div { min-width: 0; }
+.metrics .eyebrow { letter-spacing: .06em; font-size: 10px; overflow-wrap: anywhere; }
+.metrics b { font-size: 17px; }
+.res-table th { white-space: normal; line-height: 1.25; vertical-align: bottom; }
+.res-table th, .res-table td { padding-left: 4px; padding-right: 4px; }
+.res-table td { font-size: 12px; white-space: nowrap; }
+
+/* tabelas de lista: cabem em janelas de ~1280 px (sem esconder colunas nem quebrar CUB/material em várias linhas) */
+.fill th, .fill td { padding-left: 11px; padding-right: 11px; }
+.fill td.mono { white-space: nowrap; }
+@media (max-width: 1400px) { .main { padding-left: 32px; padding-right: 32px; } }
+.fill th, .fill td { padding-left: 8px; padding-right: 8px; }
+.fill th { letter-spacing: .07em; }
+.fill th:first-child, .fill td:first-child { padding-left: 14px; }
+.loc-input { width: 104px; }
+.loc-input { width: 88px; }

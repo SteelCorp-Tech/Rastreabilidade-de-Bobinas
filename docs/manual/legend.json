@@ -1,0 +1,298 @@
+{
+  "01-inicio": [
+    "Menu lateral: um item para cada módulo",
+    "Perfil simulado: clique para trocar",
+    "Pendências de certificado: clique para ver as bobinas sem certificado",
+    "Cada cartão é um atalho para um módulo"
+  ],
+  "02-perfil": [
+    "Escolha o perfil a simular. O menu e as permissões mudam conforme o perfil"
+  ],
+  "03-menu-recolhido": [
+    "Clique de novo para expandir o menu",
+    "Recolhido, o menu mostra só os ícones (passe o mouse para ver o nome)"
+  ],
+  "04-cadastros": [
+    "Abas: fornecedores, usinas, obras, perfiladeiras e catálogo de materiais",
+    "Para adicionar: digite o nome e clique em Adicionar",
+    "Clique no nome da coluna para ordenar (crescente e decrescente)",
+    "Editar ou inativar. Nada é apagado"
+  ],
+  "05-cadastros-duplicado": [
+    "Nome repetido é recusado e a mensagem diz o motivo"
+  ],
+  "06-cadastros-editar": [
+    "No modo edição, o botão vira Salvar",
+    "Cancelar volta ao modo de adicionar"
+  ],
+  "07-catalogo": [
+    "Cada linha liga espessura, largura exata e galvanização a um código ERP",
+    "Busque por código ou largura",
+    "Filtre por galvanização ou espessura",
+    "Ordene por qualquer coluna"
+  ],
+  "08-configuracoes": [
+    "Limite de peso por bobina: define em quantas bobinas cada tira é dividida",
+    "Tolerância do balanço de massa (%)",
+    "Certificado obrigatório ao registrar a bobina mãe"
+  ],
+  "09-configuracoes-cub": [
+    "Prefixo e dígitos do CUB. Só valem para CUBs novos",
+    "Layout da etiqueta: folha A4 ou térmica 100×50 mm",
+    "Salvar (só o Administrador altera)"
+  ],
+  "10-dados-exemplo": [
+    "Volta aos dados de exemplo. A auditoria é mantida"
+  ],
+  "11-bobinas-lista": [
+    "Registrar uma nova bobina mãe",
+    "Filtros por situação, com contadores",
+    "Busca por lote, fornecedor, NF ou certificado",
+    "Clique no cabeçalho para ordenar",
+    "Clique na linha para abrir a ficha da bobina"
+  ],
+  "12-bobinas-sem-certificado": [
+    "Mostra só as bobinas sem certificado (a lista de pendências)",
+    "Etiqueta laranja: sem certificado"
+  ],
+  "13-bobina-form": [
+    "Lote (LS) que o prestador atribuiu. Campos com * são obrigatórios",
+    "Fornecedor e usina vêm dos Cadastros",
+    "Peso líquido da bobina mãe, em kg",
+    "Espessura, largura e galvanização da bobina mãe"
+  ],
+  "14-bobina-sem-certificado": [
+    "Sem número e arquivo do certificado, o registro é recusado"
+  ],
+  "15-bobina-certificado": [
+    "Número do certificado (emitido pela usina)",
+    "Anexe o arquivo do certificado (PDF ou imagem)",
+    "A NF do fornecedor é opcional",
+    "Registrar"
+  ],
+  "16-bobina-ficha": [
+    "Visualizar ou baixar o certificado",
+    "Anexar ou substituir o certificado (fica na auditoria)",
+    "Segue para o plano de corte"
+  ],
+  "17-certificado-substituir": [
+    "Novo número",
+    "Novo arquivo",
+    "Confirme. O anterior fica registrado no histórico"
+  ],
+  "18-bobina-historico": [
+    "Histórico de eventos da bobina: quem, o quê e quando"
+  ],
+  "19-planos-lista": [
+    "A fazer: bobinas ainda sem plano ou com rascunho",
+    "Abra a bobina para montar o plano",
+    "Ordene as colunas"
+  ],
+  "20-plano-editor": [
+    "Informe quantas tiras e a largura de cada uma (mm)",
+    "Mais larguras: adicione outra linha",
+    "Barra: tiras (azul) e refilo (laranja)",
+    "Refilo em kg: o que se perde nas laterais",
+    "CUBs previstos",
+    "Peso por CUB estimado. O real é medido na balança"
+  ],
+  "21-plano-excedido": [
+    "Largura passou da bobina mãe: não deixa salvar"
+  ],
+  "22-plano-rascunho": [
+    "Depois de salvar, marque como enviado ao prestador",
+    "Versões do plano",
+    "Imprimir a folha do plano para o prestador"
+  ],
+  "23-plano-enviado": [
+    "Quando o prestador confirmar a programação, clique aqui",
+    "A bobina mãe passou para \"Plano enviado\""
+  ],
+  "24-plano-nova-versao": [
+    "Plano já enviado: salvar cria a versão 2 e a 1 vira \"Substituído\""
+  ],
+  "25-plano-impresso": [
+    "Folha limpa para o prestador, sem menu nem botões",
+    "Tiras, larguras, peso por bobina e CUBs previstos",
+    "Desenho das tiras e do refilo"
+  ],
+  "26-entregas-lista": [
+    "Registrar a chegada das tiras",
+    "Busque por NF, lote ou FVM",
+    "Clique para ver a entrega e imprimir etiquetas"
+  ],
+  "27-entrega-prefill": [
+    "NF que acompanha as tiras",
+    "Quantidade de bobinas declarada na NF",
+    "Escolha o lote e clique em Pré-preencher: as linhas esperadas do plano aparecem",
+    "Contagem lançada x declarada (verde quando bate)"
+  ],
+  "28-entrega-pesos": [
+    "Peso medido na balança (kg). Enter passa para a próxima linha",
+    "Código ERP sugerido pelo catálogo",
+    "Posição no estoque (opcional)"
+  ],
+  "29-entrega-contagem": [
+    "Contagem lançada diferente da declarada: o aviso fica laranja"
+  ],
+  "29b-entrega-justificativa": [
+    "Sem justificativa, a entrega não fecha. Escreva o motivo da diferença"
+  ],
+  "30-entrega-fechar": [
+    "Com a contagem batendo, registre: os CUBs são gerados"
+  ],
+  "31-entrega-detalhe": [
+    "Imprimir as etiquetas marcadas (A4 ou térmica, conforme Configurações)",
+    "Desmarque os CUBs que não quer imprimir",
+    "Contagem de bobinas da entrega"
+  ],
+  "32-etiqueta": [
+    "Logo no topo, como na etiqueta do Excel",
+    "CUB em destaque",
+    "Lote (LS)",
+    "QR com o CUB: leia na Produção",
+    "Peso medido",
+    "Fornecedor, NFs e certificado"
+  ],
+  "33-etiqueta-termica": [
+    "Layout térmico: 100×50 mm, uma etiqueta por página",
+    "O QR continua com o CUB"
+  ],
+  "34-estoque": [
+    "Situação do CUB, com contadores",
+    "Busque por CUB, lote, NF, código, obra, posição ou dimensão (0,95x166)",
+    "Clique para ordenar",
+    "Clique para informar ou mudar a posição do CUB"
+  ],
+  "35-estoque-posicao": [
+    "Digite a posição e tecle Enter (Esc cancela)"
+  ],
+  "36-estoque-saldo": [
+    "Saldo disponível por código ERP",
+    "Cada linha soma os CUBs disponíveis, bloqueados e em uso"
+  ],
+  "36b-home-producao": [
+    "Cada perfil vê só o que usa. Aqui, o menu da Produção",
+    "Perfil atual: Produção"
+  ],
+  "37-uso-inicio": [
+    "Passe o leitor ou digite o CUB. O cursor já está aqui",
+    "Ou leia o QR pela câmera do tablet"
+  ],
+  "38-uso-recusa": [
+    "CUB já consumido (ou bloqueado): o sistema recusa e diz o motivo"
+  ],
+  "39-uso-camera": [
+    "Aponte o QR da etiqueta para o quadro",
+    "Fechar e voltar a digitar"
+  ],
+  "40-uso-passo1": [
+    "A bobina lida: CUB, lote, material, código e peso atual",
+    "OP / protocolo",
+    "Obra",
+    "Perfiladeira (a última usada fica marcada)"
+  ],
+  "41-uso-espessura": [
+    "Espessura medida com o micrômetro",
+    "Diferença para a nominal. Acima de ±0,05 mm vira alerta laranja"
+  ],
+  "42-uso-passo2": [
+    "Pese a sobra na balança e digite o peso",
+    "Consumo deste uso, calculado pelo sistema",
+    "Sobra: volta ao estoque com o mesmo CUB",
+    "Consumida: o CUB sai de uso para sempre"
+  ],
+  "43-uso-sobra": [
+    "Etiqueta da sobra: mesmo CUB, novo peso e data, com a faixa SOBRA",
+    "Imprima e cole na bobina",
+    "Segue para a próxima bobina"
+  ],
+  "43b-uso-duplicidade": [
+    "Mesmo CUB, mesma OP e mesmo dia: pode ser lançamento duplicado. O sistema avisa antes de gravar"
+  ],
+  "44-uso-consumida": [
+    "Confirme: depois disso a bobina não pode mais ser usada"
+  ],
+  "45-uso-abertos": [
+    "Usos abertos: bobinas montadas e ainda não fechadas",
+    "Para fechar um uso, clique aqui (ou leia o CUB de novo)"
+  ],
+  "46-uso-tablet": [
+    "No tablet o menu fica só com ícones",
+    "Botões grandes, fáceis de tocar",
+    "O campo de leitura já vem com o cursor"
+  ],
+  "47-consulta": [
+    "Digite CUB, lote, NF, OP, obra, certificado, código ERP ou dimensão. Atalho: tecla /",
+    "Resultados agrupados por tipo",
+    "Atalho para o recall do lote"
+  ],
+  "48-ficha-cub": [
+    "Bobina mãe: NF, peso e certificado herdado, com Visualizar e Baixar",
+    "Entrega: NF do prestador e data",
+    "Usos: obra, OP e peso antes e depois",
+    "Dossiê do lote, para imprimir"
+  ],
+  "49-dossie-obra": [
+    "Imprimir",
+    "Exportar CSV para o Excel",
+    "De quais lotes e certificados saiu o aço desta obra"
+  ],
+  "50-dossie-lote": [
+    "Origem, NF e certificado do lote",
+    "Balanço de massa do lote"
+  ],
+  "51-recall": [
+    "Informe o número do lote ou do certificado",
+    "Quanto já foi consumido",
+    "Exportar CSV",
+    "Obras e OPs que consumiram este aço"
+  ],
+  "52-balanco": [
+    "Ordene por diferença para achar os lotes com problema",
+    "Dentro ou fora da tolerância (Configurações)",
+    "Exportar CSV"
+  ],
+  "53-pendencias": [
+    "Falta o número ou o arquivo do certificado",
+    "Abre a ficha para anexar"
+  ],
+  "54-bloqueio-form": [
+    "Bloqueie um lote inteiro ou só um CUB",
+    "Número do lote",
+    "Motivo obrigatório",
+    "Bloquear: a mãe e os CUBs com saldo"
+  ],
+  "55-bloqueio-ativo": [
+    "Bloqueios ativos, com motivo, quem e quando",
+    "Para liberar, clique aqui e informe o motivo"
+  ],
+  "56-fvm": [
+    "Só demonstração: mostra como a FVM bloquearia ou liberaria",
+    "Aplica o resultado (reprovada bloqueia, aprovada libera)"
+  ],
+  "57-uso-bloqueado": [
+    "Lote bloqueado: ninguém consegue abrir uso, e a tela mostra o motivo"
+  ],
+  "58-liberar": [
+    "Motivo da liberação (obrigatório)",
+    "Confirme a liberação"
+  ],
+  "58b-bloqueio-cub": [
+    "Na ficha do CUB, a Qualidade bloqueia só aquele CUB",
+    "Motivo obrigatório",
+    "Bloquear CUB"
+  ],
+  "59-auditoria": [
+    "Filtre por id, motivo, usuário ou conteúdo",
+    "Ordene por data, usuário ou ação",
+    "Detalhes: o antes e o depois",
+    "Exportar tudo em CSV"
+  ],
+  "60-auditoria-detalhe": [
+    "Estado antes e depois da mudança"
+  ],
+  "61-somente-leitura": [
+    "O Auditor só consulta: não há botões de alterar"
+  ]
+}

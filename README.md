@@ -13,6 +13,9 @@ npm test           # testes de domínio (Vitest)
 npm run build      # gera dist/ (site estático, funciona em subpasta)
 npm run dev:https  # dev em HTTPS (certificado de teste), para a câmera de um tablet na rede local
 npm run preview    # serve o dist/ (build final, sem atualização a quente) em http://localhost:4173
+npm run manual:capture  # refaz os prints do manual (precisa do app em http://localhost:4173 e do Edge ou Chrome)
+npm run manual:build    # monta docs/manual/index.html
+npm run manual:pdf      # gera docs/manual/manual-rastreabilidade-bobinas.pdf
 ```
 
 ## Estrutura
@@ -40,3 +43,9 @@ scripts/           geração do seed a partir do Excel
 ## Roteiro de aceite (CLAUDE.md seção 11)
 
 O cenário completo roda só com o domínio em `src/domain/acceptance.test.js` (`npm test`). Pela interface, siga: Almoxarifado registra o lote 8948 (0,95 × 1.200 mm, 12.195 kg, certificado e NF anexados; sem certificado é recusado) → PCP salva o plano 7 × 166 mm e envia → Almoxarifado recebe a entrega de 14 CUBs (pré-preencher pelo plano) e imprime as etiquetas → Produção abre o uso de um CUB (OP X, obra Y), fecha com sobra de 300 kg, reabre para a obra Z e consome → Qualidade consulta o lote em Recall e relatórios → Qualidade bloqueia o lote e a Produção é recusada → Auditor vê tudo em Auditoria. Depois, Configurações → Restaurar dados de exemplo.
+
+## Manual do usuário
+
+Em `docs/manual/`: `manual-rastreabilidade-bobinas.pdf` (para ler ou imprimir) e `index.html` (mesmo conteúdo, com as imagens em `img/`). São 16 capítulos e 65 telas com setas numeradas.
+
+Os prints são gerados por `scripts/manual/capture.mjs`, que percorre o sistema como um usuário num Edge (ou Chrome) invisível, com perfil temporário (não toca no seu navegador) e desenha as setas por cima de cada tela. A legenda de cada figura vem do mesmo roteiro, então texto e imagem não se desencontram. O texto está em `scripts/manual/content.mjs`. Quando uma tela mudar: `npm run build`, `npm run preview`, `npm run manual:capture`, `npm run manual:build` e `npm run manual:pdf`.
