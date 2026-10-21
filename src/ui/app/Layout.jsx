@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import { NavLink, Outlet, useNavigate } from 'react-router'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { NavLink, Outlet, useLocation, useNavigate } from 'react-router'
 import Icon from '../components/Icon.jsx'
 import { ROLES } from '../../domain/permissions.js'
 import { MODULES } from './modules.js'
@@ -45,6 +45,10 @@ export default function Layout() {
   const { canView } = useProfile()
   const [collapsed, setCollapsed] = useState(false)
   const navigate = useNavigate()
+  const mainRef = useRef(null)
+  const { pathname } = useLocation()
+  // só a área de conteúdo rola; ao trocar de tela, volta ao topo
+  useLayoutEffect(() => { mainRef.current?.scrollTo(0, 0) }, [pathname])
   // atalho do portal: "/" abre a busca universal (fora de campos de texto)
   useEffect(() => {
     const onKey = (e) => {
@@ -93,7 +97,7 @@ export default function Layout() {
         </button>
         <ProfileCard />
       </aside>
-      <main className="main">
+      <main className="main" ref={mainRef}>
         <Outlet />
       </main>
     </div>
