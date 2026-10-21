@@ -4,6 +4,7 @@ import Icon from '../components/Icon.jsx'
 import { ROLES } from '../../domain/permissions.js'
 import { MODULES } from './modules.js'
 import { useProfile } from './ProfileContext.jsx'
+import { getTheme, saveTheme } from './theme.js'
 import logo from '../../assets/steelcorp-logo.png'
 import symbol from '../../assets/steelcorp-symbol.png'
 
@@ -42,6 +43,12 @@ function ProfileCard() {
 export default function Layout() {
   const { canView } = useProfile()
   const [collapsed, setCollapsed] = useState(false)
+  const [theme, setTheme] = useState(getTheme)
+  const toggleTheme = () => {
+    const next = theme === 'dark' ? 'light' : 'dark'
+    saveTheme(next)
+    setTheme(next)
+  }
   const navigate = useNavigate()
   const mainRef = useRef(null)
   const { pathname } = useLocation()
@@ -62,7 +69,7 @@ export default function Layout() {
   const items = MODULES.filter((m) => canView(m.view))
   const groups = [...new Set(items.map((m) => m.group))]
   const current = MODULES.filter((m) => (m.path === '/' ? pathname === '/' : pathname.startsWith(m.path))).sort((a, b) => b.path.length - a.path.length)[0]
-  const title = current?.label ?? 'Bobinas'
+  const title = current?.label ?? (pathname.startsWith('/cub') ? 'Consulta' : pathname.startsWith('/dossie') ? 'Recall e relatórios' : 'Bobinas')
 
   return (
     <div className="shell">
@@ -95,7 +102,12 @@ export default function Layout() {
       <div className="workspace">
         <header className="topbar">
           <b>{title}</b>
-          <ProfileCard />
+          <div className="topbar-right">
+            <button className="theme-btn" onClick={toggleTheme} title={theme === 'dark' ? 'Mudar para o tema claro' : 'Mudar para o tema escuro'} aria-label={theme === 'dark' ? 'Mudar para o tema claro' : 'Mudar para o tema escuro'}>
+              <Icon name={theme === 'dark' ? 'sun' : 'moon'} size={18} />
+            </button>
+            <ProfileCard />
+          </div>
         </header>
         <main className="main" ref={mainRef}>
           <Outlet />

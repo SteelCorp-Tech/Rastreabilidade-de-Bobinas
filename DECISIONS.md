@@ -45,6 +45,7 @@ Decisões do projeto, com motivo e data. Atualize junto com o `CLAUDE.md`.
 ### 21/10/2026 — Novo padrão visual dos apps (referência: app "GT Tecnologia")
 - Menu lateral claro (branco) com o logo do Grupo SteelCorp, rótulo de seção, item ativo em cinza com barra escura à esquerda e "Recolher menu" no rodapé; barra superior com o título da tela e o seletor de perfil (antes no rodapé do menu); fundo branco; cartões em cinza-gelo, sem borda e sem sombra.
 - Fonte: Inter quando instalada, senão a do sistema (sem adicionar dependência). Etiquetas continuam em Montserrat.
+- Tema escuro: botão (sol/lua) na barra superior; a escolha fica em `bobinas:v1:theme`, e sem escolha segue o tema do sistema. Só vale na tela: etiquetas, planos e dossiês impressos continuam claros. Cores do app agora são variáveis (`--fundo`, `--campo`, `--titulo`, `--acao` etc. em tokens.css).
 - Sem botão "Sair": o protótipo não tem login.
 - Os prints do manual do usuário ainda mostram o visual anterior; regerar com `npm run manual:capture`, `manual:build` e `manual:pdf`.
 

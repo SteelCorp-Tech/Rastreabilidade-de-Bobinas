@@ -17,6 +17,21 @@
   --verde-600: #2f8f5b;
   --verde-100: #d9efe3;
 
+  /* semânticos (o tema escuro sobrescreve estes) */
+  --fundo: #ffffff;
+  --campo: #ffffff;
+  --titulo: #00212b;
+  --nav-texto: #3d525b;
+  --ativo: #e9eff0;
+  --linha: #e0e8e9;
+  --seg: #e6ecee;
+  --zebra: #f7fafa;
+  --laranja-texto: #a85a14;
+  --acao: #276c7a;
+  --acao-hover: #348493;
+  --vermelho-fill: #c0392b;
+  color-scheme: light;
+
   --raio: 10px;
   --sombra: 0 1px 2px rgba(0, 33, 43, 0.06);
   --alvo-toque: 48px;
@@ -25,4 +40,40 @@
 
   --fonte: Inter, system-ui, 'Segoe UI', Roboto, sans-serif;
   --fonte-mono: 'JetBrains Mono', ui-monospace, Consolas, monospace;
+}
+
+/* tema escuro: só na tela; o papel (etiquetas, planos, dossiês) segue claro */
+@media screen {
+  :root[data-theme='dark'] {
+    --fundo: #0e1a1f;
+    --campo: #14242b;
+    --gelo: #172830;
+    --borda: #2a3d45;
+    --linha: #243840;
+    --texto: #e4eef0;
+    --texto-suave: #93aab3;
+    --titulo: #f2f7f8;
+    --nav-texto: #b5c9d0;
+    --ativo: #1f343c;
+    --seg: #1b2d35;
+    --zebra: #132229;
+    --teal-600: #6cbccb;
+    --teal-500: #4aa0b0;
+    --teal-100: #1f3f47;
+    --acao: #2b7a89;
+    --acao-hover: #348fa0;
+    --laranja-100: #3b2a19;
+    --laranja-texto: #f0a566;
+    --vermelho-600: #ff8f82;
+    --vermelho-fill: #b3382b;
+    --vermelho-100: #432522;
+    --verde-600: #5fcf94;
+    --verde-100: #1b3a2b;
+    --sombra: 0 1px 2px rgba(0, 0, 0, 0.4);
+    color-scheme: dark;
+  }
+}
+
+@media screen {
+  :root[data-theme='dark'] .brand img { filter: brightness(0) invert(1); }
 }

@@ -10,6 +10,9 @@ import '@fontsource/jetbrains-mono/400.css'
 import './styles/tokens.css'
 import './styles/base.css'
 import './styles/print.css'
+import { applyTheme, getTheme } from './ui/app/theme.js'
+
+applyTheme(getTheme())
 import Layout from './ui/app/Layout.jsx'
 import Home from './ui/app/Home.jsx'
 import ModulePage from './ui/app/ModulePage.jsx'
