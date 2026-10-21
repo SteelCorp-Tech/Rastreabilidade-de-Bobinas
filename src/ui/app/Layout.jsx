@@ -44,6 +44,7 @@ export default function Layout() {
   const { canView } = useProfile()
   const [collapsed, setCollapsed] = useState(false)
   const [theme, setTheme] = useState(getTheme)
+  const [drawer, setDrawer] = useState(false)
   const toggleTheme = () => {
     const next = theme === 'dark' ? 'light' : 'dark'
     saveTheme(next)
@@ -53,7 +54,7 @@ export default function Layout() {
   const mainRef = useRef(null)
   const { pathname } = useLocation()
   // só a área de conteúdo rola; ao trocar de tela, volta ao topo
-  useLayoutEffect(() => { mainRef.current?.scrollTo(0, 0) }, [pathname])
+  useLayoutEffect(() => { mainRef.current?.scrollTo(0, 0); setDrawer(false) }, [pathname])
   // atalho do portal: "/" abre a busca universal (fora de campos de texto)
   useEffect(() => {
     const onKey = (e) => {
@@ -73,7 +74,8 @@ export default function Layout() {
 
   return (
     <div className="shell">
-      <aside className={'sidebar' + (collapsed ? ' collapsed' : '')}>
+      {drawer && <div className="backdrop" onClick={() => setDrawer(false)} />}
+      <aside className={'sidebar' + (collapsed ? ' collapsed' : '') + (drawer ? ' open' : '')}>
         <div className="brand">
           <img className="brand-full" src={logo} alt="Grupo SteelCorp" />
           <img className="brand-short" src={symbol} alt="SteelCorp" />
@@ -101,7 +103,10 @@ export default function Layout() {
       </aside>
       <div className="workspace">
         <header className="topbar">
-          <b>{title}</b>
+          <button className="menu-btn" onClick={() => setDrawer((v) => !v)} aria-label="Abrir menu" aria-expanded={drawer}>
+            <Icon name="menu" size={22} />
+          </button>
+          <b className="topbar-title">{title}</b>
           <div className="topbar-right">
             <button className="theme-btn" onClick={toggleTheme} title={theme === 'dark' ? 'Mudar para o tema claro' : 'Mudar para o tema escuro'} aria-label={theme === 'dark' ? 'Mudar para o tema claro' : 'Mudar para o tema escuro'}>
               <Icon name={theme === 'dark' ? 'sun' : 'moon'} size={18} />

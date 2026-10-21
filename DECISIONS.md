@@ -49,6 +49,12 @@ Decisões do projeto, com motivo e data. Atualize junto com o `CLAUDE.md`.
 - Sem botão "Sair": o protótipo não tem login.
 - Os prints do manual do usuário ainda mostram o visual anterior; regerar com `npm run manual:capture`, `manual:build` e `manual:pdf`.
 
+### 21/10/2026 — Responsivo para tablet e celular
+- Até 700 px (celular): menu vira gaveta aberta pelo botão ☰ na barra superior (fecha ao escolher uma tela ou tocar fora); uma coluna; listas rolam com a página e a tabela rola para os lados; campos com 16 px para o iOS não dar zoom.
+- 701 a 900 px (tablet em pé) e até 1100 px: menu recolhido só com ícones; formulários em duas colunas; a tabela do recebimento cabe sem rolagem lateral.
+- Acima disso o comportamento é o do desktop (tabela rola por dentro, cabeçalho e botões fixos).
+- Não testado em aparelhos reais; só em janelas emuladas (390, 768 e 1024 px).
+
 ## Em aberto (padrão adotado até decidirem)
 
 1. Nome do produto: "Bobinas" ao lado da marca SteelCorp.

@@ -367,3 +367,79 @@ th.sorted .th-btn .si { opacity: 1; color: var(--teal-600); }
 .fit-form .panel.mt { margin-top: 12px; }
 @media (max-width: 1280px) { .fit-form .fields.three { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 .fit-page.tall { min-height: 760px; }
+
+/* ===== celular e tablet ===== */
+.menu-btn { display: none; width: 40px; height: 40px; place-items: center; border: 0; border-radius: 8px; background: none; color: var(--titulo); }
+.menu-btn:hover { background: var(--gelo); }
+.backdrop { display: none; }
+.topbar-title { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+@media (max-width: 700px) {
+  html { -webkit-text-size-adjust: 100%; }
+  input, select, textarea { font-size: 16px; } /* evita o zoom automático do iOS ao focar */
+
+  /* menu vira gaveta */
+  .menu-btn { display: grid; }
+  .topbar { padding: 0 8px 0 6px; gap: 6px; justify-content: flex-start; }
+  .topbar-title { flex: 1; font-size: 16px; }
+  .topbar-right { margin-left: auto; }
+  .profile-meta { display: none; }
+  .backdrop { display: block; position: fixed; inset: 0; background: rgba(0, 20, 28, .55); z-index: 40; }
+  .sidebar, .sidebar.collapsed { position: fixed; top: 0; bottom: 0; left: 0; z-index: 45; width: min(300px, 86vw); transform: translateX(-102%); transition: transform .2s; box-shadow: none; }
+  .sidebar.open { transform: none; box-shadow: 8px 0 28px rgba(0, 0, 0, .3); }
+  .sidebar .brand-full, .sidebar.collapsed .brand-full { display: block; }
+  .sidebar .brand-short, .sidebar.collapsed .brand-short { display: none !important; }
+  .sidebar .brand, .sidebar.collapsed .brand { display: block; padding: 4px 10px 6px; }
+  .sidebar .nav a span, .sidebar .nav-group, .sidebar.collapsed .nav a span, .sidebar.collapsed .nav-group { display: inline; }
+  .sidebar .nav-group, .sidebar.collapsed .nav-group { display: block; }
+  .sidebar .nav a, .sidebar.collapsed .nav a { justify-content: flex-start; padding: 0 12px; min-height: 46px; }
+  .sidebar .collapse-btn, .sidebar.collapsed .collapse-btn { display: none; }
+
+  /* conteúdo */
+  .main, .main:has(> .fit-page) { display: block; padding: 14px 12px 40px; overflow-x: hidden; overflow-y: auto; }
+  h1 { font-size: 22px; }
+  .page-head { flex-direction: column; gap: 12px; margin-bottom: 16px; }
+  .panel, .fit-form .panel { padding: 16px; }
+  .fields.two, .fields.three, .fit-form .fields.three { grid-template-columns: 1fr; }
+  .grid-2, .chain, .audit-detail { grid-template-columns: 1fr; }
+  .metrics, .metrics.five, .cc-grid { grid-template-columns: 1fr 1fr; }
+  .grid-tiles { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+  .pending-card { min-width: 0; width: 100%; }
+  .kv { grid-template-columns: 1fr; gap: 2px; }
+  .timeline li { grid-template-columns: 1fr; gap: 2px; }
+  .filters > *, .form-row label { min-width: 100%; }
+  .search { max-width: none; }
+  .seg { width: 100%; }
+  .seg button { flex: 1 1 auto; padding: 0 10px; }
+  .actions-row { flex-wrap: wrap; }
+  .actions-row .btn { flex: 1 1 auto; }
+  .actions-row.two-big .btn { min-width: 100%; }
+  .machine { min-width: calc(50% - 6px); }
+  .prefill select { min-width: 0; }
+  .link-card { flex-basis: 100%; min-width: 0; }
+  .profile-menu { right: -4px; min-width: 200px; }
+  .doc { padding: 16px; }
+  .scrap { max-width: none; }
+
+  /* listas: a página rola e a tabela rola para os lados */
+  .fit-page, .fit-page.tall { display: block; min-height: 0; }
+  .fit-form { display: block; }
+  .fit-form > .recv-card { display: block; }
+  .fit-page > .fill, .fit-page .tab-body > .fill, .tab-body > .fill, .recv-card > .fill { max-height: none; overflow-x: auto; overflow-y: visible; }
+  .fill table, .table-wrap table { min-width: 680px; }
+  .fit-page .tab-body { display: block; }
+}
+
+/* tablet em pé */
+@media (min-width: 701px) and (max-width: 900px) {
+  .main, .main:has(> .fit-page) { padding-left: 18px; padding-right: 18px; }
+  .filters > * { min-width: 150px; }
+  .fit-form .fields.three { grid-template-columns: 1fr 1fr; }
+  .fit-page.tall { min-height: 0; }
+}
+@media (min-width: 701px) and (max-width: 900px) {
+  .lines-table.recv td:nth-child(2) select { min-width: 0; }
+  .lines-table.recv th, .lines-table.recv td { padding-left: 5px; padding-right: 5px; }
+  .lines-table.recv input, .lines-table.recv select { padding: 0 8px; }
+}
+@media (max-width: 700px) { .sticky-actions { bottom: -40px; } }
