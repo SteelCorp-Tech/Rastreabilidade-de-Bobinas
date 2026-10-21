@@ -38,6 +38,7 @@ Decisões do projeto, com motivo e data. Atualize junto com o `CLAUDE.md`.
 | Layout de altura fixa: a janela não rola; só a área de conteúdo (`.main`) rola, o menu fica parado e a rolagem volta ao topo ao trocar de tela. Na impressão o layout volta a fluir normalmente. | Pedido do dono do produto em 21/10/2026. |
 | Telas de lista (Bobinas mãe, Plano de corte, Recebimento, Estoque, Cadastros, Auditoria, Balanço e Pendências do Recall): título, abas e filtros ficam parados e a **tabela** ocupa o resto da janela, com rolagem própria e cabeçalho fixo (classes `fit-page` e `fill`). Telas com várias seções (ficha, dossiê, levantamento do Recall) rolam a área de conteúdo inteira. | Pedido do dono do produto em 21/10/2026. |
 | Telas de lista em janela baixa ou estreita: a tabela tem altura mínima (a página `fit-page` tem 540 px no mínimo) e, se a janela for menor que isso, a área de conteúdo inteira volta a rolar. | Evita tabela espremida ou fora da tela sem como rolar (21/10/2026). |
+| Tabelas de lista com **colunas ordenáveis**: clicar no nome da coluna ordena crescente, de novo decrescente (seta ▲/▼ na coluna ativa). Números ordenam como números, textos em ordem natural pt-BR (lote 9843 antes de 10001), vazios vão sempre para o fim. Sem clique, vale a ordem padrão de cada tela. | Pedido do dono do produto em 21/10/2026. |
 
 ## Em aberto (padrão adotado até decidirem)
 

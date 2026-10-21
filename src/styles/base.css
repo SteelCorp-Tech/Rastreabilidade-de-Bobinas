@@ -314,3 +314,11 @@ select.big-input { font-size: 18px; }
 .fill { overflow: auto; }
 .fill thead th { position: sticky; top: 0; z-index: 1; background: #fff; box-shadow: 0 1px 0 var(--borda); }
 .fill tfoot td { position: sticky; bottom: 0; }
+
+/* colunas ordenáveis */
+.th-btn { display: inline-flex; align-items: center; gap: 6px; background: none; border: 0; padding: 0; margin: 0; font: inherit; letter-spacing: inherit; text-transform: inherit; color: inherit; cursor: pointer; text-align: left; white-space: nowrap; min-height: 0; }
+.th-btn .si { font-size: 9px; opacity: .35; }
+.th-btn:hover { color: var(--petroleo-900); }
+.th-btn:hover .si { opacity: .8; }
+th.sorted .th-btn { color: var(--petroleo-900); font-weight: 600; }
+th.sorted .th-btn .si { opacity: 1; color: var(--teal-600); }

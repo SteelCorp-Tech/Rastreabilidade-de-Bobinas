@@ -1,5 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router'
+import SortTh from '../components/SortTh.jsx'
+import { useSort } from '../sortRows.js'
 import Seg from '../components/Seg.jsx'
 import { useAction } from '../components/useAction.js'
 import { useProfile } from '../app/ProfileContext.jsx'
@@ -38,13 +40,16 @@ function LocationCell({ coil, editable }) {
 function Balance() {
   const { state } = useStore()
   const rows = stockBalanceByMaterial(state)
+  const { rows: sorted, sort, toggle } = useSort(rows, {
+    code: (r) => r.code, material: (r) => r.thickness * 100000 + r.width, count: (r) => r.available_count, weight: (r) => r.available_weight, blocked: (r) => r.blocked_count, inuse: (r) => r.in_use_count,
+  })
   const total = rows.reduce((s, r) => s + r.available_weight, 0)
   return (
     <div className="card table-wrap fill">
       <table>
-        <thead><tr><th>Código ERP</th><th>Material</th><th>Disponível</th><th>Peso disponível</th><th>Bloqueado</th><th>Em uso</th></tr></thead>
+        <thead><tr><SortTh k="code" sort={sort} onSort={toggle}>Código ERP</SortTh><SortTh k="material" sort={sort} onSort={toggle}>Material</SortTh><SortTh k="count" sort={sort} onSort={toggle}>Disponível</SortTh><SortTh k="weight" sort={sort} onSort={toggle}>Peso disponível</SortTh><SortTh k="blocked" sort={sort} onSort={toggle}>Bloqueado</SortTh><SortTh k="inuse" sort={sort} onSort={toggle}>Em uso</SortTh></tr></thead>
         <tbody>
-          {rows.map((r) => (
+          {sorted.map((r) => (
             <tr key={r.code}>
               <td className="mono"><b>{r.code}</b></td>
               <td className="mono">{fmtThickness(r.thickness)} × {r.width} {r.galvanization}{r.variants > 1 ? <small className="muted"> +{r.variants - 1} larg.</small> : null}</td>
@@ -89,6 +94,10 @@ export default function StockPage() {
     .filter((c) => (status === 'all' || c.status === status) && (!galv || c.galvanization === galv) && (!thick || c.thickness === Number(thick)))
     .filter((c) => !needle || [c.cub, c.slitter_lot, c.slitter_invoice_number, c.material, c.last_project, c.last_production_order, c.storage_location, `${c.thickness}x${c.width}`].some((v) => String(v ?? '').toLowerCase().replace(',', '.').includes(needle.replace(',', '.'))))
     .sort((a, b) => a.cub.localeCompare(b.cub))
+  const { rows: sortedCoils, sort: coilSort, toggle: coilToggle } = useSort(rows, {
+    cub: (c) => c.cub, lot: (c) => c.slitter_lot, code: (c) => c.material, material: (c) => c.thickness * 100000 + c.width, weight: (c) => c.current_weight,
+    location: (c) => c.storage_location, project: (c) => c.last_project ?? lastUseOf.get(c.id)?.project, status: (c) => COIL_STATUS[c.status]?.label,
+  })
 
   return (
     <div className="fit-page">
@@ -110,9 +119,9 @@ export default function StockPage() {
           </div>
           <div className="card table-wrap fill">
             <table>
-              <thead><tr><th>CUB</th><th>Lote</th><th>Código ERP</th><th>Material</th><th>Peso atual</th><th>Posição</th><th>Última obra</th><th>Situação</th></tr></thead>
+              <thead><tr><SortTh k="cub" sort={coilSort} onSort={coilToggle}>CUB</SortTh><SortTh k="lot" sort={coilSort} onSort={coilToggle}>Lote</SortTh><SortTh k="code" sort={coilSort} onSort={coilToggle}>Código ERP</SortTh><SortTh k="material" sort={coilSort} onSort={coilToggle}>Material</SortTh><SortTh k="weight" sort={coilSort} onSort={coilToggle}>Peso atual</SortTh><SortTh k="location" sort={coilSort} onSort={coilToggle}>Posição</SortTh><SortTh k="project" sort={coilSort} onSort={coilToggle}>Última obra</SortTh><SortTh k="status" sort={coilSort} onSort={coilToggle}>Situação</SortTh></tr></thead>
               <tbody>
-                {rows.slice(0, 300).map((c) => (
+                {sortedCoils.slice(0, 300).map((c) => (
                   <tr key={c.id} className={c.status === 'CONSUMED' || c.status === 'RETURNED' ? 'dim' : ''}>
                     <td className="mono"><b>{c.cub}</b></td>
                     <td className="mono"><Link to={`/bobinas-mae/${c.mother_coil}`}>{c.slitter_lot}</Link></td>

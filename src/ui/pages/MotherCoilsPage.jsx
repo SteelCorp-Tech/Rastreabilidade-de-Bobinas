@@ -1,5 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router'
+import SortTh from '../components/SortTh.jsx'
+import { useSort } from '../sortRows.js'
 import Seg from '../components/Seg.jsx'
 import { useProfile } from '../app/ProfileContext.jsx'
 import { useStore } from '../app/StoreContext.jsx'
@@ -52,6 +54,10 @@ export default function MotherCoilsPage() {
     .filter(matches[filter])
     .filter((m) => !needle || [m.slitter_lot, m.supplier, m.supplier_invoice_number, m.certificate_number, m.slitter_job_ref, m.mill].some((v) => String(v ?? '').toLowerCase().includes(needle)))
     .sort((a, b) => (b.received_at ?? '').localeCompare(a.received_at ?? ''))
+  const { rows: sorted, sort, toggle } = useSort(rows, {
+    lot: (m) => m.slitter_lot, supplier: (m) => m.supplier, material: (m) => m.thickness * 100000 + m.width, weight: (m) => m.net_weight,
+    invoice: (m) => m.supplier_invoice_number, cert: (m) => m.certificate_number, status: (m) => MOTHER_STATUS[m.status]?.label, cubs: (m) => cubCount.get(m.id) ?? 0,
+  })
 
   return (
     <div className="fit-page">
@@ -67,10 +73,10 @@ export default function MotherCoilsPage() {
       <div className="card table-wrap fill">
         <table>
           <thead>
-            <tr><th>Lote</th><th>Fornecedor</th><th>Material</th><th>Peso líquido</th><th>NF fornecedor</th><th>Certificado</th><th>Situação</th><th>CUBs</th></tr>
+            <tr><SortTh k="lot" sort={sort} onSort={toggle}>Lote</SortTh><SortTh k="supplier" sort={sort} onSort={toggle}>Fornecedor</SortTh><SortTh k="material" sort={sort} onSort={toggle}>Material</SortTh><SortTh k="weight" sort={sort} onSort={toggle}>Peso líquido</SortTh><SortTh k="invoice" sort={sort} onSort={toggle}>NF fornecedor</SortTh><SortTh k="cert" sort={sort} onSort={toggle}>Certificado</SortTh><SortTh k="status" sort={sort} onSort={toggle}>Situação</SortTh><SortTh k="cubs" sort={sort} onSort={toggle}>CUBs</SortTh></tr>
           </thead>
           <tbody>
-            {rows.map((m) => (
+            {sorted.map((m) => (
               <tr key={m.id} className="click" onClick={() => navigate(`/bobinas-mae/${m.id}`)}>
                 <td className="mono"><b>{m.slitter_lot}</b></td>
                 <td>{m.supplier}{m.mill && m.mill !== m.supplier ? <small className="muted"> · {m.mill}</small> : null}</td>

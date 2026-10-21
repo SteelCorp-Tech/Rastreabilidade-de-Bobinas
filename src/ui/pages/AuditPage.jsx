@@ -1,4 +1,6 @@
 import { useMemo, useState } from 'react'
+import SortTh from '../components/SortTh.jsx'
+import { useSort } from '../sortRows.js'
 import { useStore } from '../app/StoreContext.jsx'
 import { AUDIT_COLUMNS, auditRows, toCsv } from '../../domain/reports.js'
 import { downloadCsv } from '../csv.js'
@@ -22,6 +24,9 @@ export default function AuditPage() {
     .filter((a) => (!action || a.action === action) && (!role || a.actor.role === role))
     .filter((a) => !needle || [a.entity_id, a.reason, a.actor.user, a.entity, JSON.stringify(a.after ?? '')].some((v) => String(v ?? '').toLowerCase().includes(needle)))
     .slice().reverse()
+  const { rows: sorted, sort, toggle } = useSort(rows, {
+    at: (a) => a.at, who: (a) => a.actor.user, action: (a) => auditLabel(a.action), target: (a) => `${a.entity} ${a.entity_id}`, reason: (a) => a.reason,
+  })
 
   return (
     <div className="fit-page">
@@ -40,9 +45,9 @@ export default function AuditPage() {
       </div>
       <div className="card table-wrap fill">
         <table>
-          <thead><tr><th>Quando</th><th>Quem</th><th>Ação</th><th>Alvo</th><th>Motivo</th><th /></tr></thead>
+          <thead><tr><SortTh k="at" sort={sort} onSort={toggle}>Quando</SortTh><SortTh k="who" sort={sort} onSort={toggle}>Quem</SortTh><SortTh k="action" sort={sort} onSort={toggle}>Ação</SortTh><SortTh k="target" sort={sort} onSort={toggle}>Alvo</SortTh><SortTh k="reason" sort={sort} onSort={toggle}>Motivo</SortTh><th /></tr></thead>
           <tbody>
-            {rows.slice(0, 300).map((a) => (
+            {sorted.slice(0, 300).map((a) => (
               <>
                 <tr key={a.id} className="click" onClick={() => setOpen(open === a.id ? null : a.id)}>
                   <td className="mono">{fmtDateTime(a.at)}</td><td>{a.actor.user} <small className="muted">({a.actor.role})</small></td>

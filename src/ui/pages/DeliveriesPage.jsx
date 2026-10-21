@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router'
+import SortTh from '../components/SortTh.jsx'
+import { useSort } from '../sortRows.js'
 import { useProfile } from '../app/ProfileContext.jsx'
 import { useStore } from '../app/StoreContext.jsx'
 import { fmtDate, fmtKg } from '../format.js'
@@ -15,6 +17,9 @@ export default function DeliveriesPage() {
   const rows = state.deliveries
     .filter((d) => !needle || d.slitter_invoice_number.toLowerCase().includes(needle) || d.mother_coils.some((m) => String(lotOf(m)).includes(needle)) || (d.fvm_number ?? '').toLowerCase().includes(needle))
     .sort((a, b) => (b.received_date + b.id).localeCompare(a.received_date + a.id))
+  const { rows: sorted, sort, toggle } = useSort(rows, {
+    invoice: (d) => d.slitter_invoice_number, date: (d) => d.received_date, lots: (d) => lotOf(d.mother_coils[0]), cubs: (d) => d.cubs.length, weight: weightOf, fvm: (d) => d.fvm_number,
+  })
 
   return (
     <div className="fit-page">
@@ -28,9 +33,9 @@ export default function DeliveriesPage() {
       <div className="filters"><input className="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="NF do prestador, lote ou FVM…" aria-label="Buscar" /></div>
       <div className="card table-wrap fill">
         <table>
-          <thead><tr><th>NF do prestador</th><th>Recebida em</th><th>Lotes</th><th>CUBs</th><th>Peso medido</th><th>FVM</th></tr></thead>
+          <thead><tr><SortTh k="invoice" sort={sort} onSort={toggle}>NF do prestador</SortTh><SortTh k="date" sort={sort} onSort={toggle}>Recebida em</SortTh><SortTh k="lots" sort={sort} onSort={toggle}>Lotes</SortTh><SortTh k="cubs" sort={sort} onSort={toggle}>CUBs</SortTh><SortTh k="weight" sort={sort} onSort={toggle}>Peso medido</SortTh><SortTh k="fvm" sort={sort} onSort={toggle}>FVM</SortTh></tr></thead>
           <tbody>
-            {rows.map((d) => (
+            {sorted.map((d) => (
               <tr key={d.id} className="click" onClick={() => navigate(`/recebimento/${d.id}`)}>
                 <td className="mono"><b>{d.slitter_invoice_number || 'sem NF'}</b></td>
                 <td>{fmtDate(d.received_date)}</td>

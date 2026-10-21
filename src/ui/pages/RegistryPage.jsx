@@ -1,4 +1,6 @@
 import { useMemo, useState } from 'react'
+import SortTh from '../components/SortTh.jsx'
+import { useSort } from '../sortRows.js'
 import Seg from '../components/Seg.jsx'
 import { useAction } from '../components/useAction.js'
 import { useProfile } from '../app/ProfileContext.jsx'
@@ -26,7 +28,8 @@ function SimpleRegistry({ kind }) {
   const [q, setQ] = useState('')
   const editable = can('registry.edit')
   const label = REGISTRY_KINDS[kind].label
-  const rows = state[kind].filter((i) => i.name.toLowerCase().includes(q.trim().toLowerCase()))
+  const rows0 = state[kind].filter((i) => i.name.toLowerCase().includes(q.trim().toLowerCase()))
+  const { rows, sort, toggle } = useSort(rows0, { name: (i) => i.name, code: (i) => i.code, status: (i) => (i.active === false ? 1 : 0) })
 
   const reset = () => { setEditing(null); setName(''); setCode(''); clearError() }
   const submit = (e) => {
@@ -57,7 +60,7 @@ function SimpleRegistry({ kind }) {
       <input className="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Buscar…" aria-label="Buscar" />
       <div className="card table-wrap fill">
         <table>
-          <thead><tr><th>Nome</th><th>Código externo</th><th>Situação</th>{editable && <th />}</tr></thead>
+          <thead><tr><SortTh k="name" sort={sort} onSort={toggle}>Nome</SortTh><SortTh k="code" sort={sort} onSort={toggle}>Código externo</SortTh><SortTh k="status" sort={sort} onSort={toggle}>Situação</SortTh>{editable && <th />}</tr></thead>
           <tbody>
             {rows.map((i) => (
               <tr key={i.id} className={i.active === false ? 'dim' : ''}>
@@ -97,6 +100,7 @@ function Catalog() {
   const rows = state.materials
     .filter((m) => (!q || m.code.includes(q.trim()) || String(m.width) === q.trim()) && (!galv || m.galvanization === galv) && (!thick || m.thickness === Number(thick)))
     .sort((a, b) => a.thickness - b.thickness || a.width - b.width)
+  const { rows: sortedRows, sort, toggle } = useSort(rows, { code: (m) => m.code, thickness: (m) => m.thickness, width: (m) => m.width, galv: (m) => m.galvanization, status: (m) => (m.active === false ? 1 : 0) })
   const codes = new Set(state.materials.map((m) => m.code)).size
   const set = (k) => (e) => setForm({ ...form, [k]: e.target.value })
   const reset = () => { setEditing(null); setForm({ code: '', galvanization: 'Z275', thickness: '', width: '' }); clearError() }
@@ -134,9 +138,9 @@ function Catalog() {
       </div>
       <div className="card table-wrap fill">
         <table>
-          <thead><tr><th>Código ERP</th><th>Espessura</th><th>Largura</th><th>Galvanização</th><th>Situação</th>{editable && <th />}</tr></thead>
+          <thead><tr><SortTh k="code" sort={sort} onSort={toggle}>Código ERP</SortTh><SortTh k="thickness" sort={sort} onSort={toggle}>Espessura</SortTh><SortTh k="width" sort={sort} onSort={toggle}>Largura</SortTh><SortTh k="galv" sort={sort} onSort={toggle}>Galvanização</SortTh><SortTh k="status" sort={sort} onSort={toggle}>Situação</SortTh>{editable && <th />}</tr></thead>
           <tbody>
-            {rows.map((m) => (
+            {sortedRows.map((m) => (
               <tr key={m.id} className={m.active === false ? 'dim' : ''}>
                 <td className="mono">{m.code}</td>
                 <td className="mono">{fmtThickness(m.thickness)} mm</td>

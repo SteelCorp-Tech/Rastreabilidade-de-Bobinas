@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
+import SortTh from '../components/SortTh.jsx'
+import { useSort } from '../sortRows.js'
 import Seg from '../components/Seg.jsx'
 import { useStore } from '../app/StoreContext.jsx'
 import { activePlan } from '../../domain/traceability.js'
@@ -40,6 +42,10 @@ export default function CuttingPlansPage() {
     .filter(matches[filter])
     .filter((r) => !needle || [r.m.slitter_lot, r.m.supplier].some((v) => String(v).toLowerCase().includes(needle)))
     .sort((a, b) => (b.m.received_at ?? '').localeCompare(a.m.received_at ?? ''))
+  const { rows: sortedShown, sort, toggle } = useSort(shown, {
+    lot: (r) => r.m.slitter_lot, supplier: (r) => r.m.supplier, material: (r) => r.m.thickness * 100000 + r.m.width, weight: (r) => r.m.net_weight,
+    plan: (r) => (r.plan ? r.plan.version : null), cubs: (r) => r.plan?.result.total_cubs, trim: (r) => r.plan?.result.trim_weight, status: (r) => MOTHER_STATUS[r.m.status]?.label,
+  })
 
   return (
     <div className="fit-page">
@@ -54,10 +60,10 @@ export default function CuttingPlansPage() {
       <div className="card table-wrap fill">
         <table>
           <thead>
-            <tr><th>Lote</th><th>Fornecedor</th><th>Material</th><th>Peso líquido</th><th>Plano</th><th>CUBs previstos</th><th>Refilo</th><th>Situação da mãe</th></tr>
+            <tr><SortTh k="lot" sort={sort} onSort={toggle}>Lote</SortTh><SortTh k="supplier" sort={sort} onSort={toggle}>Fornecedor</SortTh><SortTh k="material" sort={sort} onSort={toggle}>Material</SortTh><SortTh k="weight" sort={sort} onSort={toggle}>Peso líquido</SortTh><SortTh k="plan" sort={sort} onSort={toggle}>Plano</SortTh><SortTh k="cubs" sort={sort} onSort={toggle}>CUBs previstos</SortTh><SortTh k="trim" sort={sort} onSort={toggle}>Refilo</SortTh><SortTh k="status" sort={sort} onSort={toggle}>Situação da mãe</SortTh></tr>
           </thead>
           <tbody>
-            {shown.map(({ m, plan }) => (
+            {sortedShown.map(({ m, plan }) => (
               <tr key={m.id} className="click" onClick={() => navigate(`/planos-de-corte/${m.id}`)}>
                 <td className="mono"><b>{m.slitter_lot}</b></td>
                 <td>{m.supplier}</td>

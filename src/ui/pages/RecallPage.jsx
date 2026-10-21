@@ -1,5 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Link, useSearchParams } from 'react-router'
+import SortTh from '../components/SortTh.jsx'
+import { useSort } from '../sortRows.js'
 import Seg from '../components/Seg.jsx'
 import BlockForm from '../components/BlockForm.jsx'
 import { useProfile } from '../app/ProfileContext.jsx'
@@ -102,6 +104,10 @@ function Recall() {
 function Balance() {
   const { state } = useStore()
   const rows = massBalanceReport(state).sort((a, b) => b.difference_pct - a.difference_pct)
+  const { rows: sorted, sort, toggle } = useSort(rows, {
+    lot: (b) => b.slitter_lot, cubs: (b) => b.cubs, net: (b) => b.net_weight, cubsKg: (b) => b.received_weight, trim: (b) => (b.trim_known ? b.trim_weight : null),
+    diff: (b) => b.difference_pct, base: (b) => (b.estimated ? 1 : 0), result: (b) => (b.within_tolerance ? 0 : 1),
+  })
   const out = rows.filter((r) => !r.within_tolerance).length
   const tol = state.config.mass_tolerance_pct
   return (
@@ -109,9 +115,9 @@ function Balance() {
       <p className="muted">Peso líquido da mãe contra a soma dos CUBs recebidos mais o refilo do plano. Tolerância: {fmtPct(tol)} (Configurações). {out ? <b>{out} de {rows.length} lotes fora da tolerância.</b> : 'Todos dentro da tolerância.'}</p>
       <div className="actions-row no-print-row"><button className="btn ghost" onClick={() => downloadCsv('balanco-de-massa.csv', toCsv(BALANCE_COLUMNS, balanceRows(rows)))}>Exportar CSV</button></div>
       <div className="card table-wrap fill"><table>
-        <thead><tr><th>Lote</th><th>CUBs</th><th>Peso líquido</th><th>CUBs (kg)</th><th>Refilo</th><th>Diferença</th><th>Base</th><th /></tr></thead>
+        <thead><tr><SortTh k="lot" sort={sort} onSort={toggle}>Lote</SortTh><SortTh k="cubs" sort={sort} onSort={toggle}>CUBs</SortTh><SortTh k="net" sort={sort} onSort={toggle}>Peso líquido</SortTh><SortTh k="cubsKg" sort={sort} onSort={toggle}>CUBs (kg)</SortTh><SortTh k="trim" sort={sort} onSort={toggle}>Refilo</SortTh><SortTh k="diff" sort={sort} onSort={toggle}>Diferença</SortTh><SortTh k="base" sort={sort} onSort={toggle}>Base</SortTh><SortTh k="result" sort={sort} onSort={toggle}>Resultado</SortTh></tr></thead>
         <tbody>
-          {rows.map((b) => (
+          {sorted.map((b) => (
             <tr key={b.mother_coil}>
               <td className="mono"><Link to={`/recall?q=${b.slitter_lot}`}><b>{b.slitter_lot}</b></Link></td><td className="mono">{b.cubs}</td><td className="mono">{fmtKg(b.net_weight)}</td>
               <td className="mono">{fmtKg(b.received_weight)}</td><td className="mono">{b.trim_known ? fmtKg(b.trim_weight) : <span className="badge warn">sem plano</span>}</td>
@@ -132,13 +138,16 @@ function Pendencies() {
   const { state } = useStore()
   const rows = certificatePendencies(state)
   const coilsOf = (id) => state.coils.filter((c) => c.mother_coil === id).length
+  const { rows: sortedRows, sort, toggle } = useSort(rows, {
+    lot: (m) => m.slitter_lot, supplier: (m) => m.supplier, invoice: (m) => m.supplier_invoice_number, affected: (m) => coilsOf(m.id), number: (m) => m.certificate_number, file: (m) => (m.certificate_file ? 1 : 0),
+  })
   return (
     <>
       <p className="muted">Bobinas mãe sem número de certificado ou sem arquivo anexado. {rows.length} no total.</p>
       <div className="card table-wrap fill"><table>
-        <thead><tr><th>Lote</th><th>Fornecedor</th><th>NF fornecedor</th><th>CUBs afetados</th><th>Número</th><th>Arquivo</th><th /></tr></thead>
+        <thead><tr><SortTh k="lot" sort={sort} onSort={toggle}>Lote</SortTh><SortTh k="supplier" sort={sort} onSort={toggle}>Fornecedor</SortTh><SortTh k="invoice" sort={sort} onSort={toggle}>NF fornecedor</SortTh><SortTh k="affected" sort={sort} onSort={toggle}>CUBs afetados</SortTh><SortTh k="number" sort={sort} onSort={toggle}>Número</SortTh><SortTh k="file" sort={sort} onSort={toggle}>Arquivo</SortTh><th /></tr></thead>
         <tbody>
-          {rows.map((m) => (
+          {sortedRows.map((m) => (
             <tr key={m.id}>
               <td className="mono"><b>{m.slitter_lot}</b></td><td>{m.supplier}</td><td className="mono">{m.supplier_invoice_number || '—'}</td><td className="mono">{coilsOf(m.id)}</td>
               <td className="mono">{m.certificate_number || <span className="badge warn">falta</span>}</td><td>{m.certificate_file ? 'anexado' : <span className="badge warn">falta</span>}</td>
