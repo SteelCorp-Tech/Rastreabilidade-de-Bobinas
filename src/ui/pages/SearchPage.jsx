@@ -32,7 +32,7 @@ export default function SearchPage() {
         </div>
       </div>
       <input
-        ref={ref} className="scan-input big-search" value={q} onChange={(e) => setQ(e.target.value)} autoComplete="off"
+        ref={ref} className="search-lg" value={q} onChange={(e) => setQ(e.target.value)} autoComplete="off"
         placeholder="CUB, lote, NF, OP, obra, certificado, código ERP ou dimensão (0,95x166)" aria-label="Buscar"
       />
       <p className="muted small">Atalho: pressione / em qualquer tela para vir aqui. Pergunta que esta tela responde: de qual bobina mãe, lote e certificado saiu o aço da obra X, e quais obras consumiram um lote.</p>

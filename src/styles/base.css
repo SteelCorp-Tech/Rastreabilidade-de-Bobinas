@@ -443,3 +443,14 @@ th.sorted .th-btn .si { opacity: 1; color: var(--teal-600); }
   .lines-table.recv input, .lines-table.recv select { padding: 0 8px; }
 }
 @media (max-width: 700px) { .sticky-actions { bottom: -40px; } }
+
+/* barras de busca de escritório (os controles grandes ficam só no Uso de bobina) */
+.lookup { display: flex; gap: 12px; align-items: center; margin: 0 0 16px; }
+.lookup > input { flex: 1; min-width: 0; }
+.lookup > .btn { flex: none; }
+.search-lg { min-height: 48px; font-size: 15px; margin-bottom: 8px; }
+@media (max-width: 700px) { .lookup { flex-wrap: wrap; } .lookup > .btn { flex: 1 1 100%; } }
+.block-form .btn { align-self: flex-start; }
+input[type='file'] { padding: 0 8px 0 0; line-height: 42px; color: var(--texto-suave); }
+input[type='file']::file-selector-button { height: 30px; margin: 6px 10px 6px 6px; padding: 0 14px; border: 1px solid var(--borda); border-radius: 6px; background: var(--gelo); color: var(--titulo); font: inherit; font-weight: 600; font-size: 13px; cursor: pointer; }
+input[type='file']::file-selector-button:hover { background: var(--ativo); }

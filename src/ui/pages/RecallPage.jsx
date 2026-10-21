@@ -32,10 +32,10 @@ function Recall() {
 
   return (
     <>
-      <form className="filters" onSubmit={(e) => { e.preventDefault(); setParams(q.trim() ? { q: q.trim() } : {}) }}>
-        <input className="scan-input" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Número do lote (LS) ou do certificado" aria-label="Lote ou certificado" list="lots" autoFocus />
+      <form className="lookup" onSubmit={(e) => { e.preventDefault(); setParams(q.trim() ? { q: q.trim() } : {}) }}>
+        <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Número do lote (LS) ou do certificado" aria-label="Lote ou certificado" list="lots" autoFocus />
         <datalist id="lots">{state.motherCoils.map((m) => <option key={m.id} value={m.slitter_lot} />)}</datalist>
-        <button className="btn big">Levantar</button>
+        <button className="btn">Levantar</button>
       </form>
       {!needle && <div className="card placeholder">Informe um lote ou um certificado para ver os CUBs, o saldo atual, e as obras e OPs que consumiram esse aço.</div>}
       {found?.kind === 'none' && <div className="err">Nenhum lote ou certificado "{needle}".</div>}
