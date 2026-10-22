@@ -20,21 +20,19 @@ export function Label({ label }) {
   return (
     <div className={'label' + (leftover ? ' leftover' : '')}>
       <img className="l-watermark" src={symbol} alt="" />
-      <div className="l-top">
-        <img className="l-logo" src={logo} alt="Grupo SteelCorp" />
-        {leftover && <span className="l-tag">SOBRA · {fmtDate(label.date)}</span>}
-      </div>
       <div className="l-head">
         <div className="l-id">
+          {leftover && <span className="l-tag">SOBRA · {fmtDate(label.date)}</span>}
           <div className="l-cub">{label.cub}</div>
-          <div className="l-lot"><span className="l-k">LOTE:</span> LS <b>{label.lot}</b></div>
           <div className="l-specs">
+            <div className="l-spec"><span className="l-k">LOTE</span><b>LS {label.lot}</b></div>
             <div className="l-spec"><span className="l-k">GALV.</span><b>{label.galvanization}</b></div>
             <div className="l-spec"><span className="l-k">DIM.</span><b>{label.dimension}</b></div>
           </div>
         </div>
         <div className="l-qr">
-          <QRCodeSVG value={label.qr} size={104} level="M" marginSize={0} />
+          <img className="l-logo" src={logo} alt="Grupo SteelCorp" />
+          <QRCodeSVG value={label.qr} size={110} level="M" marginSize={0} />
           <div className="l-weight">{fmtKg(label.weight)}</div>
         </div>
       </div>
