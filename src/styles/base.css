@@ -206,6 +206,10 @@ h2.sub { margin-top: 22px; font-size: 17px; }
 .l-cub { font-family: "Montserrat", system-ui, sans-serif; font-weight: 800; font-size: 17pt; letter-spacing: -.02em; line-height: 1.05; white-space: nowrap; }
 .l-lot { margin-top: 2mm; font-size: 15pt; font-weight: 800; line-height: 1.1; }
 .l-lot .l-k { font-size: 7.5pt; font-weight: 500; margin-right: 1mm; }
+.l-specs { margin-top: 2mm; display: flex; flex-direction: column; gap: .9mm; padding-left: 2mm; border-left: 1.4mm solid #00212b; }
+.l-spec { display: flex; align-items: baseline; gap: 2mm; line-height: 1.1; }
+.l-spec .l-k { width: 10mm; font-size: 7.5pt; font-weight: 700; color: #00212b; }
+.l-spec b { font-family: "Montserrat", system-ui, sans-serif; font-weight: 800; font-size: 14pt; white-space: nowrap; }
 .l-qr { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
 .l-qr svg { width: 24mm; height: 24mm; }
 .l-weight { margin-top: 1mm; font-family: "JetBrains Mono", monospace; font-size: 10pt; font-weight: 700; }
@@ -221,6 +225,9 @@ h2.sub { margin-top: 22px; font-size: 17px; }
 .label-area.thermal .l-head { margin-top: .5mm; }
 .label-area.thermal .l-cub { font-size: 14pt; }
 .label-area.thermal .l-lot { margin-top: 1mm; font-size: 11pt; }
+.label-area.thermal .l-specs { margin-top: 1mm; gap: .3mm; border-left-width: 1mm; }
+.label-area.thermal .l-spec .l-k { width: 8mm; font-size: 6pt; }
+.label-area.thermal .l-spec b { font-size: 10.5pt; }
 .label-area.thermal .l-qr svg { width: 17mm; height: 17mm; }
 .label-area.thermal .l-weight { font-size: 8pt; }
 .label-area.thermal .l-col { gap: .6mm; }

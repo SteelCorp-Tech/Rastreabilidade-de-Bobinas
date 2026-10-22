@@ -6,6 +6,7 @@ import {
 import { certificatePendencies, chainOfCoil, recallByCertificate, recallByLot, searchAll } from './traceability.js'
 import { roundKg } from './units.js'
 import { findPossibleDuplicateUse } from './coil.js'
+import { CASO_8948 } from './test-helpers.js'
 
 const NOW = new Date('2026-10-20T15:00:00Z')
 const ctx = (role, user = 'teste', now = NOW) => ({ role, user, now })
@@ -28,7 +29,7 @@ function codeOf(fn) {
 
 /** Estado com a mãe 8948 registrada, plano de 7 × 166 enviado e entrega de 14 CUBs recebida. */
 function stockWith14() {
-  let s = emptyState()
+  let s = emptyState(CASO_8948)
   s = registerMotherCoil(s, lote8948, ALMOX).state
   s = savePlan(s, { mother_coil_id: 'mc-1', lines: [{ strip_count: 7, strip_width: 166 }] }, PCP).state
   s = markPlanSent(s, { plan_id: 'plan-1' }, PCP).state
@@ -40,7 +41,7 @@ function stockWith14() {
 
 describe('critério de aceite (domínio) — lote 8948', () => {
   it('1. recusa registrar a mãe sem certificado (padrão) e aceita com certificado', () => {
-    const s = emptyState()
+    const s = emptyState(CASO_8948)
     const { certificate_file, ...semArquivo } = lote8948
     expect(codeOf(() => registerMotherCoil(s, semArquivo, ALMOX))).toBe('CERTIFICATE_REQUIRED')
     expect(codeOf(() => registerMotherCoil(s, { ...lote8948, certificate_number: '' }, ALMOX))).toBe('CERTIFICATE_REQUIRED')
@@ -50,7 +51,7 @@ describe('critério de aceite (domínio) — lote 8948', () => {
   })
 
   it('2. plano 7 × 166 → 14 CUBs de ≈ 843,5 kg, refilo 386,2 kg; mãe vai a PLANNED e SCHEDULED', () => {
-    let s = registerMotherCoil(emptyState(), lote8948, ALMOX).state
+    let s = registerMotherCoil(emptyState(CASO_8948), lote8948, ALMOX).state
     const { state, result } = savePlan(s, { mother_coil_id: 'mc-1', lines: [{ strip_count: 7, strip_width: 166 }] }, PCP)
     expect(result.result.total_cubs).toBe(14)
     expect(roundKg(result.result.lines[0].coil_weight)).toBe(843.5)
@@ -69,7 +70,7 @@ describe('critério de aceite (domínio) — lote 8948', () => {
     expect(s.coils.every((c) => c.status === 'IN_STOCK' && c.slitter_lot === '8948' && c.slitter_invoice_number === '14748')).toBe(true)
     expect(s.motherCoils[0].status).toBe('RECEIVED')
 
-    const base = registerMotherCoil(emptyState(), lote8948, ALMOX).state
+    const base = registerMotherCoil(emptyState(CASO_8948), lote8948, ALMOX).state
     const linhas13 = Array.from({ length: 13 }, () => ({ mother_coil: 'mc-1', measured_weight: 843.5, width: 166 }))
     const delivery = { slitter_invoice_number: '14748', declared_coil_count: 14 }
     expect(codeOf(() => receiveDelivery(base, { delivery, lines: linhas13 }, ALMOX))).toBe('DELIVERY_COUNT_MISMATCH')
@@ -160,7 +161,7 @@ describe('critério de aceite (domínio) — lote 8948', () => {
 
 describe('invariantes (CLAUDE.md 5.2)', () => {
   it('sem exigência de certificado, a mãe entra marcada "sem certificado" nas pendências, até anexar', () => {
-    let s = emptyState({ ...emptyState().config, certificate_required: false })
+    let s = emptyState({ ...CASO_8948, certificate_required: false })
     const { certificate_file, certificate_number, ...semCert } = lote8948
     s = registerMotherCoil(s, semCert, ALMOX).state
     expect(certificatePendencies(s)).toHaveLength(1)
@@ -172,7 +173,7 @@ describe('invariantes (CLAUDE.md 5.2)', () => {
   })
 
   it('lote da mãe é único', () => {
-    const s = registerMotherCoil(emptyState(), lote8948, ALMOX).state
+    const s = registerMotherCoil(emptyState(CASO_8948), lote8948, ALMOX).state
     expect(codeOf(() => registerMotherCoil(s, lote8948, ALMOX))).toBe('MOTHER_LOT_DUPLICATE')
   })
 
@@ -185,7 +186,7 @@ describe('invariantes (CLAUDE.md 5.2)', () => {
   })
 
   it('galvanização e espessura da tira devem bater com as da mãe; CUB exige peso medido', () => {
-    const s = registerMotherCoil(emptyState(), lote8948, ALMOX).state
+    const s = registerMotherCoil(emptyState(CASO_8948), lote8948, ALMOX).state
     const delivery = { slitter_invoice_number: '14748', declared_coil_count: 1 }
     const line = { mother_coil: 'mc-1', measured_weight: 800, width: 166 }
     expect(codeOf(() => receiveDelivery(s, { delivery, lines: [{ ...line, galvanization: 'Z350' }] }, ALMOX))).toBe('DELIVERY_GALV_MISMATCH')
@@ -195,7 +196,7 @@ describe('invariantes (CLAUDE.md 5.2)', () => {
   })
 
   it('uma entrega pode trazer tiras de mais de um lote', () => {
-    let s = registerMotherCoil(emptyState(), lote8948, ALMOX).state
+    let s = registerMotherCoil(emptyState(CASO_8948), lote8948, ALMOX).state
     s = registerMotherCoil(s, { ...lote8948, slitter_lot: '8949', supplier_invoice_number: '213062' }, ALMOX).state
     const lines = [{ mother_coil: 'mc-1', measured_weight: 800, width: 166 }, { mother_coil: 'mc-2', measured_weight: 810, width: 166 }]
     const r = receiveDelivery(s, { delivery: { slitter_invoice_number: '14748', declared_coil_count: 2 }, lines }, ALMOX)
@@ -228,7 +229,7 @@ describe('invariantes (CLAUDE.md 5.2)', () => {
   })
 
   it('o estado anterior não é alterado (funções puras) e o AuditLog só cresce', () => {
-    const s0 = registerMotherCoil(emptyState(), lote8948, ALMOX).state
+    const s0 = registerMotherCoil(emptyState(CASO_8948), lote8948, ALMOX).state
     const snapshot = JSON.stringify(s0)
     const s1 = savePlan(s0, { mother_coil_id: 'mc-1', lines: [{ strip_count: 7, strip_width: 166 }] }, PCP).state
     expect(JSON.stringify(s0)).toBe(snapshot)
@@ -237,12 +238,12 @@ describe('invariantes (CLAUDE.md 5.2)', () => {
   })
 
   it('perfil sem permissão é recusado; auditor é somente leitura', () => {
-    expect(codeOf(() => registerMotherCoil(emptyState(), lote8948, PROD))).toBe('FORBIDDEN')
-    expect(codeOf(() => registerMotherCoil(emptyState(), lote8948, ctx('AUDITOR')))).toBe('FORBIDDEN')
+    expect(codeOf(() => registerMotherCoil(emptyState(CASO_8948), lote8948, PROD))).toBe('FORBIDDEN')
+    expect(codeOf(() => registerMotherCoil(emptyState(CASO_8948), lote8948, ctx('AUDITOR')))).toBe('FORBIDDEN')
   })
 
   it('salvar de novo um rascunho o atualiza; depois de enviado, cria nova versão e substitui a anterior', () => {
-    let s = registerMotherCoil(emptyState(), lote8948, ALMOX).state
+    let s = registerMotherCoil(emptyState(CASO_8948), lote8948, ALMOX).state
     s = savePlan(s, { mother_coil_id: 'mc-1', lines: [{ strip_count: 7, strip_width: 166 }] }, PCP).state
     s = savePlan(s, { mother_coil_id: 'mc-1', lines: [{ strip_count: 6, strip_width: 166 }] }, PCP).state
     expect(s.cuttingPlans.map((p) => [p.version, p.status, p.result.total_cubs])).toEqual([[1, 'DRAFT', 12]])
@@ -250,5 +251,22 @@ describe('invariantes (CLAUDE.md 5.2)', () => {
     s = savePlan(s, { mother_coil_id: 'mc-1', lines: [{ strip_count: 7, strip_width: 166 }] }, PCP).state
     expect(s.cuttingPlans.map((p) => [p.version, p.status])).toEqual([[1, 'SUPERSEDED'], [2, 'DRAFT']])
     expect(s.auditLog.filter((x) => x.action === 'cuttingPlan.save')).toHaveLength(3)
+  })
+})
+
+describe('regras da PCP (22/10/2026): refilo de 14 a 30 mm e limite de 700 kg', () => {
+  const comPadrao = () => registerMotherCoil(emptyState(), lote8948, ALMOX).state
+
+  it('o plano 7 × 166 (refilo de 38 mm) é recusado com a configuração padrão', () => {
+    const e = (() => { try { savePlan(comPadrao(), { mother_coil_id: 'mc-1', lines: [{ strip_count: 7, strip_width: 166 }] }, PCP) } catch (x) { return x } })()
+    expect(e.code).toBe('PLAN_TRIM_OUT_OF_RANGE')
+    expect(e.message).toMatch(/38 mm.*entre 14 e 30 mm/)
+  })
+
+  it('um plano com refilo de 20 mm é aceito e, com 700 kg, divide as tiras de 166 mm em 3 bobinas', () => {
+    // 5 × 166 + 1 × 350 = 1.180 mm usados → refilo de 20 mm
+    const { result } = savePlan(comPadrao(), { mother_coil_id: 'mc-1', lines: [{ strip_count: 5, strip_width: 166 }, { strip_count: 1, strip_width: 350 }] }, PCP)
+    expect(result.result.trim_width).toBe(20)
+    expect(result.result.lines[0].coils_per_strip).toBe(3)
   })
 })

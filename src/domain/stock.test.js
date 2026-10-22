@@ -4,6 +4,7 @@ import { expectedRowsFromPlan } from './delivery.js'
 import { buildLabel } from './label.js'
 import { stockBalanceByMaterial } from './stock.js'
 import { roundKg } from './units.js'
+import { CASO_8948 } from './test-helpers.js'
 
 const NOW = new Date('2026-10-20T15:00:00Z')
 const ctx = (role) => ({ role, user: 'teste', now: NOW })
@@ -16,7 +17,7 @@ const lote = {
 }
 
 function withStock() {
-  let s = registerMotherCoil(emptyState(), lote, ALMOX).state
+  let s = registerMotherCoil(emptyState(CASO_8948), lote, ALMOX).state
   const lines = [
     { mother_coil: 'mc-1', measured_weight: 840, width: 166, material: '10337' },
     { mother_coil: 'mc-1', measured_weight: 850, width: 166, material: '10337' },
@@ -29,7 +30,7 @@ function withStock() {
 
 describe('linhas esperadas pelo plano', () => {
   it('lote 8948: 14 linhas de 166 mm com ≈ 843,5 kg estimados', () => {
-    let s = registerMotherCoil(emptyState(), lote, ALMOX).state
+    let s = registerMotherCoil(emptyState(CASO_8948), lote, ALMOX).state
     s = savePlan(s, { mother_coil_id: 'mc-1', lines: [{ strip_count: 7, strip_width: 166 }] }, PCP).state
     const rows = expectedRowsFromPlan(s.cuttingPlans[0])
     expect(rows).toHaveLength(14)
@@ -50,7 +51,7 @@ describe('saldo por código ERP', () => {
     expect(rows.find((r) => r.code === '10322')).toBeUndefined() // consumido
   })
   it('CUB sem código aparece como "SEM CÓDIGO"', () => {
-    let s = registerMotherCoil(emptyState(), lote, ALMOX).state
+    let s = registerMotherCoil(emptyState(CASO_8948), lote, ALMOX).state
     s = receiveDelivery(s, { delivery: { slitter_invoice_number: '1', declared_coil_count: 1 }, lines: [{ mother_coil: 'mc-1', measured_weight: 800, width: 166 }] }, ALMOX).state
     expect(stockBalanceByMaterial(s)[0].code).toBe('SEM CÓDIGO')
   })

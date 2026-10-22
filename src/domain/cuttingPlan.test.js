@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { calcCuttingPlan } from './cuttingPlan.js'
+import { calcCuttingPlan, checkTrim } from './cuttingPlan.js'
 import { massBalance } from './massBalance.js'
 import { roundKg } from './units.js'
 
@@ -27,8 +27,11 @@ describe('plano de corte: lote 8948', () => {
     expect(r.total_cubs).toBe(21)
   })
 
-  it('usa 1.000 kg como limite padrão', () => {
-    expect(calcCuttingPlan(lote8948).total_cubs).toBe(14)
+  it('usa 700 kg como limite padrão (definido pela PCP)', () => {
+    const r = calcCuttingPlan(lote8948)
+    expect(r.lines[0].coils_per_strip).toBe(3)
+    expect(roundKg(r.lines[0].coil_weight)).toBe(562.3)
+    expect(r.total_cubs).toBe(21)
   })
 
   it('o peso do CUB não soma o refilo (erro da planilha: 871,1 kg)', () => {
@@ -76,5 +79,19 @@ describe('balanço de massa', () => {
   it('acusa diferença acima da tolerância', () => {
     const r = massBalance({ net_weight: 12195, trim_weight: 386.2, received_weights: Array(14).fill(800), tolerance_pct: 1 })
     expect(r.within_tolerance).toBe(false)
+  })
+})
+
+describe('regra do refilo (14 a 30 mm)', () => {
+  it('aceita refilo dentro da faixa e recusa fora dela', () => {
+    expect(checkTrim(14).ok).toBe(true)
+    expect(checkTrim(30).ok).toBe(true)
+    expect(checkTrim(13.9).ok).toBe(false)
+    expect(checkTrim(38).ok).toBe(false)
+    expect(checkTrim(38).message).toMatch(/entre 14 e 30 mm/)
+  })
+
+  it('sem limites configurados a regra fica desligada', () => {
+    expect(checkTrim(500, { trim_min_mm: null, trim_max_mm: null }).ok).toBe(true)
   })
 })

@@ -2,7 +2,7 @@ import { DEFAULT_CONFIG } from './config.js'
 import { DomainError, ensure } from './errors.js'
 import { can } from './permissions.js'
 import { appendAudit } from './audit.js'
-import { calcCuttingPlan } from './cuttingPlan.js'
+import { calcCuttingPlan, checkTrim } from './cuttingPlan.js'
 import { advanceMotherCoil, buildMotherCoil, withCertificate } from './motherCoil.js'
 import { buildDelivery } from './delivery.js'
 import { blockCoil, closeUse, openUse, unblockCoil } from './coil.js'
@@ -84,7 +84,10 @@ export function attachCertificate(state, { mother_coil_id, number, file }, ctx) 
 export function savePlan(state, { mother_coil_id, lines, expected_delivery_date }, ctx) {
   authorize(ctx, 'cuttingPlan.edit')
   const mc = find(state.motherCoils, mother_coil_id, 'MOTHER_NOT_FOUND', 'Bobina mãe não encontrada.')
-  const result = calcCuttingPlan({ mother_width: mc.width, net_weight: mc.net_weight, weight_limit: state.config.weight_limit, lines })
+  const cfg = { ...DEFAULT_CONFIG, ...state.config }
+  const result = calcCuttingPlan({ mother_width: mc.width, net_weight: mc.net_weight, weight_limit: cfg.weight_limit, lines })
+  const trim = checkTrim(result.trim_width, cfg)
+  ensure(trim.ok, 'PLAN_TRIM_OUT_OF_RANGE', trim.message)
   const previous = state.cuttingPlans.filter((p) => p.mother_coil === mc.id)
   const active = previous.filter((p) => p.status !== 'SUPERSEDED').sort((a, b) => b.version - a.version)[0]
 

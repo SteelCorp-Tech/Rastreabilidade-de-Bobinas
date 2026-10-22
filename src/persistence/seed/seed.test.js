@@ -11,7 +11,7 @@ describe('seed (gerado do Excel real)', () => {
     for (const k of ['config', 'suppliers', 'mills', 'projects', 'machines', 'materials', 'motherCoils', 'cuttingPlans', 'deliveries', 'coils', 'uses', 'auditLog']) {
       expect(seed, k).toHaveProperty(k)
     }
-    expect(seed.config.weight_limit).toBe(1000)
+    expect(seed.config.weight_limit).toBe(700)
     expect(seed.config.certificate_required).toBe(true)
   })
 

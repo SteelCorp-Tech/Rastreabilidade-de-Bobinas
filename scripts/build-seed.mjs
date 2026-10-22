@@ -10,6 +10,8 @@ import { CERT_MODEL } from '../src/persistence/certModel.js'
 
 const XLSX = process.argv[2] ?? 'CONTROLE_RASTREABILIDADE_BOBINAS_A29.xlsx'
 const EXCLUDED_LOT = '8948' // o roteiro de aceite registra este lote do zero
+// os lotes de 2026 do Excel foram cortados com o limite antigo de 1.000 kg; os planos do histórico são derivados com ele.
+// A configuração padrão do app (DEFAULT_CONFIG) já é a nova: 700 kg e refilo de 14 a 30 mm.
 const WEIGHT_LIMIT = 1000
 const SEED_ACTOR = 'Importação Excel'
 

@@ -1,6 +1,8 @@
 /**
  * @typedef {Object} Config
  * @property {number} weight_limit      Limite de peso por bobina no desbobinador (kg).
+ * @property {number|null} trim_min_mm   Refilo mínimo obrigatório no plano de corte (mm); null desliga a regra.
+ * @property {number|null} trim_max_mm   Refilo máximo permitido no plano de corte (mm); null desliga a regra.
  * @property {boolean} certificate_required  Certificado obrigatório ao registrar a bobina mãe.
  * @property {string} cub_prefix
  * @property {number} cub_digits        Dígitos do sequencial (só vale para CUBs novos).
@@ -10,7 +12,9 @@
 
 /** @type {Config} */
 export const DEFAULT_CONFIG = {
-  weight_limit: 1000,
+  weight_limit: 700,
+  trim_min_mm: 14,
+  trim_max_mm: 30,
   certificate_required: true,
   cub_prefix: 'CUB',
   cub_digits: 5,

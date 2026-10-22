@@ -55,6 +55,13 @@ Decisões do projeto, com motivo e data. Atualize junto com o `CLAUDE.md`.
 - Acima disso o comportamento é o do desktop (tabela rola por dentro, cabeçalho e botões fixos).
 - Não testado em aparelhos reais; só em janelas emuladas (390, 768 e 1024 px).
 
+### 22/10/2026 — Regras da PCP (reunião com quem opera o plano de corte)
+- **Limite por bobina: 700 kg** (era 1.000 kg). Padrão da configuração; o lote 8948 passa de 14 para 21 CUBs de ≈ 562,3 kg.
+- **Refilo obrigatório de 14 a 30 mm** em todo plano de corte. Valida no domínio ao salvar (`PLAN_TRIM_OUT_OF_RANGE`), avisa em vermelho no editor e desabilita "Salvar". Faixa configurável (`trim_min_mm`, `trim_max_mm`); em branco desliga a regra. Planos antigos do seed (histórico do Excel) não são revalidados.
+- **Etiqueta:** galvanização e dimensão passam para logo abaixo do lote, em fonte grande (14 pt no A4), com barra lateral de destaque. Código Microsys, fornecedor, data, NF e certificado seguem nos dois blocos de baixo.
+- Os testes do lote 8948 continuam com 1.000 kg e sem regra de refilo (`CASO_8948`), para provar as fórmulas da seção 6; há testes novos para a faixa de refilo e para o limite de 700 kg. O seed histórico continua derivado com 1.000 kg (assim foram cortados os lotes de 2026), mas sua configuração já vem com 700 kg e 14–30 mm.
+- Quem já tem dados salvos no navegador mantém a configuração antiga (1.000 kg) até o administrador alterar em Configurações ou restaurar os dados de exemplo.
+
 ## Em aberto (padrão adotado até decidirem)
 
 1. Nome do produto: "Bobinas" ao lado da marca SteelCorp.

@@ -19,6 +19,8 @@ export default function SettingsPage() {
 
   const toForm = (c) => ({
     weight_limit: String(c.weight_limit).replace('.', ','),
+    trim_min_mm: c.trim_min_mm == null ? '' : String(c.trim_min_mm).replace('.', ','),
+    trim_max_mm: c.trim_max_mm == null ? '' : String(c.trim_max_mm).replace('.', ','),
     mass_tolerance_pct: String(c.mass_tolerance_pct).replace('.', ','),
     cub_prefix: c.cub_prefix,
     cub_digits: String(c.cub_digits),
@@ -34,6 +36,8 @@ export default function SettingsPage() {
     exec(async () => {
       await run(updateConfig, {
         weight_limit: parseDecimal(form.weight_limit),
+        trim_min_mm: form.trim_min_mm.trim() === '' ? null : parseDecimal(form.trim_min_mm),
+        trim_max_mm: form.trim_max_mm.trim() === '' ? null : parseDecimal(form.trim_max_mm),
         mass_tolerance_pct: parseDecimal(form.mass_tolerance_pct),
         cub_prefix: form.cub_prefix.trim().toUpperCase(),
         cub_digits: Number(form.cub_digits),
@@ -71,6 +75,17 @@ export default function SettingsPage() {
             <input className="mono" inputMode="decimal" value={form.weight_limit} onChange={set('weight_limit')} disabled={!editable} />
             <small className="muted">Peso máximo no desbobinador; define em quantas bobinas cada tira é dividida.</small>
           </label>
+          <div className="fields two">
+            <label>
+              <span className="eyebrow">Refilo mínimo do plano (mm)</span>
+              <input className="mono" inputMode="decimal" value={form.trim_min_mm} onChange={set('trim_min_mm')} disabled={!editable} />
+            </label>
+            <label>
+              <span className="eyebrow">Refilo máximo do plano (mm)</span>
+              <input className="mono" inputMode="decimal" value={form.trim_max_mm} onChange={set('trim_max_mm')} disabled={!editable} />
+            </label>
+          </div>
+          <small className="muted">Todo plano de corte precisa deixar uma sobra lateral dentro dessa faixa. Em branco, a regra fica desligada.</small>
           <label>
             <span className="eyebrow">Tolerância do balanço de massa (%)</span>
             <input className="mono" inputMode="decimal" value={form.mass_tolerance_pct} onChange={set('mass_tolerance_pct')} disabled={!editable} />

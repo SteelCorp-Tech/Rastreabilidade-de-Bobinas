@@ -119,6 +119,8 @@ export function updateConfig(state, patch, ctx) {
   const before = { ...DEFAULT_CONFIG, ...state.config }
   const next = { ...before, ...patch }
   ensure(next.weight_limit > 0, 'CONFIG_WEIGHT_INVALID', 'O limite de peso por bobina deve ser maior que zero.')
+  for (const k of ['trim_min_mm', 'trim_max_mm']) ensure(next[k] == null || (Number.isFinite(next[k]) && next[k] >= 0), 'CONFIG_TRIM_INVALID', 'O refilo mínimo e o máximo devem ser números maiores ou iguais a zero (ou ficar em branco).')
+  ensure(next.trim_min_mm == null || next.trim_max_mm == null || next.trim_min_mm <= next.trim_max_mm, 'CONFIG_TRIM_INVALID', 'O refilo mínimo não pode ser maior que o máximo.')
   ensure(next.mass_tolerance_pct >= 0 && next.mass_tolerance_pct <= 100, 'CONFIG_TOLERANCE_INVALID', 'A tolerância do balanço deve ficar entre 0 e 100%.')
   ensure(/^[A-Z]{2,6}$/.test(next.cub_prefix), 'CONFIG_PREFIX_INVALID', 'O prefixo do CUB deve ter de 2 a 6 letras maiúsculas.')
   ensure(Number.isInteger(next.cub_digits) && next.cub_digits >= 3 && next.cub_digits <= 8, 'CONFIG_DIGITS_INVALID', 'O sequencial do CUB deve ter de 3 a 8 dígitos.')

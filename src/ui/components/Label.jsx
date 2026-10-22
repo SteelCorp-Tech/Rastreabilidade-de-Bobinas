@@ -28,6 +28,10 @@ export function Label({ label }) {
         <div className="l-id">
           <div className="l-cub">{label.cub}</div>
           <div className="l-lot"><span className="l-k">LOTE:</span> LS <b>{label.lot}</b></div>
+          <div className="l-specs">
+            <div className="l-spec"><span className="l-k">GALV.</span><b>{label.galvanization}</b></div>
+            <div className="l-spec"><span className="l-k">DIM.</span><b>{label.dimension}</b></div>
+          </div>
         </div>
         <div className="l-qr">
           <QRCodeSVG value={label.qr} size={104} level="M" marginSize={0} />
@@ -37,12 +41,10 @@ export function Label({ label }) {
       <div className="l-cols">
         <div className="l-col">
           <Field k="CÓD MICROSYS" v={label.material || '—'} />
-          <Field k="GALV." v={label.galvanization} />
-          <Field k="DIM. (E X L)" v={label.dimension} />
+          <Field k="FORN." v={label.supplier} />
           <Field k="DATA RECEB." v={fmtDate(label.received_date)} />
         </div>
         <div className="l-col">
-          <Field k="FORN." v={label.supplier} />
           <Field k="NF FORN." v={label.supplier_invoice || '—'} />
           <Field k="NF PRESTADOR" v={label.slitter_invoice || '—'} />
           <Field k="CERT. QUAL." v={label.certificate || '—'} />

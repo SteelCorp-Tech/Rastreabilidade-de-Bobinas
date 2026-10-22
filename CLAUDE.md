@@ -60,7 +60,9 @@ Papéis no sistema: Almoxarifado, PCP, Produção, Qualidade, Suprimentos, Admin
 | **O CUB é a chave da bobina** ("RG da bobina"). Formato `CUB-AAAA-NNNNN`. | Decisão do cliente em reunião. Cada tira/bobina física tem um CUB e o mantém até acabar. |
 | **O lote do prestador é a chave da Qualidade** (certificado, validade, bloqueio, recall). | Nos dados reais, nenhum lote tem mais de um fornecedor ou galvanização, e só 1 tem mais de um certificado. |
 | O almoxarifado registra a bobina mãe e o lote. | Decisão do cliente. |
-| Limite de peso por bobina no desbobinador: **1.000 kg** (configurável). | Bate com o histórico: tiras de ~1.687 kg viram 2 bobinas de ~843,5 kg. |
+| Limite de peso por bobina no desbobinador: **700 kg** (configurável). | Definido pela PCP em 22/10/2026 (antes: 1.000 kg, que bate com o histórico de 2026: tiras de ~1.687 kg viravam 2 bobinas de ~843,5 kg). |
+| **Todo plano de corte deve deixar de 14 a 30 mm de refilo** (configurável; o sistema recusa salvar fora da faixa). | Regra da PCP, 22/10/2026. O lote real 8948 (refilo de 38 mm) não cumpriria. |
+| Na etiqueta, **galvanização e dimensão ficam logo abaixo do lote**, em corpo grande. | Pedido da PCP, 22/10/2026. |
 | A Produção reetiqueta a sobra; checklist e não conformidade são da FVM. | Decisão do cliente. |
 | Sem botão "trocar de obra" com bobina montada. | Quase não acontece. |
 | Marco zero: inventário físico como carga inicial; histórico fica no Excel. | Evita migrar dados ruins. |
@@ -111,7 +113,7 @@ Valores: peso em **kg com 1 casa decimal**; espessura em **mm com 2 casas**; lar
 
 ## 6. Plano de corte: cálculos e caso de teste
 
-Entradas: largura da mãe `W`, peso líquido `P`, limite por bobina `L` (padrão 1.000 kg), linhas `(n_i, w_i)`.
+Entradas: largura da mãe `W`, peso líquido `P`, limite por bobina `L` (padrão 700 kg), linhas `(n_i, w_i)`.
 
 | Resultado | Fórmula |
 |---|---|
@@ -123,6 +125,8 @@ Entradas: largura da mãe `W`, peso líquido `P`, limite por bobina `L` (padrão
 | Bobinas por tira | `ceil(t_i / L)` (a tira é dividida no comprimento) |
 | Peso estimado por CUB (kg) | `t_i / bobinas por tira` |
 | CUBs previstos | `Σ n_i × bobinas por tira_i` |
+
+> **Atenção (22/10/2026):** os números abaixo valem para o limite de 1.000 kg e sem regra de refilo (`CASO_8948` em `src/domain/test-helpers.js`). Com o padrão atual (700 kg; refilo de 14 a 30 mm), o 7 × 166 mm do lote 8948 seria recusado (refilo de 38 mm) e, se fosse aceito, daria 21 CUBs de ≈ 562,3 kg.
 
 **Caso de teste obrigatório (lote real 8948):** mãe 0,95 × 1.200 mm, 12.195 kg; 7 tiras de 166 mm.
 - Largura utilizada 1.162 mm; refilo 38 mm = **386,2 kg**; aproveitamento ≈ 96,8%.

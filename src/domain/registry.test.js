@@ -73,7 +73,7 @@ describe('configurações', () => {
     expect(codeOf(() => updateConfig(s, { weight_limit: 800 }, ctx('PCP')))).toBe('FORBIDDEN')
     const r = updateConfig(s, { weight_limit: 800, certificate_required: false }, ADMIN)
     expect(r.state.config.weight_limit).toBe(800)
-    expect(r.state.auditLog.at(-1)).toMatchObject({ action: 'config.update', before: { weight_limit: 1000, certificate_required: true }, after: { weight_limit: 800, certificate_required: false } })
+    expect(r.state.auditLog.at(-1)).toMatchObject({ action: 'config.update', before: { weight_limit: 700, certificate_required: true }, after: { weight_limit: 800, certificate_required: false } })
   })
   it('valida cada campo', () => {
     const s = emptyState()

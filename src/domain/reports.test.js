@@ -4,13 +4,14 @@ import {
 } from './commands.js'
 import { massBalanceReport, projectNames, recallByLot, recallByProject, searchAll } from './traceability.js'
 import { balanceRows, BALANCE_COLUMNS, PROJECT_COLUMNS, projectRows, RECALL_COLUMNS, recallRows, toCsv } from './reports.js'
+import { CASO_8948 } from './test-helpers.js'
 
 const NOW = new Date('2026-10-20T15:00:00Z')
 const ctx = (role) => ({ role, user: 'teste', now: NOW })
 const ALMOX = ctx('ALMOXARIFADO'), PCP = ctx('PCP'), PROD = ctx('PRODUCAO')
 
 function scenario() {
-  let s = registerMotherCoil(emptyState(), {
+  let s = registerMotherCoil(emptyState(CASO_8948), {
     slitter_lot: '8948', supplier: 'AMAFER', mill: 'CSN', supplier_invoice_number: '213061', thickness: 0.95, width: 1200,
     galvanization: 'Z275', net_weight: 12195, certificate_number: '7948088101', certificate_file: { id: 'a', name: 'c.pdf' },
   }, ALMOX).state

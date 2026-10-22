@@ -5,7 +5,7 @@ import { useProfile } from '../app/ProfileContext.jsx'
 import { useStore } from '../app/StoreContext.jsx'
 import { confirmSchedule, markPlanSent, savePlan } from '../../domain/commands.js'
 import { DEFAULT_CONFIG } from '../../domain/config.js'
-import { calcCuttingPlan } from '../../domain/cuttingPlan.js'
+import { calcCuttingPlan, checkTrim } from '../../domain/cuttingPlan.js'
 import { activePlan } from '../../domain/traceability.js'
 import { fmtDate, fmtDateTime, fmtInt, fmtKg, fmtMm, fmtPct, fmtThickness, parseDecimal } from '../format.js'
 import { MOTHER_STATUS } from '../labels.js'
@@ -66,7 +66,8 @@ export default function CuttingPlanEditor() {
   const { error, busy, exec } = useAction()
   const mc = state.motherCoils.find((m) => m.id === id)
   const plan = mc ? activePlan(state, mc.id) : null
-  const limit = { ...DEFAULT_CONFIG, ...state.config }.weight_limit
+  const cfg = { ...DEFAULT_CONFIG, ...state.config }
+  const limit = cfg.weight_limit
   const editable = can('cuttingPlan.edit')
 
   const [rows, setRows] = useState([blankLine()])
@@ -109,6 +110,7 @@ export default function CuttingPlanEditor() {
     setSaved('Programação confirmada pelo prestador.')
   })
   const r = calc?.result
+  const trimCheck = r ? checkTrim(r.trim_width, cfg) : { ok: true }
 
   return (
     <>
@@ -127,6 +129,7 @@ export default function CuttingPlanEditor() {
             <div className="kv"><span className="eyebrow">Fornecedor</span><div>{mc.supplier}</div></div>
             <div className="kv"><span className="eyebrow">Material</span><div className="mono">{fmtThickness(mc.thickness)} mm × {mc.width} mm · {mc.galvanization}</div></div>
             <div className="kv"><span className="eyebrow">Peso líquido</span><div className="mono">{fmtKg(mc.net_weight)}</div></div>
+            <div className="kv"><span className="eyebrow">Refilo exigido</span><div className="mono">{cfg.trim_min_mm == null && cfg.trim_max_mm == null ? 'sem regra' : `${cfg.trim_min_mm ?? 0} a ${cfg.trim_max_mm ?? '—'} mm`}</div></div>
             <div className="kv"><span className="eyebrow">Limite por bobina</span><div className="mono">{fmtKg(limit)} <Link to="/configuracoes" className="muted">(configuração)</Link></div></div>
 
             <h2 className="sub">Linhas de corte</h2>
@@ -156,6 +159,7 @@ export default function CuttingPlanEditor() {
               {calc?.problem && <div className="err" role="alert">{calc.problem}</div>}
               {r && (
                 <>
+                  {!trimCheck.ok && <div className="err" role="alert">{trimCheck.message} Ajuste as linhas para salvar.</div>}
                   <StripBar lines={calc.lines} trim={r.trim_width} total={mc.width} />
                   <div className="legend"><span><i className="sw s0" /> tiras</span><span><i className="sw trim" /> refilo</span></div>
                   <div className="metrics">
@@ -205,7 +209,7 @@ export default function CuttingPlanEditor() {
         {error && <div className="err" role="alert">{error}</div>}
         {saved && <p className="ok-msg">{saved}</p>}
         <div className="actions-row sticky-actions">
-          {editable && <button className="btn" onClick={save} disabled={busy || !r || !dirty}>{willBeNewVersion ? `Salvar como nova versão (v${(plan?.version ?? 0) + 1})` : 'Salvar rascunho'}</button>}
+          {editable && <button className="btn" onClick={save} disabled={busy || !r || !dirty || !trimCheck.ok}>{willBeNewVersion ? `Salvar como nova versão (v${(plan?.version ?? 0) + 1})` : 'Salvar rascunho'}</button>}
           {editable && plan?.status === 'DRAFT' && !dirty && <button className="btn" onClick={send} disabled={busy}>Marcar como enviado ao prestador</button>}
           {editable && mc.status === 'PLANNED' && plan?.status === 'SENT' && !dirty && <button className="btn ghost" onClick={schedule} disabled={busy}>Confirmar programação do prestador</button>}
           <button className="btn ghost" onClick={() => window.print()} disabled={!r}>Imprimir plano</button>
