@@ -9,7 +9,7 @@ import { closeCoilUse, openCoilUse } from '../../domain/commands.js'
 import { DEFAULT_CONFIG } from '../../domain/config.js'
 import { findPossibleDuplicateUse, refusalMessage } from '../../domain/coil.js'
 import { buildLabel } from '../../domain/label.js'
-import { dateInSaoPaulo, roundMm } from '../../domain/units.js'
+import { dateInSaoPaulo } from '../../domain/units.js'
 import { fmtDateTime, fmtKg, fmtThickness, parseDecimal } from '../format.js'
 
 const LAST_KEY = 'bobinas:v1:last-use'
@@ -156,26 +156,22 @@ export default function CoilUsePage() {
   )
 }
 
-/** Passo 1: montagem. OP, obra, perfiladeira e espessura medida. */
+/** Passo 1: montagem. OP, obra e perfiladeira. */
 function MountStep({ coil, state, canOpen, onDone, run, exec, busy, error }) {
   const last = readLast()
   const [op, setOp] = useState('')
   const [project, setProject] = useState('')
   const [machine, setMachine] = useState(last.machine ?? '')
-  const [thick, setThick] = useState('')
   const [confirmDup, setConfirmDup] = useState(false)
   const projects = state.projects.filter((p) => p.active !== false)
   const machines = state.machines.filter((m) => m.active !== false)
-  const measured = parseDecimal(thick)
-  const delta = measured > 0 ? roundMm(measured - coil.thickness) : null
-  const off = delta != null && Math.abs(delta) > 0.05
   const dup = op.trim() && findPossibleDuplicateUse(state.uses, { coil: coil.id, production_order: op, day: dateInSaoPaulo(new Date()) })
 
   const submit = (e) => {
     e.preventDefault()
     if (dup && !confirmDup) { setConfirmDup(true); return }
     exec(async () => {
-      await run(openCoilUse, { cub: coil.cub, production_order: op, project, machine, measured_thickness: measured })
+      await run(openCoilUse, { cub: coil.cub, production_order: op, project, machine })
       saveLast({ machine })
       onDone(coil)
     })
@@ -201,17 +197,6 @@ function MountStep({ coil, state, canOpen, onDone, run, exec, busy, error }) {
           {machines.map((m) => (
             <button type="button" key={m.id} className={'machine' + (machine === m.name ? ' on' : '')} onClick={() => setMachine(m.name)}>{m.name}</button>
           ))}
-        </div>
-        <div className="fields two">
-          <label>
-            <span className="eyebrow">Espessura medida (mm) *</span>
-            <input className="big-input mono" value={thick} onChange={(e) => setThick(e.target.value)} inputMode="decimal" placeholder={fmtThickness(coil.thickness).replace(/.$/, '0')} />
-          </label>
-          <div className={'delta' + (off ? ' off' : '')}>
-            <span className="eyebrow">Diferença para a nominal ({fmtThickness(coil.thickness)} mm)</span>
-            <b className="mono">{delta == null ? '—' : `${delta > 0 ? '+' : ''}${delta.toFixed(2).replace('.', ',')} mm`}</b>
-            {off && <small>Fora de ±0,05 mm: confira a bobina e a medição.</small>}
-          </div>
         </div>
         {dup && <div className="warn-box">Já existe um uso deste CUB com a mesma OP hoje ({dup.project}). Pode ser lançamento duplicado.{confirmDup ? ' Toque em Iniciar uso de novo para confirmar.' : ''}</div>}
         {error && <div className="err big-err" role="alert">{error}</div>}
@@ -249,7 +234,6 @@ function CloseStep({ coil, use, state, layout, canClose, run, exec, busy, error,
         <div className="kv"><span className="eyebrow">Obra</span><div>{use.project}</div></div>
         <div className="kv"><span className="eyebrow">Perfiladeira</span><div>{use.machine}</div></div>
         <div className="kv"><span className="eyebrow">Peso na montagem</span><div className="mono">{fmtKg(use.weight_before)}</div></div>
-        <div className="kv"><span className="eyebrow">Espessura medida</span><div className="mono">{fmtThickness(use.measured_thickness)} mm ({use.thickness_delta > 0 ? '+' : ''}{String(use.thickness_delta).replace('.', ',')})</div></div>
 
         {!canClose && <div className="err">O perfil atual não fecha usos.</div>}
         <div className="fields two">

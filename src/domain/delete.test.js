@@ -50,7 +50,7 @@ describe('exclusões (só administrador)', () => {
 
   it('recebimento com CUB já usado é recusado, e o motivo cita o CUB', () => {
     let s = scenario()
-    s = openCoilUse(s, { cub: 'CUB-2026-00001', production_order: 'OP1', project: 'OBRA Y', machine: 'FRAMECAD 90', measured_thickness: 0.95 }, PROD).state
+    s = openCoilUse(s, { cub: 'CUB-2026-00001', production_order: 'OP1', project: 'OBRA Y', machine: 'FRAMECAD 90' }, PROD).state
     const e = (() => { try { deleteDelivery(s, { delivery_id: s.deliveries[0].id }, ADM) } catch (x) { return x } })()
     expect(e.code).toBe('DELIVERY_HAS_USES')
     expect(e.message).toMatch(/CUB-2026-00001/)

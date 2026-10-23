@@ -1,5 +1,5 @@
 import { DomainError, ensure } from './errors.js'
-import { roundKg, roundMm } from './units.js'
+import { roundKg } from './units.js'
 
 /**
  * @typedef {'IN_STOCK'|'IN_USE'|'BLOCKED'|'CONSUMED'|'RETURNED'} CoilStatus
@@ -38,9 +38,6 @@ import { roundKg, roundMm } from './units.js'
  * @property {string} production_order
  * @property {string} project
  * @property {string} machine
- * @property {number} nominal_thickness
- * @property {number} measured_thickness
- * @property {number} thickness_delta
  * @property {number} weight_before
  * @property {number|null} weight_after
  * @property {number|null} consumption
@@ -95,17 +92,12 @@ export function openUse(coil, input, uses, actor, now) {
   ensure(!blank(input.production_order), 'USE_OP_REQUIRED', 'Informe a OP.')
   ensure(!blank(input.project), 'USE_PROJECT_REQUIRED', 'Informe a obra.')
   ensure(!blank(input.machine), 'USE_MACHINE_REQUIRED', 'Informe a perfiladeira.')
-  ensure(input.measured_thickness > 0, 'USE_THICKNESS_REQUIRED', 'Informe a espessura medida (mm).')
-  const nominal = input.nominal_thickness ?? coil.thickness
   const use = {
     id: `use-${uses.length + 1}`,
     coil: coil.id,
     production_order: String(input.production_order).trim(),
     project: input.project,
     machine: input.machine,
-    nominal_thickness: nominal,
-    measured_thickness: input.measured_thickness,
-    thickness_delta: roundMm(input.measured_thickness - nominal),
     weight_before: coil.current_weight,
     weight_after: null,
     consumption: null,

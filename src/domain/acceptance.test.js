@@ -81,19 +81,19 @@ describe('critério de aceite (domínio) — lote 8948', () => {
 
   it('4. abre uso de um CUB para a OP X da obra Y e recusa o segundo uso', () => {
     let s = stockWith14()
-    const r = openCoilUse(s, { cub: 'CUB-2026-00001', production_order: 'OP-X', project: 'OBRA Y', machine: 'FRAMECAD 90', measured_thickness: 0.97 }, PROD)
+    const r = openCoilUse(s, { cub: 'CUB-2026-00001', production_order: 'OP-X', project: 'OBRA Y', machine: 'FRAMECAD 90' }, PROD)
     expect(r.result.coil.status).toBe('IN_USE')
-    expect(r.result.use.thickness_delta).toBe(0.02)
+    expect(r.result.use).not.toHaveProperty('measured_thickness')
     expect(r.result.use.weight_before).toBe(843.5)
     s = r.state
-    const again = { cub: 'CUB-2026-00001', production_order: 'OP-X2', project: 'OBRA Y', machine: 'FRAMECAD 90', measured_thickness: 0.95 }
+    const again = { cub: 'CUB-2026-00001', production_order: 'OP-X2', project: 'OBRA Y', machine: 'FRAMECAD 90' }
     expect(codeOf(() => openCoilUse(s, again, PROD))).toBe('COIL_NOT_AVAILABLE')
     expect(() => openCoilUse(s, again, PROD)).toThrow(/já tem um uso aberto/)
   })
 
   it('5. fecha com sobra de 300 kg (mesmo CUB), reabre para a obra Z e consome tudo', () => {
     let s = stockWith14()
-    s = openCoilUse(s, { cub: 'CUB-2026-00001', production_order: 'OP-X', project: 'OBRA Y', machine: 'FRAMECAD 90', measured_thickness: 0.95 }, PROD).state
+    s = openCoilUse(s, { cub: 'CUB-2026-00001', production_order: 'OP-X', project: 'OBRA Y', machine: 'FRAMECAD 90' }, PROD).state
     const closed = closeCoilUse(s, { use_id: 'use-1', outcome: 'LEFTOVER', weight_after: 300 }, PROD)
     s = closed.state
     expect(closed.result.coil.cub).toBe('CUB-2026-00001')
@@ -102,7 +102,7 @@ describe('critério de aceite (domínio) — lote 8948', () => {
     expect(closed.result.use.consumption).toBe(543.5)
     expect(s.coils).toHaveLength(14) // a sobra não cria CUB novo
 
-    s = openCoilUse(s, { cub: 'CUB-2026-00001', production_order: 'OP-Z', project: 'OBRA Z', machine: 'PINNACLE X3', measured_thickness: 0.94 }, PROD).state
+    s = openCoilUse(s, { cub: 'CUB-2026-00001', production_order: 'OP-Z', project: 'OBRA Z', machine: 'PINNACLE X3' }, PROD).state
     expect(s.uses[1].weight_before).toBe(300)
     const done = closeCoilUse(s, { use_id: 'use-2', outcome: 'CONSUMED' }, PROD)
     expect(done.result.coil.status).toBe('CONSUMED')
@@ -110,14 +110,14 @@ describe('critério de aceite (domínio) — lote 8948', () => {
     expect(done.result.coil.use_count).toBe(2)
     expect(done.result.coil.cumulative_consumption).toBe(843.5)
     // consumido não abre mais
-    expect(codeOf(() => openCoilUse(done.state, { cub: 'CUB-2026-00001', production_order: 'OP-W', project: 'OBRA W', machine: 'FRAMECAD 90', measured_thickness: 0.95 }, PROD))).toBe('COIL_NOT_AVAILABLE')
+    expect(codeOf(() => openCoilUse(done.state, { cub: 'CUB-2026-00001', production_order: 'OP-W', project: 'OBRA W', machine: 'FRAMECAD 90' }, PROD))).toBe('COIL_NOT_AVAILABLE')
   })
 
   it('6. consulta e recall do lote 8948: obras, OPs, consumos, saldos, balanço e certificado em todos os CUBs', () => {
     let s = stockWith14()
-    s = openCoilUse(s, { cub: 'CUB-2026-00001', production_order: 'OP-X', project: 'OBRA Y', machine: 'FRAMECAD 90', measured_thickness: 0.95 }, PROD).state
+    s = openCoilUse(s, { cub: 'CUB-2026-00001', production_order: 'OP-X', project: 'OBRA Y', machine: 'FRAMECAD 90' }, PROD).state
     s = closeCoilUse(s, { use_id: 'use-1', outcome: 'LEFTOVER', weight_after: 300 }, PROD).state
-    s = openCoilUse(s, { cub: 'CUB-2026-00001', production_order: 'OP-Z', project: 'OBRA Z', machine: 'FRAMECAD 90', measured_thickness: 0.95 }, PROD).state
+    s = openCoilUse(s, { cub: 'CUB-2026-00001', production_order: 'OP-Z', project: 'OBRA Z', machine: 'FRAMECAD 90' }, PROD).state
     s = closeCoilUse(s, { use_id: 'use-2', outcome: 'CONSUMED' }, PROD).state
 
     const recall = recallByLot(s, '8948')
@@ -149,7 +149,7 @@ describe('critério de aceite (domínio) — lote 8948', () => {
     const blocked = blockLot(s, { slitter_lot: '8948', reason: 'Descamação' }, ADM)
     s = blocked.state
     expect(blocked.result.blocked_cubs).toHaveLength(14)
-    const input = { cub: 'CUB-2026-00005', production_order: 'OP-X', project: 'OBRA Y', machine: 'FRAMECAD 90', measured_thickness: 0.95 }
+    const input = { cub: 'CUB-2026-00005', production_order: 'OP-X', project: 'OBRA Y', machine: 'FRAMECAD 90' }
     expect(() => openCoilUse(s, input, PROD)).toThrow(/bloqueado: Descamação/)
     expect(s.auditLog.at(-1)).toMatchObject({ action: 'lot.block', reason: 'Descamação', actor: { role: 'ADMIN' } })
 
@@ -180,7 +180,7 @@ describe('invariantes (CLAUDE.md 5.2)', () => {
 
   it('peso depois não pode passar do peso antes; sobra precisa de peso; consumida zera', () => {
     let s = stockWith14()
-    s = openCoilUse(s, { cub: 'CUB-2026-00001', production_order: 'OP-X', project: 'OBRA Y', machine: 'FRAMECAD 90', measured_thickness: 0.95 }, PROD).state
+    s = openCoilUse(s, { cub: 'CUB-2026-00001', production_order: 'OP-X', project: 'OBRA Y', machine: 'FRAMECAD 90' }, PROD).state
     expect(codeOf(() => closeCoilUse(s, { use_id: 'use-1', outcome: 'LEFTOVER', weight_after: 900 }, PROD))).toBe('USE_WEIGHT_INCREASED')
     expect(codeOf(() => closeCoilUse(s, { use_id: 'use-1', outcome: 'LEFTOVER', weight_after: 0 }, PROD))).toBe('USE_LEFTOVER_ZERO')
     expect(codeOf(() => closeCoilUse(s, { use_id: 'use-1', outcome: 'CONSUMED', weight_after: 50 }, PROD))).toBe('USE_CONSUMED_WEIGHT')
@@ -214,7 +214,7 @@ describe('invariantes (CLAUDE.md 5.2)', () => {
 
   it('bloquear CUB em uso: a sobra volta bloqueada', () => {
     let s = stockWith14()
-    s = openCoilUse(s, { cub: 'CUB-2026-00001', production_order: 'OP-X', project: 'OBRA Y', machine: 'FRAMECAD 90', measured_thickness: 0.95 }, PROD).state
+    s = openCoilUse(s, { cub: 'CUB-2026-00001', production_order: 'OP-X', project: 'OBRA Y', machine: 'FRAMECAD 90' }, PROD).state
     s = blockCoilCmd(s, { cub: 'CUB-2026-00001', reason: 'Suspeita de descamação' }, ADM).state
     expect(s.coils[0].status).toBe('IN_USE')
     s = closeCoilUse(s, { use_id: 'use-1', outcome: 'LEFTOVER', weight_after: 300 }, PROD).state
@@ -224,7 +224,7 @@ describe('invariantes (CLAUDE.md 5.2)', () => {
 
   it('alerta de possível duplicidade: mesmo CUB, OP e dia', () => {
     let s = stockWith14()
-    s = openCoilUse(s, { cub: 'CUB-2026-00001', production_order: 'OP-X', project: 'OBRA Y', machine: 'FRAMECAD 90', measured_thickness: 0.95 }, PROD).state
+    s = openCoilUse(s, { cub: 'CUB-2026-00001', production_order: 'OP-X', project: 'OBRA Y', machine: 'FRAMECAD 90' }, PROD).state
     expect(findPossibleDuplicateUse(s.uses, { coil: 'coil-1', production_order: 'OP-X', day: '2026-10-20' })).toBeTruthy()
     expect(findPossibleDuplicateUse(s.uses, { coil: 'coil-1', production_order: 'OP-X', day: '2026-10-21' })).toBeUndefined()
   })

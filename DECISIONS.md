@@ -72,6 +72,8 @@ Decisões do projeto, com motivo e data. Atualize junto com o `CLAUDE.md`.
 - **Uso de bobina**: lista suspensa com os CUBs em estoque, agrupados por lote, além do campo de leitura (que ganhou sugestões).
 - Removida do app e do manual a menção a micrômetro (e a linha sobre calibração do CLAUDE.md). Configurações: botão "Salvar" com mais espaço.
 - Os prints e o PDF do manual ainda não refletem estas mudanças.
+- **Impressão das etiquetas cortada à direita** (23/10/2026): a largura útil da folha A4 (cerca de 688 px) caía na regra de celular (até 700 px) e ganhava margens e `overflow: hidden`. As regras responsivas agora valem só para tela (`@media screen`), e a margem de impressão passou de 14 mm para 12 mm (as duas colunas de 89 mm + 3 mm de vão precisam de 181 mm).
+- **Uso de bobina sem medição de espessura** (23/10/2026): saíram o campo "Espessura medida", a diferença para a nominal e o alerta de ±0,05 mm. O domínio deixou de exigir e de gravar `measured_thickness`, `nominal_thickness` e `thickness_delta` no uso (a regra de espessura do recebimento, que confere com a bobina mãe, continua). O seed foi regenerado sem esses campos; dados antigos salvos no navegador que os tenham são simplesmente ignorados.
 
 ## Em aberto (padrão adotado até decidirem)
 

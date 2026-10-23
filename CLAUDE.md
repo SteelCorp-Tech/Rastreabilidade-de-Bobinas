@@ -96,7 +96,7 @@ Valores: peso em **kg com 1 casa decimal**; espessura em **mm com 2 casas**; lar
 **Coil (CUB)** — `cub` (único), `mother_coil`, `delivery`, `slitter_lot` (denormalizado), `slitter_invoice_number`, `received_date`, `supplier`, `galvanization`, `thickness`, `width`, `material` (catálogo), `certificate_number`, `fvm_number`, `received_weight`, `current_weight`, `status`, `storage_location`, `last_project`, `last_production_order`, `use_count`, `cumulative_consumption`.
 - Estados: `IN_STOCK`, `IN_USE`, `BLOCKED`, `CONSUMED`, `RETURNED`.
 
-**CoilUse (Uso)** — um registro por uso: `coil`, `production_order`, `project`, `machine`, `nominal_thickness`, `measured_thickness`, `thickness_delta`, `weight_before`, `weight_after`, `consumption`, `scrap_weight`, `outcome` (`LEFTOVER` | `CONSUMED`), `opened_by/at`, `closed_by/at`, foto da etiqueta da sobra (opcional).
+**CoilUse (Uso)** — um registro por uso: `coil`, `production_order`, `project`, `machine`, `weight_before`, `weight_after`, `consumption`, `scrap_weight`, `outcome` (`LEFTOVER` | `CONSUMED`), `opened_by/at`, `closed_by/at`, foto da etiqueta da sobra (opcional).
 
 **AuditLog** — lista só de inclusão: quem (perfil simulado), quando, entidade, ação, antes e depois.
 
@@ -148,7 +148,7 @@ Entradas: largura da mãe `W`, peso líquido `P`, limite por bobina `L` (padrão
 4. **Recebimento de entregas** — registrar a NF do prestador, a quantidade declarada e o romaneio; lançar uma linha por bobina com **peso medido** e largura; **gerar os CUBs e imprimir as etiquetas** (com QR).
 5. **Estoque de CUBs** — lista e filtros por status, material, lote, galvanização, espessura; saldo por código ERP; posição no estoque.
 6. **Uso de bobina** — pensado para **tablet e leitor de QR**, com poucos toques:
-   - Passo 1 (montagem): ler o QR do CUB, informar OP e obra, perfiladeira e espessura medida. Mostra a diferença para a nominal.
+   - Passo 1 (montagem): ler o QR do CUB, informar OP e obra e a perfiladeira.
    - Passo 2 (fim do uso): pesar a sobra e escolher **sobra** (gera etiqueta com o mesmo CUB e o novo peso) ou **consumida**.
 7. **Consulta e rastreabilidade** — busca universal (CUB, lote, NF, OP, obra, certificado, código ERP, dimensão) e **ficha da bobina com a cadeia de elos**: fornecedor e usina → bobina mãe (NF, certificado) → lote e OP do prestador → entrega → CUB → usos (OP e obra) → sobra. O certificado abre direto da ficha (visualizar e baixar), inclusive na ficha do CUB, herdado da mãe.
 8. **Recall e relatórios** — dado um lote ou certificado: CUBs, saldo atual, obras e OPs que consumiram. **Balanço de massa por lote**: peso líquido da mãe contra soma dos pesos recebidos mais refilo. **Pendências de certificado**: bobinas mãe sem arquivo anexado. Exportar CSV e imprimir ("dossiê de rastreabilidade" por obra e por lote).

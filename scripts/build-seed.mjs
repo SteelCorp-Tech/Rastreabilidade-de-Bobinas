@@ -290,7 +290,6 @@ for (const [cub, list] of usesByCub) {
     useSeq++
     state.uses.push({
       id: `use-${useSeq}`, coil: coil.id, production_order: 'SEM OP', project: u.project, machine: 'N/D',
-      nominal_thickness: coil.thickness, measured_thickness: coil.thickness, thickness_delta: 0,
       weight_before: weight, weight_after: after, consumption: roundKg(weight - after), scrap_weight: 0, outcome,
       opened_by: SEED_ACTOR, opened_at: isoTs(new Date(`${u.date}T00:00:00Z`)), closed_by: SEED_ACTOR,
       closed_at: isoTs(new Date(`${u.date}T00:00:00Z`)), label_photo: null, estimated: true,

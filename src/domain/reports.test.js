@@ -19,7 +19,7 @@ function scenario() {
   s = markPlanSent(s, { plan_id: 'plan-1' }, PCP).state
   const lines = Array.from({ length: 14 }, () => ({ mother_coil: 'mc-1', measured_weight: 843.5, width: 166 }))
   s = receiveDelivery(s, { delivery: { slitter_invoice_number: '14748', declared_coil_count: 14 }, lines }, ALMOX).state
-  const use = (cub, project, op) => ({ cub, production_order: op, project, machine: 'FRAMECAD 90', measured_thickness: 0.95 })
+  const use = (cub, project, op) => ({ cub, production_order: op, project, machine: 'FRAMECAD 90' })
   s = openCoilUse(s, use('CUB-2026-00001', 'OBRA Y', 'OP-X'), PROD).state
   s = closeCoilUse(s, { use_id: 'use-1', outcome: 'LEFTOVER', weight_after: 300 }, PROD).state
   s = openCoilUse(s, use('CUB-2026-00001', 'OBRA Z', 'OP-Z'), PROD).state

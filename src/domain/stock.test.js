@@ -42,8 +42,8 @@ describe('saldo por código ERP', () => {
   it('separa disponível, bloqueado e em uso; consumido não conta', () => {
     let s = withStock()
     s = blockCoilCmd(s, { cub: 'CUB-2026-00001', reason: 'Teste' }, ADM).state
-    s = openCoilUse(s, { cub: 'CUB-2026-00002', production_order: 'OP1', project: 'OBRA', machine: 'M', measured_thickness: 0.95 }, PROD).state
-    s = openCoilUse(s, { cub: 'CUB-2026-00004', production_order: 'OP2', project: 'OBRA', machine: 'M', measured_thickness: 0.95 }, PROD).state
+    s = openCoilUse(s, { cub: 'CUB-2026-00002', production_order: 'OP1', project: 'OBRA', machine: 'M' }, PROD).state
+    s = openCoilUse(s, { cub: 'CUB-2026-00004', production_order: 'OP2', project: 'OBRA', machine: 'M' }, PROD).state
     s = closeCoilUse(s, { use_id: 'use-2', outcome: 'CONSUMED' }, PROD).state
     const rows = stockBalanceByMaterial(s)
     const r337 = rows.find((r) => r.code === '10337')
@@ -64,7 +64,7 @@ describe('posição no estoque', () => {
     expect(s.coils[0].storage_location).toBe('Rua B · Prat. 3')
     expect(s.auditLog.at(-1)).toMatchObject({ action: 'coil.locate', before: { storage_location: '' }, after: { storage_location: 'Rua B · Prat. 3' } })
     expect(codeOf(() => setStorageLocation(s, { cub: 'CUB-2026-00001', location: 'X' }, QUAL))).toBe('FORBIDDEN')
-    s = openCoilUse(s, { cub: 'CUB-2026-00004', production_order: 'OP2', project: 'OBRA', machine: 'M', measured_thickness: 0.95 }, PROD).state
+    s = openCoilUse(s, { cub: 'CUB-2026-00004', production_order: 'OP2', project: 'OBRA', machine: 'M' }, PROD).state
     s = closeCoilUse(s, { use_id: 'use-1', outcome: 'CONSUMED' }, PROD).state
     expect(codeOf(() => setStorageLocation(s, { cub: 'CUB-2026-00004', location: 'X' }, ALMOX))).toBe('LOCATE_NOT_APPLICABLE')
   })
