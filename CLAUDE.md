@@ -63,6 +63,8 @@ Papéis no sistema: Almoxarifado, PCP, Produção, Qualidade, Suprimentos, Admin
 | Limite de peso por bobina no desbobinador: **700 kg** (configurável). | Definido pela PCP em 22/10/2026 (antes: 1.000 kg, que bate com o histórico de 2026: tiras de ~1.687 kg viravam 2 bobinas de ~843,5 kg). |
 | **Todo plano de corte deve deixar de 14 a 30 mm de refilo** (configurável; o sistema recusa salvar fora da faixa). | Regra da PCP, 22/10/2026. O lote real 8948 (refilo de 38 mm) não cumpriria. |
 | Na etiqueta, **galvanização e dimensão ficam logo abaixo do lote**, em corpo grande. | Pedido da PCP, 22/10/2026. |
+| **Bloqueio e liberação é só do Administrador** por padrão; as permissões de cada perfil são editáveis na tela Permissões (o Administrador sempre pode tudo). | Pedido do dono do produto, 23/10/2026. |
+| **O Administrador pode excluir** bobina mãe (sem CUBs), plano de corte e recebimento (CUBs nunca usados), com confirmação e registro na auditoria. | Pedido do dono do produto, 23/10/2026. Exceção deliberada à regra de só inativar. |
 | A Produção reetiqueta a sobra; checklist e não conformidade são da FVM. | Decisão do cliente. |
 | Sem botão "trocar de obra" com bobina montada. | Quase não acontece. |
 | Marco zero: inventário físico como carga inicial; histórico fica no Excel. | Evita migrar dados ruins. |
@@ -150,10 +152,11 @@ Entradas: largura da mãe `W`, peso líquido `P`, limite por bobina `L` (padrão
    - Passo 2 (fim do uso): pesar a sobra e escolher **sobra** (gera etiqueta com o mesmo CUB e o novo peso) ou **consumida**.
 7. **Consulta e rastreabilidade** — busca universal (CUB, lote, NF, OP, obra, certificado, código ERP, dimensão) e **ficha da bobina com a cadeia de elos**: fornecedor e usina → bobina mãe (NF, certificado) → lote e OP do prestador → entrega → CUB → usos (OP e obra) → sobra. O certificado abre direto da ficha (visualizar e baixar), inclusive na ficha do CUB, herdado da mãe.
 8. **Recall e relatórios** — dado um lote ou certificado: CUBs, saldo atual, obras e OPs que consumiram. **Balanço de massa por lote**: peso líquido da mãe contra soma dos pesos recebidos mais refilo. **Pendências de certificado**: bobinas mãe sem arquivo anexado. Exportar CSV e imprimir ("dossiê de rastreabilidade" por obra e por lote).
-9. **Bloqueio e liberação** — papel Qualidade bloqueia ou libera um CUB ou lote inteiro, com motivo obrigatório e registro na auditoria.
+9. **Bloqueio e liberação** — o **Administrador** (padrão desde 23/10/2026; concedível a outros perfis na tela Permissões) bloqueia ou libera um CUB ou lote inteiro, com motivo obrigatório e registro na auditoria. O módulo só aparece no menu para quem tem a permissão.
 10. **Importação inicial** (depois da fatia v1; o catálogo e o estoque iniciais entram pelo seed) — carga do estoque a partir de CSV, com **relatório de inconsistências** (seção 9).
 11. **Auditoria** — consulta do AuditLog.
-12. **Configurações** — limite de peso, formato do CUB, campos obrigatórios (inclui `certificate_required`), tema.
+12. **Configurações** — limite de peso, faixa de refilo, formato do CUB, campos obrigatórios (inclui `certificate_required`), tema.
+13. **Permissões** (Administrador) — para cada perfil, quais telas aparecem no menu e quais ações pode fazer. Travas: o Administrador sempre pode tudo, o Auditor nunca recebe ações, e configurações, permissões e exclusões não podem ser concedidas a outros perfis. Cada mudança vai para a auditoria e há "restaurar padrão" por perfil.
 
 ### Fica para depois do protótipo
 
@@ -169,12 +172,12 @@ Backend e banco, autenticação real, multiempresa, API e webhooks, integração
 - Almoxarifado: cadastrar bobina mãe (inclusive anexar o certificado) e entregas, gerar etiquetas.
 - PCP: plano de corte.
 - Produção: abrir e fechar uso, reetiquetar sobra.
-- Qualidade: bloquear e liberar, consultar tudo, anexar certificado.
+- Qualidade: consultar e anexar certificado. (Bloquear e liberar é do Administrador por padrão.)
 - Suprimentos: cadastros de fornecedor e pedido.
-- Administrador: tudo e configurações.
+- Administrador: tudo, inclusive configurações, permissões, bloqueio e liberação e **exclusões** (bobina mãe sem CUBs, plano de corte e recebimento cujos CUBs nunca foram usados).
 - Auditor: somente leitura, incluindo auditoria.
 
-**8.3 Auditoria.** Todo evento relevante grava no AuditLog, sem edição nem exclusão. Registros de negócio não são apagados, só inativados.
+**8.3 Auditoria.** Todo evento relevante grava no AuditLog, sem edição nem exclusão. Registros de negócio não são apagados, só inativados, **exceto as exclusões do Administrador** (acima): o conteúdo excluído fica no AuditLog e um número de CUB já emitido nunca volta a ser usado.
 
 **8.4 Etiquetas.** CUB sequencial por ano, gerado pela função de domínio (sem repetição, mesmo se duas abas estiverem abertas: toda gravação passa por um executor de comandos que pega uma trava entre abas, relê o storage, aplica a regra de domínio, grava e avisa as outras abas). O QR carrega o CUB. A etiqueta de sobra repete o CUB com o novo peso e a data. Impressão pelo navegador (`window.print` com folha de estilo própria).
 

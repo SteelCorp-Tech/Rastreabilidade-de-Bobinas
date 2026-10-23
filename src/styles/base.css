@@ -502,3 +502,9 @@ button.chip:hover { border-color: var(--teal-600); }
 .perm-group > .eyebrow { display: block; margin-bottom: 4px; }
 .save-row { margin-top: 24px; }
 @media (max-width: 1100px) { .perm-grid { grid-template-columns: 1fr; } }
+
+/* exclusão com confirmação */
+.delete-box { padding: 14px 16px; border: 1px solid var(--vermelho-fill); border-radius: 10px; background: var(--vermelho-100); }
+.delete-box p { margin: 0 0 10px; color: var(--texto); font-weight: 500; }
+.delete-box .actions-row { margin-top: 10px; }
+.danger-zone { border: 1px solid var(--vermelho-100); }

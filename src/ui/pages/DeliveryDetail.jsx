@@ -1,18 +1,22 @@
 import { useState } from 'react'
-import { Link, useParams } from 'react-router'
+import { Link, useNavigate, useParams } from 'react-router'
 import Attachment from '../components/Attachment.jsx'
+import DeleteButton from '../components/DeleteButton.jsx'
 import LabelSheet from '../components/Label.jsx'
 import { useProfile } from '../app/ProfileContext.jsx'
 import { useStore } from '../app/StoreContext.jsx'
 import { DEFAULT_CONFIG } from '../../domain/config.js'
+import { deleteDelivery } from '../../domain/deleteCommands.js'
+import { deleteAttachments } from '../../persistence/attachmentStore.js'
 import { buildLabel } from '../../domain/label.js'
 import { COIL_STATUS } from '../labels.js'
 import { fmtDate, fmtKg } from '../format.js'
 
 export default function DeliveryDetail() {
   const { id } = useParams()
-  const { state } = useStore()
+  const { state, run } = useStore()
   const { can } = useProfile()
+  const navigate = useNavigate()
   const [off, setOff] = useState(new Set())
   const [showAll, setShowAll] = useState(false)
   const d = state.deliveries.find((x) => x.id === id)
@@ -50,6 +54,20 @@ export default function DeliveryDetail() {
               <div className="kv"><span className="eyebrow">Nº FVM</span><div className="mono">{d.fvm_number || '—'}</div></div>
               <div className="kv"><span className="eyebrow">Romaneio</span><div><Attachment file={d.delivery_note_file} /></div></div>
               <div className="kv"><span className="eyebrow">Recebida por</span><div>{d.received_by}</div></div>
+              {can('delivery.delete') && (
+                <div className="mt">
+                  <DeleteButton
+                    key={d.id}
+                    label="Excluir recebimento"
+                    warning={`Excluir a NF ${d.slitter_invoice_number || 'sem NF'} e os ${coils.length} CUBs dela? Só é possível se nenhum CUB foi usado. Isso não pode ser desfeito.`}
+                    onDelete={async () => {
+                      await run(deleteDelivery, { delivery_id: d.id })
+                      await deleteAttachments([d.delivery_note_file])
+                      navigate('/recebimento')
+                    }}
+                  />
+                </div>
+              )}
             </div>
 
             <div className="card panel wide labels-card">

@@ -78,3 +78,10 @@ export async function ensureSeedAttachments(ref) {
 export async function deleteAttachment(id) {
   await tx('readwrite', (s) => s.delete(id))
 }
+
+/** Remove anexos que deixaram de ter dono (ex.: depois de excluir a bobina). Os do seed são compartilhados e ficam. */
+export async function deleteAttachments(files) {
+  for (const f of files) {
+    if (f?.id && !String(f.id).startsWith('seed-')) await deleteAttachment(f.id).catch(() => {})
+  }
+}

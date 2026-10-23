@@ -62,6 +62,17 @@ Decisões do projeto, com motivo e data. Atualize junto com o `CLAUDE.md`.
 - Os testes do lote 8948 continuam com 1.000 kg e sem regra de refilo (`CASO_8948`), para provar as fórmulas da seção 6; há testes novos para a faixa de refilo e para o limite de 700 kg. O seed histórico continua derivado com 1.000 kg (assim foram cortados os lotes de 2026), mas sua configuração já vem com 700 kg e 14–30 mm.
 - Quem já tem dados salvos no navegador mantém a configuração antiga (1.000 kg) até o administrador alterar em Configurações ou restaurar os dados de exemplo.
 
+### 23/10/2026 — Ajustes pedidos pelo dono do produto (branch `ajustes-app`)
+- **Permissões editáveis** por perfil em /permissoes (só Administrador): telas do menu e ações. Guardadas em `state.permissions`; sem alteração vale a matriz padrão de `permissions.js`. Travas: Administrador fixo, Auditor sem ações, ações administrativas e telas de Configurações e Permissões não são concedíveis; Início e Consulta sempre visíveis. Telas sem permissão também são barradas pelo endereço (voltam ao Início).
+- **Bloqueio e liberação só do Administrador** (antes: Qualidade). Qualidade e Auditor deixam de ver o módulo; pode ser concedido de novo na tela Permissões.
+- **Exclusões do Administrador** (exceção à regra de só inativar): recebimento (e seus CUBs) se nenhum CUB foi usado; plano de corte (todas as versões); bobina mãe se não tem CUBs. Confirmação em duas etapas; o conteúdo excluído fica em `before` no AuditLog; o piso `cub_floor` sobe para o número de CUB nunca ser reaproveitado; a mãe volta ao status coerente (planejada/registrada). Anexos do próprio registro saem do IndexedDB (os do seed ficam).
+- **Certificado**: "Visualizar" abre numa janela dentro do app (PDF ou imagem). Nova aba era bloqueada por pop-up e não existe no painel embutido.
+- **Bobina mãe**: clicar num CUB abre o resumo (com atalho para a ficha completa). **Consulta**: botão "Voltar" nos dossiês e na ficha do CUB.
+- **Recebimento (detalhe)**: sem rolagem da página; a tabela de CUBs rola por dentro; as etiquetas ficam sob a entrega mostrando só a primeira, com botão "Ver todas"; a impressão leva todas as marcadas.
+- **Uso de bobina**: lista suspensa com os CUBs em estoque, agrupados por lote, além do campo de leitura (que ganhou sugestões).
+- Removida do app e do manual a menção a micrômetro (e a linha sobre calibração do CLAUDE.md). Configurações: botão "Salvar" com mais espaço.
+- Os prints e o PDF do manual ainda não refletem estas mudanças.
+
 ## Em aberto (padrão adotado até decidirem)
 
 1. Nome do produto: "Bobinas" ao lado da marca SteelCorp.

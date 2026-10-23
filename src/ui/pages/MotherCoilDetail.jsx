@@ -1,7 +1,8 @@
 import { useState } from 'react'
-import { Link, useParams } from 'react-router'
+import { Link, useNavigate, useParams } from 'react-router'
 import Attachment from '../components/Attachment.jsx'
 import CoilSummary from '../components/CoilSummary.jsx'
+import DeleteButton from '../components/DeleteButton.jsx'
 import FileField from '../components/FileField.jsx'
 import { useAction } from '../components/useAction.js'
 import { useProfile } from '../app/ProfileContext.jsx'
@@ -9,7 +10,8 @@ import { useStore } from '../app/StoreContext.jsx'
 import { attachCertificate } from '../../domain/commands.js'
 import { lacksCertificate } from '../../domain/motherCoil.js'
 import { activePlan } from '../../domain/traceability.js'
-import { deleteAttachment, putAttachment } from '../../persistence/attachmentStore.js'
+import { deleteAttachment, deleteAttachments, putAttachment } from '../../persistence/attachmentStore.js'
+import { deleteMotherCoil } from '../../domain/deleteCommands.js'
 import { auditLabel, COIL_STATUS, MOTHER_STATUS } from '../labels.js'
 import { fmtDate, fmtDateTime, fmtKg, fmtMm, fmtPct, fmtThickness } from '../format.js'
 import { StatusBadge } from './MotherCoilsPage.jsx'
@@ -71,7 +73,9 @@ function CertificateCard({ mc }) {
 
 export default function MotherCoilDetail() {
   const { id } = useParams()
-  const { state } = useStore()
+  const { state, run } = useStore()
+  const { can } = useProfile()
+  const navigate = useNavigate()
   const [summaryCub, setSummaryCub] = useState(null)
   const mc = state.motherCoils.find((m) => m.id === id)
   if (!mc) return <div className="card placeholder">Bobina mãe não encontrada. <Link to="/bobinas-mae">Voltar à lista</Link></div>
@@ -148,6 +152,22 @@ export default function MotherCoilDetail() {
         )}
         {coils.length > 0 && <p className="muted small">Clique em um CUB para ver o resumo.</p>}
       </div>
+      {can('motherCoil.delete') && (
+        <div className="card panel wide danger-zone">
+          <h2>Excluir bobina mãe</h2>
+          <p className="muted">Só administradores. Remove o lote {mc.slitter_lot} e os planos de corte dele. Se já houver CUBs, exclua antes o recebimento. O que for excluído fica registrado na auditoria.</p>
+          <DeleteButton
+            key={mc.id}
+            label="Excluir bobina mãe"
+            warning={`Excluir o lote ${mc.slitter_lot} e ${plans.length ? `${plans.length} versão(ões) de plano de corte` : 'nenhum plano'}? Isso não pode ser desfeito.`}
+            onDelete={async () => {
+              await run(deleteMotherCoil, { mother_coil_id: mc.id })
+              await deleteAttachments([mc.certificate_file, mc.invoice_file])
+              navigate('/bobinas-mae')
+            }}
+          />
+        </div>
+      )}
       {summaryCub && <CoilSummary coil={coils.find((c) => c.cub === summaryCub)} onClose={() => setSummaryCub(null)} />}
 
       <div className="card panel wide">

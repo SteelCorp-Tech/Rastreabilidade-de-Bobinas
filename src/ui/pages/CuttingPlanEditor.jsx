@@ -5,7 +5,9 @@ import { useProfile } from '../app/ProfileContext.jsx'
 import { useStore } from '../app/StoreContext.jsx'
 import { confirmSchedule, markPlanSent, savePlan } from '../../domain/commands.js'
 import { DEFAULT_CONFIG } from '../../domain/config.js'
+import DeleteButton from '../components/DeleteButton.jsx'
 import { calcCuttingPlan, checkTrim } from '../../domain/cuttingPlan.js'
+import { deleteCuttingPlans } from '../../domain/deleteCommands.js'
 import { activePlan } from '../../domain/traceability.js'
 import { fmtDate, fmtDateTime, fmtInt, fmtKg, fmtMm, fmtPct, fmtThickness, parseDecimal } from '../format.js'
 import { MOTHER_STATUS } from '../labels.js'
@@ -202,6 +204,16 @@ export default function CuttingPlanEditor() {
                   ))}
                 </ol>
               ) : <p className="muted">Nenhum plano salvo ainda.</p>}
+              {can('cuttingPlan.delete') && versions.length > 0 && (
+                <div className="mt">
+                  <DeleteButton
+                    key={mc.id}
+                    label="Excluir plano de corte"
+                    warning={`Excluir ${versions.length === 1 ? 'o plano' : `as ${versions.length} versões do plano`} do lote ${mc.slitter_lot}? Isso não pode ser desfeito.`}
+                    onDelete={async () => { await run(deleteCuttingPlans, { mother_coil_id: mc.id }) }}
+                  />
+                </div>
+              )}
             </div>
           </div>
         </div>
