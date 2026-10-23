@@ -14,6 +14,7 @@ const ALMOX = ctx('ALMOXARIFADO', 'almox')
 const PCP = ctx('PCP', 'pcp')
 const PROD = ctx('PRODUCAO', 'prod')
 const QUAL = ctx('QUALIDADE', 'qual')
+const ADM = ctx('ADMIN', 'adm') // bloquear e liberar é do administrador (padrão desde 23/10/2026)
 
 const cert = { id: 'att-1', name: 'cert-7948088101.pdf', type: 'application/pdf', size: 1000 }
 const lote8948 = {
@@ -143,16 +144,16 @@ describe('critério de aceite (domínio) — lote 8948', () => {
 
   it('7. bloquear o lote impede novos usos e fica na auditoria; liberar restaura', () => {
     let s = stockWith14()
-    expect(codeOf(() => blockLot(s, { slitter_lot: '8948', reason: '' }, QUAL))).toBe('BLOCK_REASON_REQUIRED')
+    expect(codeOf(() => blockLot(s, { slitter_lot: '8948', reason: '' }, ADM))).toBe('BLOCK_REASON_REQUIRED')
     expect(codeOf(() => blockLot(s, { slitter_lot: '8948', reason: 'Descamação' }, PROD))).toBe('FORBIDDEN')
-    const blocked = blockLot(s, { slitter_lot: '8948', reason: 'Descamação' }, QUAL)
+    const blocked = blockLot(s, { slitter_lot: '8948', reason: 'Descamação' }, ADM)
     s = blocked.state
     expect(blocked.result.blocked_cubs).toHaveLength(14)
     const input = { cub: 'CUB-2026-00005', production_order: 'OP-X', project: 'OBRA Y', machine: 'FRAMECAD 90', measured_thickness: 0.95 }
     expect(() => openCoilUse(s, input, PROD)).toThrow(/bloqueado: Descamação/)
-    expect(s.auditLog.at(-1)).toMatchObject({ action: 'lot.block', reason: 'Descamação', actor: { role: 'QUALIDADE' } })
+    expect(s.auditLog.at(-1)).toMatchObject({ action: 'lot.block', reason: 'Descamação', actor: { role: 'ADMIN' } })
 
-    s = unblockLot(s, { slitter_lot: '8948', reason: 'Laudo aprovado' }, QUAL).state
+    s = unblockLot(s, { slitter_lot: '8948', reason: 'Laudo aprovado' }, ADM).state
     expect(s.coils.every((c) => c.status === 'IN_STOCK')).toBe(true)
     expect(s.motherCoils[0].status).toBe('RECEIVED')
     expect(openCoilUse(s, input, PROD).result.coil.status).toBe('IN_USE')
@@ -214,7 +215,7 @@ describe('invariantes (CLAUDE.md 5.2)', () => {
   it('bloquear CUB em uso: a sobra volta bloqueada', () => {
     let s = stockWith14()
     s = openCoilUse(s, { cub: 'CUB-2026-00001', production_order: 'OP-X', project: 'OBRA Y', machine: 'FRAMECAD 90', measured_thickness: 0.95 }, PROD).state
-    s = blockCoilCmd(s, { cub: 'CUB-2026-00001', reason: 'Suspeita de descamação' }, QUAL).state
+    s = blockCoilCmd(s, { cub: 'CUB-2026-00001', reason: 'Suspeita de descamação' }, ADM).state
     expect(s.coils[0].status).toBe('IN_USE')
     s = closeCoilUse(s, { use_id: 'use-1', outcome: 'LEFTOVER', weight_after: 300 }, PROD).state
     expect(s.coils[0].status).toBe('BLOCKED')

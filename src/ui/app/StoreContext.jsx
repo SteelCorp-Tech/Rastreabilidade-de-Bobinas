@@ -2,7 +2,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 import { createLocalStorageRepository, STATE_KEY } from '../../persistence/localStorageRepository.js'
 import { createCommandRunner } from '../../persistence/commandRunner.js'
 import { ensureSeedAttachments } from '../../persistence/attachmentStore.js'
-import { useProfile } from './ProfileContext.jsx'
+import { OverridesContext, useProfile } from './ProfileContext.jsx'
 
 const StoreContext = createContext(null)
 const USER = 'Gustavo Oliveira'
@@ -50,7 +50,11 @@ export function StoreProvider({ children }) {
   const value = useMemo(() => ({ state, run, restoreSeed, error }), [state, run, restoreSeed, error])
   if (error) return <div className="placeholder">Não foi possível abrir os dados: {String(error.message ?? error)}</div>
   if (!state) return <div className="placeholder">Carregando dados…</div>
-  return <StoreContext.Provider value={value}>{children}</StoreContext.Provider>
+  return (
+    <StoreContext.Provider value={value}>
+      <OverridesContext.Provider value={state.permissions}>{children}</OverridesContext.Provider>
+    </StoreContext.Provider>
+  )
 }
 
 export function useStore() {

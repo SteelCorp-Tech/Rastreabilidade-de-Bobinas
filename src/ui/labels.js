@@ -30,6 +30,11 @@ export const AUDIT_ACTIONS = {
   'lot.block': 'Lote bloqueado',
   'lot.unblock': 'Lote liberado',
   'config.update': 'Configuração alterada',
+  'permissions.update': 'Permissões do perfil alteradas',
+  'permissions.reset': 'Permissões do perfil restauradas ao padrão',
+  'motherCoil.delete': 'Bobina mãe excluída',
+  'cuttingPlan.delete': 'Plano de corte excluído',
+  'delivery.delete': 'Recebimento excluído',
   'seed.restore': 'Dados de exemplo restaurados',
 }
 export const auditLabel = (action) => AUDIT_ACTIONS[action] ?? action

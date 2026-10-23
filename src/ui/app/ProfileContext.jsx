@@ -1,8 +1,10 @@
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { ROLES, can as canDo, canView as canSee } from '../../domain/permissions.js'
 
 const KEY = 'bobinas:v1:role'
 const ProfileContext = createContext(null)
+/** Permissões alteradas pelo administrador (state.permissions). Quem provê é o StoreProvider, já na 1ª renderização. */
+export const OverridesContext = createContext(undefined)
 
 function loadRole() {
   try {
@@ -29,12 +31,16 @@ export function ProfileProvider({ children }) {
     role,
     setRole,
     roleLabel: ROLES.find((r) => r.id === role).label,
-    can: (action) => canDo(role, action),
-    canView: (view) => canSee(role, view),
   }
   return <ProfileContext.Provider value={value}>{children}</ProfileContext.Provider>
 }
 
 export function useProfile() {
-  return useContext(ProfileContext)
+  const base = useContext(ProfileContext)
+  const overrides = useContext(OverridesContext)
+  return useMemo(() => ({
+    ...base,
+    can: (action) => canDo(base.role, action, overrides),
+    canView: (view) => canSee(base.role, view, overrides),
+  }), [base, overrides])
 }

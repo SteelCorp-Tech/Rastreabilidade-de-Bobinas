@@ -1,6 +1,7 @@
 import { DEFAULT_CONFIG } from './config.js'
 import { DomainError, ensure } from './errors.js'
 import { audit, authorize } from './commands.js'
+import { ACTIONS, LOCKED_ROLES, ROLES, VIEWS, effectivePermissions } from './permissions.js'
 
 /**
  * Cadastros (fornecedor, usina, obra, perfiladeira, catálogo de materiais) e configurações.
@@ -135,5 +136,47 @@ export function updateConfig(state, patch, ctx) {
       after: Object.fromEntries(changed.map((k) => [k, next[k]])),
     }),
     result: next,
+  }
+}
+
+/**
+ * Altera as permissões de um perfil (ações e telas). Só o administrador.
+ * Travas: o administrador não muda; o auditor nunca recebe ações; ações administrativas e as telas de
+ * Configurações e Permissões não podem ser concedidas; Início e Consulta ficam sempre visíveis.
+ */
+export function updateRolePermissions(state, { role, actions, views }, ctx) {
+  authorize(ctx, 'permissions.edit')
+  ensure(ROLES.some((r) => r.id === role), 'PERMISSION_ROLE_INVALID', 'Perfil desconhecido.')
+  ensure(!LOCKED_ROLES.includes(role), 'PERMISSION_ROLE_LOCKED', 'As permissões do administrador não podem ser alteradas.')
+  const grantable = ACTIONS.filter((a) => !a.adminOnly).map((a) => a.id)
+  const viewable = VIEWS.filter((v) => !v.adminOnly).map((v) => v.id)
+  ensure(Array.isArray(actions) && actions.every((a) => grantable.includes(a)), 'PERMISSION_ACTION_INVALID', 'Há uma ação inválida ou reservada ao administrador.')
+  ensure(Array.isArray(views) && views.every((v) => viewable.includes(v)), 'PERMISSION_VIEW_INVALID', 'Há uma tela inválida ou reservada ao administrador.')
+  ensure(role !== 'AUDITOR' || actions.length === 0, 'PERMISSION_AUDITOR_READONLY', 'O auditor é somente leitura e não recebe ações.')
+
+  const before = effectivePermissions(role, state.permissions)
+  const next = effectivePermissions(role, { [role]: { actions: [...new Set(actions)], views: [...new Set(views)] } })
+  const same = (a, b) => a.length === b.length && a.every((x) => b.includes(x))
+  if (same(before.actions, next.actions) && same(before.views, next.views)) throw new DomainError('PERMISSION_UNCHANGED', 'Nenhuma alteração para salvar.')
+  return {
+    state: audit({ ...state, permissions: { ...(state.permissions ?? {}), [role]: next } }, ctx, {
+      action: 'permissions.update', entity: 'Role', entity_id: role,
+      before, after: next,
+    }),
+    result: next,
+  }
+}
+
+/** Volta um perfil à matriz padrão. */
+export function resetRolePermissions(state, { role }, ctx) {
+  authorize(ctx, 'permissions.edit')
+  ensure(ROLES.some((r) => r.id === role) && !LOCKED_ROLES.includes(role), 'PERMISSION_ROLE_INVALID', 'Perfil inválido.')
+  ensure(state.permissions?.[role], 'PERMISSION_UNCHANGED', 'Este perfil já está com as permissões padrão.')
+  const { [role]: removed, ...rest } = state.permissions
+  return {
+    state: audit({ ...state, permissions: rest }, ctx, {
+      action: 'permissions.reset', entity: 'Role', entity_id: role, before: removed, after: effectivePermissions(role),
+    }),
+    result: effectivePermissions(role),
   }
 }

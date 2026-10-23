@@ -494,3 +494,11 @@ button.chip:hover { border-color: var(--teal-600); }
 .labels-card > .small { margin: 2px 0 0; }
 .pick-cub { display: block; margin-top: 16px; }
 .pick-cub .eyebrow { display: block; margin-bottom: 6px; }
+
+/* tela de permissões */
+.perm-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 20px; align-items: start; margin-top: 16px; }
+.perm-row { padding: 7px 0; }
+.perm-group { margin-top: 14px; }
+.perm-group > .eyebrow { display: block; margin-bottom: 4px; }
+.save-row { margin-top: 24px; }
+@media (max-width: 1100px) { .perm-grid { grid-template-columns: 1fr; } }

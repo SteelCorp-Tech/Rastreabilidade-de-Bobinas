@@ -44,7 +44,7 @@ export function createCommandRunner({ repo, loadSeed, locks = browserLocks(), cl
     async run(command, input, actor) {
       return locks.run(async () => {
         const state = await currentState()
-        const out = command(state, input, { ...actor, now: clock() })
+        const out = command(state, input, { ...actor, now: clock(), permissions: state.permissions })
         repo.save(out.state)
         return out
       })

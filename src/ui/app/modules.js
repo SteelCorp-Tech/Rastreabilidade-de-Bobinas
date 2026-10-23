@@ -14,5 +14,6 @@ export const MODULES = [
   { view: 'reports', path: '/recall', label: 'Recall e relatórios', desc: 'Lote, balanço de massa, pendências', icon: 'report', group: 'Qualidade', increment: 8 },
   { view: 'registry', path: '/cadastros', label: 'Cadastros', desc: 'Fornecedores, obras, catálogo', icon: 'users', group: 'Sistema', increment: 3 },
   { view: 'audit', path: '/auditoria', label: 'Auditoria', desc: 'Registro de eventos', icon: 'list', group: 'Sistema', increment: 8 },
+  { view: 'permissions', path: '/permissoes', label: 'Permissões', desc: 'O que cada perfil vê e pode fazer', icon: 'key', group: 'Sistema', increment: 9 },
   { view: 'settings', path: '/configuracoes', label: 'Configurações', desc: 'Limite de peso, CUB, certificado', icon: 'gear', group: 'Sistema', increment: 3 },
 ]

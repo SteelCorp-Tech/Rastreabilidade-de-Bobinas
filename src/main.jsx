@@ -1,6 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { HashRouter, Route, Routes } from 'react-router'
+import { HashRouter, Navigate, Route, Routes } from 'react-router'
 import '@fontsource/montserrat/400.css'
 import '@fontsource/montserrat/500.css'
 import '@fontsource/montserrat/600.css'
@@ -35,10 +35,18 @@ import CoilSheet from './ui/pages/CoilSheet.jsx'
 import RecallPage from './ui/pages/RecallPage.jsx'
 import BlocksPage from './ui/pages/BlocksPage.jsx'
 import AuditPage from './ui/pages/AuditPage.jsx'
+import PermissionsPage from './ui/app/PermissionsPage.jsx'
+import { useProfile } from './ui/app/ProfileContext.jsx'
 import { LotDossier, ProjectDossier } from './ui/pages/Dossier.jsx'
 import { MODULES } from './ui/app/modules.js'
 
-const PAGES = { settings: <SettingsPage />, registry: <RegistryPage />, motherCoils: <MotherCoilsPage />, cuttingPlans: <CuttingPlansPage />, deliveries: <DeliveriesPage />, stock: <StockPage />, coilUse: <CoilUsePage />, search: <SearchPage />, reports: <RecallPage />, blocks: <BlocksPage />, audit: <AuditPage /> }
+const PAGES = { permissions: <PermissionsPage />, settings: <SettingsPage />, registry: <RegistryPage />, motherCoils: <MotherCoilsPage />, cuttingPlans: <CuttingPlansPage />, deliveries: <DeliveriesPage />, stock: <StockPage />, coilUse: <CoilUsePage />, search: <SearchPage />, reports: <RecallPage />, blocks: <BlocksPage />, audit: <AuditPage /> }
+
+/** Tela só aparece para perfis com acesso; quem digita o endereço sem permissão volta ao Início. */
+function RequireView({ view, children }) {
+  const { canView } = useProfile()
+  return canView(view) ? children : <Navigate to="/" replace />
+}
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -49,7 +57,7 @@ createRoot(document.getElementById('root')).render(
           <Route element={<Layout />}>
             <Route index element={<Home />} />
             {MODULES.filter((m) => m.view !== 'home').map((m) => (
-              <Route key={m.path} path={m.path} element={PAGES[m.view] ?? <ModulePage module={m} />} />
+              <Route key={m.path} path={m.path} element={<RequireView view={m.view}>{PAGES[m.view] ?? <ModulePage module={m} />}</RequireView>} />
             ))}
             <Route path="/bobinas-mae/nova" element={<MotherCoilForm />} />
             <Route path="/bobinas-mae/:id" element={<MotherCoilDetail />} />

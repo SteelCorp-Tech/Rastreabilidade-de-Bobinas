@@ -41,7 +41,7 @@ export function emptyState(config = DEFAULT_CONFIG) {
 }
 
 export function authorize(ctx, action) {
-  if (!can(ctx.role, action)) {
+  if (!can(ctx.role, action, ctx.permissions)) {
     throw new DomainError('FORBIDDEN', `O perfil ${ctx.role} não tem permissão para esta ação (${action}).`)
   }
 }

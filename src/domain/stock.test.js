@@ -8,7 +8,7 @@ import { CASO_8948 } from './test-helpers.js'
 
 const NOW = new Date('2026-10-20T15:00:00Z')
 const ctx = (role) => ({ role, user: 'teste', now: NOW })
-const ALMOX = ctx('ALMOXARIFADO'), PCP = ctx('PCP'), PROD = ctx('PRODUCAO'), QUAL = ctx('QUALIDADE')
+const ALMOX = ctx('ALMOXARIFADO'), PCP = ctx('PCP'), PROD = ctx('PRODUCAO'), QUAL = ctx('QUALIDADE'), ADM = ctx('ADMIN')
 const codeOf = (fn) => { try { fn() } catch (e) { return e.code } return null }
 
 const lote = {
@@ -41,7 +41,7 @@ describe('linhas esperadas pelo plano', () => {
 describe('saldo por código ERP', () => {
   it('separa disponível, bloqueado e em uso; consumido não conta', () => {
     let s = withStock()
-    s = blockCoilCmd(s, { cub: 'CUB-2026-00001', reason: 'Teste' }, QUAL).state
+    s = blockCoilCmd(s, { cub: 'CUB-2026-00001', reason: 'Teste' }, ADM).state
     s = openCoilUse(s, { cub: 'CUB-2026-00002', production_order: 'OP1', project: 'OBRA', machine: 'M', measured_thickness: 0.95 }, PROD).state
     s = openCoilUse(s, { cub: 'CUB-2026-00004', production_order: 'OP2', project: 'OBRA', machine: 'M', measured_thickness: 0.95 }, PROD).state
     s = closeCoilUse(s, { use_id: 'use-2', outcome: 'CONSUMED' }, PROD).state
