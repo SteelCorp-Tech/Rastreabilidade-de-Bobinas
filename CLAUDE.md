@@ -66,7 +66,6 @@ Papéis no sistema: Almoxarifado, PCP, Produção, Qualidade, Suprimentos, Admin
 | A Produção reetiqueta a sobra; checklist e não conformidade são da FVM. | Decisão do cliente. |
 | Sem botão "trocar de obra" com bobina montada. | Quase não acontece. |
 | Marco zero: inventário físico como carga inicial; histórico fica no Excel. | Evita migrar dados ruins. |
-| A calibração de micrômetro e paquímetro é controlada fora deste sistema. | Informado pelo cliente. |
 | O prestador de slitagem não entra no app. | Decisão do dono do produto. |
 | Protótipo só em React, sem backend, banco, Supabase ou Vercel. | Decisão do dono do produto. |
 | **JavaScript puro, sem TypeScript.** | Decisão do dono do produto. |

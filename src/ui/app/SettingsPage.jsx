@@ -122,7 +122,7 @@ export default function SettingsPage() {
 
         {error && <div className="err" role="alert">{error}</div>}
         {saved && <p className="ok-msg">Configurações salvas.</p>}
-        {editable && <button className="btn" disabled={busy}>Salvar</button>}
+        {editable && <button className="btn save-btn" disabled={busy}>Salvar</button>}
       </form>
 
       <div className="card panel">

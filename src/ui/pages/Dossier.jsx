@@ -1,5 +1,6 @@
 import { Link, useParams } from 'react-router'
 import Attachment from '../components/Attachment.jsx'
+import BackButton from '../components/BackButton.jsx'
 import { useStore } from '../app/StoreContext.jsx'
 import { PROJECT_COLUMNS, projectRows, toCsv } from '../../domain/reports.js'
 import { activePlan, recallByLot, recallByProject } from '../../domain/traceability.js'
@@ -9,7 +10,7 @@ import { fmtDate, fmtDateTime, fmtKg, fmtPct, fmtThickness } from '../format.js'
 
 const Head = ({ title, sub, actions }) => (
   <div className="page-head no-print">
-    <div><div className="eyebrow">Dossiê de rastreabilidade</div><h1>{title}</h1><p className="muted">{sub}</p></div>
+    <div><BackButton /><div className="eyebrow">Dossiê de rastreabilidade</div><h1>{title}</h1><p className="muted">{sub}</p></div>
     <div className="head-actions">{actions}</div>
   </div>
 )

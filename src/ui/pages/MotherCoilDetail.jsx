@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useParams } from 'react-router'
 import Attachment from '../components/Attachment.jsx'
+import CoilSummary from '../components/CoilSummary.jsx'
 import FileField from '../components/FileField.jsx'
 import { useAction } from '../components/useAction.js'
 import { useProfile } from '../app/ProfileContext.jsx'
@@ -71,6 +72,7 @@ function CertificateCard({ mc }) {
 export default function MotherCoilDetail() {
   const { id } = useParams()
   const { state } = useStore()
+  const [summaryCub, setSummaryCub] = useState(null)
   const mc = state.motherCoils.find((m) => m.id === id)
   if (!mc) return <div className="card placeholder">Bobina mãe não encontrada. <Link to="/bobinas-mae">Voltar à lista</Link></div>
 
@@ -135,16 +137,18 @@ export default function MotherCoilDetail() {
         {coils.length ? (
           <div className="chips">
             {coils.map((c) => (
-              <span key={c.id} className="chip" title={`${COIL_STATUS[c.status]?.label ?? c.status} · ${fmtKg(c.current_weight)}`}>
+              <button type="button" key={c.id} className="chip" onClick={() => setSummaryCub(c.cub)} title={`${COIL_STATUS[c.status]?.label ?? c.status} · ${fmtKg(c.current_weight)} · clique para ver o resumo`}>
                 <span className="mono">{c.cub.replace('CUB-', '')}</span>
                 <i className={`dot ${COIL_STATUS[c.status]?.tone ?? ''}`} />
-              </span>
+              </button>
             ))}
           </div>
         ) : (
           <p className="muted">As tiras ainda não foram recebidas.</p>
         )}
+        {coils.length > 0 && <p className="muted small">Clique em um CUB para ver o resumo.</p>}
       </div>
+      {summaryCub && <CoilSummary coil={coils.find((c) => c.cub === summaryCub)} onClose={() => setSummaryCub(null)} />}
 
       <div className="card panel wide">
         <h2>Histórico</h2>

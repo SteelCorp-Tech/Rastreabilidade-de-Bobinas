@@ -1,5 +1,6 @@
 import { Link, useParams } from 'react-router'
 import Attachment from '../components/Attachment.jsx'
+import BackButton from '../components/BackButton.jsx'
 import BlockForm from '../components/BlockForm.jsx'
 import { useProfile } from '../app/ProfileContext.jsx'
 import { useStore } from '../app/StoreContext.jsx'
@@ -33,6 +34,7 @@ export default function CoilSheet() {
       <div className="no-print">
         <div className="page-head">
           <div>
+            <BackButton />
             <div className="eyebrow">Consulta · <Link to="/consulta">Rastreabilidade</Link></div>
             <h1 className="mono">{coil.cub}</h1>
           </div>

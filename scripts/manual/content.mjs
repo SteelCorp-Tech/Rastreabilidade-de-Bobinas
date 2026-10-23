@@ -339,7 +339,7 @@ export const blocks = [
     'Confira no cartão escuro o CUB, o lote, o material, o código e o peso atual.',
     'Digite a <b>OP / protocolo</b> e escolha a <b>obra</b>.',
     'Toque na <b>perfiladeira</b> (a última usada neste tablet vem marcada).',
-    'Meça a espessura com o micrômetro e digite em <b>Espessura medida</b>.',
+    'Meça a espessura e digite em <b>Espessura medida</b>.',
     'Toque em <b>Iniciar uso</b>.',
   ),
   fig('41-uso-espessura', 'A diferença para a espessura nominal é mostrada na hora.'),

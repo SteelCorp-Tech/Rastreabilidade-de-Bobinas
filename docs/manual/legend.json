@@ -193,7 +193,7 @@
     "Perfiladeira (a última usada fica marcada)"
   ],
   "41-uso-espessura": [
-    "Espessura medida com o micrômetro",
+    "Espessura medida",
     "Diferença para a nominal. Acima de ±0,05 mm vira alerta laranja"
   ],
   "42-uso-passo2": [

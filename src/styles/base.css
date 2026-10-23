@@ -455,3 +455,42 @@ th.sorted .th-btn .si { opacity: 1; color: var(--teal-600); }
 input[type='file'] { padding: 0 8px 0 0; line-height: 42px; color: var(--texto-suave); }
 input[type='file']::file-selector-button { height: 30px; margin: 6px 10px 6px 6px; padding: 0 14px; border: 1px solid var(--borda); border-radius: 6px; background: var(--gelo); color: var(--titulo); font: inherit; font-weight: 600; font-size: 13px; cursor: pointer; }
 input[type='file']::file-selector-button:hover { background: var(--ativo); }
+
+/* janelas (modal): visualizador de anexo e resumo do CUB */
+.modal-backdrop { position: fixed; inset: 0; z-index: 60; background: rgba(0, 20, 28, .6); display: grid; place-items: center; padding: 20px; }
+.modal { width: min(520px, 100%); max-height: calc(100dvh - 40px); display: flex; flex-direction: column; background: var(--fundo); color: var(--texto); border: 1px solid var(--borda); border-radius: 14px; box-shadow: 0 20px 60px rgba(0, 0, 0, .35); }
+.modal.wide { width: min(980px, 100%); height: calc(100dvh - 40px); }
+.modal-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 20px; border-bottom: 1px solid var(--borda); flex-wrap: wrap; }
+.modal-head h2 { font-size: 17px; overflow-wrap: anywhere; }
+.modal-actions { display: flex; gap: 8px; align-items: center; }
+.modal-actions .btn { min-height: 40px; padding: 0 16px; }
+.modal-body { padding: 16px 20px 20px; overflow: auto; flex: 1 1 auto; min-height: 0; }
+.modal.wide .modal-body { padding: 0; display: flex; }
+.viewer-frame { flex: 1; width: 100%; border: 0; background: #fff; }
+.viewer-img { max-width: 100%; max-height: 100%; margin: auto; object-fit: contain; }
+button.chip { cursor: pointer; font: inherit; color: inherit; }
+button.chip:hover { border-color: var(--teal-600); }
+@media print { .modal-backdrop { display: none; } }
+.save-btn { margin-top: 28px; }
+.back-btn { display: inline-flex; align-items: center; margin: 0 0 8px -8px; padding: 6px 8px; border: 0; border-radius: 8px; background: none; color: var(--teal-600); font-weight: 600; min-height: 36px; }
+.back-btn:hover { background: var(--gelo); }
+
+/* detalhe da entrega: sem rolagem da página; CUBs e etiquetas rolam dentro das seções */
+.fit-page > .delivery-grid { flex: 1 1 0; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 20px; align-items: stretch; }
+.delivery-left { display: flex; flex-direction: column; gap: 16px; min-height: 0; }
+.delivery-left > .panel { margin: 0; flex: none; }
+.delivery-left > .labels-card { flex: 1 1 0; min-height: 200px; display: flex; flex-direction: column; }
+.labels-card > * { flex: none; }
+.labels-card > .labels-scroll { flex: 1 1 0; min-height: 0; overflow: auto; margin-top: 8px; }
+.labels-card .label-area.a4 { grid-template-columns: repeat(auto-fill, 89mm); }
+.cubs-card { display: flex; flex-direction: column; min-height: 0; margin: 0; }
+.cubs-card > .fill { flex: 1 1 0; min-height: 0; margin-top: 8px; }
+.small-btn { min-height: 38px; padding: 0 14px; font-size: 14px; }
+@media (max-width: 1100px) { .fit-page > .delivery-grid { grid-template-columns: 1fr; flex: none; } .delivery-left > .labels-card { flex: none; } .cubs-card { max-height: 420px; } }
+@media (max-width: 700px) { .fit-page > .delivery-grid { display: block; } .delivery-left { margin-bottom: 16px; } .cubs-card > .fill { overflow-x: auto; } }
+.delivery-left > .panel { padding: 14px 18px; }
+.delivery-left > .panel h2 { margin-bottom: 4px; }
+.delivery-left .kv { padding: 4px 0; gap: 8px; }
+.labels-card > .small { margin: 2px 0 0; }
+.pick-cub { display: block; margin-top: 16px; }
+.pick-cub .eyebrow { display: block; margin-bottom: 6px; }

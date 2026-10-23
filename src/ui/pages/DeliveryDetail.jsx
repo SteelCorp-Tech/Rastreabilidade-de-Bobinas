@@ -14,6 +14,7 @@ export default function DeliveryDetail() {
   const { state } = useStore()
   const { can } = useProfile()
   const [off, setOff] = useState(new Set())
+  const [showAll, setShowAll] = useState(false)
   const d = state.deliveries.find((x) => x.id === id)
   if (!d) return <div className="card placeholder">Entrega não encontrada. <Link to="/recebimento">Voltar</Link></div>
 
@@ -28,7 +29,7 @@ export default function DeliveryDetail() {
 
   return (
     <>
-      <div className="no-print">
+      <div className="fit-page no-print">
         <div className="page-head">
           <div>
             <div className="eyebrow">Operação · <Link to="/recebimento">Recebimento</Link></div>
@@ -37,21 +38,41 @@ export default function DeliveryDetail() {
           {can('label.print') && <button className="btn" onClick={() => window.print()} disabled={!picked.length}>Imprimir etiquetas ({picked.length})</button>}
         </div>
 
-        <div className="grid-2">
-          <div className="card panel wide">
-            <h2>Entrega</h2>
-            <div className="kv"><span className="eyebrow">Recebida em</span><div>{fmtDate(d.received_date)}</div></div>
-            <div className="kv"><span className="eyebrow">Lotes</span><div>{lots.map((m, i) => <span key={m.id}>{i > 0 && ', '}<Link to={`/bobinas-mae/${m.id}`} className="mono">{m.slitter_lot}</Link></span>)}</div></div>
-            <div className="kv"><span className="eyebrow">Contagem</span><div className="mono">{d.cubs.length} de {d.declared_coil_count} declaradas</div></div>
-            {d.count_justification && <div className="kv"><span className="eyebrow">Justificativa</span><div>{d.count_justification}</div></div>}
-            <div className="kv"><span className="eyebrow">Peso {estimated ? 'estimado' : 'medido'}</span><div className="mono">{fmtKg(total)}</div></div>
-            <div className="kv"><span className="eyebrow">Nº FVM</span><div className="mono">{d.fvm_number || '—'}</div></div>
-            <div className="kv"><span className="eyebrow">Romaneio</span><div><Attachment file={d.delivery_note_file} /></div></div>
-            <div className="kv"><span className="eyebrow">Recebida por</span><div>{d.received_by}</div></div>
+        <div className="delivery-grid">
+          <div className="delivery-left">
+            <div className="card panel wide">
+              <h2>Entrega</h2>
+              <div className="kv"><span className="eyebrow">Recebida em</span><div>{fmtDate(d.received_date)}</div></div>
+              <div className="kv"><span className="eyebrow">Lotes</span><div>{lots.map((m, i) => <span key={m.id}>{i > 0 && ', '}<Link to={`/bobinas-mae/${m.id}`} className="mono">{m.slitter_lot}</Link></span>)}</div></div>
+              <div className="kv"><span className="eyebrow">Contagem</span><div className="mono">{d.cubs.length} de {d.declared_coil_count} declaradas</div></div>
+              {d.count_justification && <div className="kv"><span className="eyebrow">Justificativa</span><div>{d.count_justification}</div></div>}
+              <div className="kv"><span className="eyebrow">Peso {estimated ? 'estimado' : 'medido'}</span><div className="mono">{fmtKg(total)}</div></div>
+              <div className="kv"><span className="eyebrow">Nº FVM</span><div className="mono">{d.fvm_number || '—'}</div></div>
+              <div className="kv"><span className="eyebrow">Romaneio</span><div><Attachment file={d.delivery_note_file} /></div></div>
+              <div className="kv"><span className="eyebrow">Recebida por</span><div>{d.received_by}</div></div>
+            </div>
+
+            <div className="card panel wide labels-card">
+              <div className="row-between">
+                <h2>Etiquetas ({layout === 'THERMAL' ? 'térmica 100×50 mm' : 'folha A4, 2 colunas'})</h2>
+                {picked.length > 1 && (
+                  <button type="button" className="btn ghost small-btn" onClick={() => setShowAll((v) => !v)}>
+                    {showAll ? 'Mostrar só a primeira' : `Ver todas as etiquetas (${picked.length})`}
+                  </button>
+                )}
+              </div>
+              <p className="muted small">O QR de cada etiqueta carrega o CUB. Desmarque na tabela os CUBs que não quer imprimir; a impressão leva todas as marcadas, mesmo com só a primeira à mostra.</p>
+              <div className="labels-scroll">
+                {picked.length
+                  ? <LabelSheet labels={(showAll ? picked : picked.slice(0, 1)).map((l) => l.label)} layout={layout} />
+                  : <p className="muted">Nenhum CUB marcado para impressão.</p>}
+              </div>
+            </div>
           </div>
-          <div className="card panel wide">
+
+          <div className="card panel wide cubs-card">
             <h2>CUBs ({coils.length})</h2>
-            <div className="table-wrap">
+            <div className="table-wrap fill">
               <table>
                 <thead><tr><th /><th>CUB</th><th>Peso</th><th>Código</th><th>Situação</th></tr></thead>
                 <tbody>
@@ -69,10 +90,8 @@ export default function DeliveryDetail() {
             </div>
           </div>
         </div>
-        <h2 className="sub">Etiquetas ({layout === 'THERMAL' ? 'térmica 100×50 mm' : 'folha A4, 2 colunas'})</h2>
-        <p className="muted small">O QR de cada etiqueta carrega o CUB. Desmarque na tabela acima os CUBs que não quer imprimir. O layout se troca em Configurações.</p>
       </div>
-      <LabelSheet labels={picked.map((l) => l.label)} layout={layout} />
+      <div className="print-only"><LabelSheet labels={picked.map((l) => l.label)} layout={layout} /></div>
     </>
   )
 }

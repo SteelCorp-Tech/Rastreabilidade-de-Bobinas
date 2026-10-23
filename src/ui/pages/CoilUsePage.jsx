@@ -45,6 +45,10 @@ export default function CoilUsePage() {
   const openUse = coil && state.uses.find((u) => u.coil === coil.id && !u.closed_at)
   const layout = { ...DEFAULT_CONFIG, ...state.config }.label_layout
   const openUses = state.uses.filter((u) => !u.closed_at)
+  // CUBs disponíveis para montar (em estoque), agrupados por lote para facilitar a procura
+  const available = state.coils.filter((c) => c.status === 'IN_STOCK')
+  const byLot = [...available.reduce((m, c) => m.set(c.slitter_lot, [...(m.get(c.slitter_lot) ?? []), c]), new Map())]
+    .sort((a, b) => String(a[0]).localeCompare(String(b[0]), 'pt-BR', { numeric: true }))
 
   useEffect(() => { if (!coil && !done && !scanning) scanRef.current?.focus() }, [coil, done, scanning])
 
@@ -101,13 +105,25 @@ export default function CoilUsePage() {
               <form onSubmit={(e) => { e.preventDefault(); select(cubText) }}>
                 <input
                   ref={scanRef} className="scan-input mono" value={cubText} onChange={(e) => setCubText(e.target.value)}
-                  placeholder="Passe o leitor ou digite CUB-2026-00000" autoComplete="off" autoCapitalize="characters" inputMode="text" aria-label="CUB"
+                  placeholder="Passe o leitor ou digite CUB-2026-00000" autoComplete="off" autoCapitalize="characters" inputMode="text" aria-label="CUB" list="cubs-disponiveis"
                 />
+                <datalist id="cubs-disponiveis">{available.map((c) => <option key={c.id} value={c.cub} />)}</datalist>
                 <div className="actions-row">
                   <button className="btn big" disabled={!cubText.trim()}>Buscar</button>
                   <button type="button" className="btn big ghost" onClick={() => setScanning(true)}>Ler com a câmera</button>
                 </div>
               </form>
+              <label className="pick-cub">
+                <span className="eyebrow">Ou escolha um CUB disponível ({available.length})</span>
+                <select className="big-input" value="" onChange={(e) => e.target.value && select(e.target.value)} aria-label="CUBs disponíveis para uso" disabled={!available.length}>
+                  <option value="">{available.length ? 'Selecione na lista…' : 'Nenhum CUB em estoque'}</option>
+                  {byLot.map(([lot, list]) => (
+                    <optgroup key={lot} label={`Lote ${lot} · ${list.length} ${list.length === 1 ? 'CUB' : 'CUBs'}`}>
+                      {list.map((c) => <option key={c.id} value={c.cub}>{c.cub} · {fmtThickness(c.thickness)} × {c.width} {c.galvanization} · {fmtKg(c.current_weight)}</option>)}
+                    </optgroup>
+                  ))}
+                </select>
+              </label>
               {error && <div className="err big-err" role="alert">{error}</div>}
             </div>
 
@@ -188,7 +204,7 @@ function MountStep({ coil, state, canOpen, onDone, run, exec, busy, error }) {
         </div>
         <div className="fields two">
           <label>
-            <span className="eyebrow">Espessura medida com o micrômetro (mm) *</span>
+            <span className="eyebrow">Espessura medida (mm) *</span>
             <input className="big-input mono" value={thick} onChange={(e) => setThick(e.target.value)} inputMode="decimal" placeholder={fmtThickness(coil.thickness).replace(/.$/, '0')} />
           </label>
           <div className={'delta' + (off ? ' off' : '')}>

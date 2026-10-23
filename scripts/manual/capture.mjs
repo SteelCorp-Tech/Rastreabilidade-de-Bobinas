@@ -399,7 +399,7 @@ try {
   await fillC('.big-input', '1,00', 2)
   await sleep(300)
   await shot('41-uso-espessura', [
-    { target: eyes('.big-input', 2), text: 'Espessura medida com o micrômetro', side: 'top' },
+    { target: eyes('.big-input', 2), text: 'Espessura medida', side: 'top' },
     { target: eyes('.delta'), text: 'Diferença para a nominal. Acima de ±0,05 mm vira alerta laranja', side: 'right', dx: 20 },
   ])
   await fillC('.big-input', '0,95', 2)
