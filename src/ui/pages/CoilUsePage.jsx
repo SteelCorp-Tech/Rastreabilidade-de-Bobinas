@@ -71,6 +71,7 @@ export default function CoilUsePage() {
       <div className="use-page">
         <div className="no-print">
         <div className="card panel wide done">
+          <button type="button" className="back-btn" onClick={reset}>← Voltar aos usos</button>
           <h1>{done.kind === 'LEFTOVER' ? 'Sobra registrada' : 'Bobina consumida'}</h1>
           <p className="big-text mono">{done.cub}</p>
           <p className="muted">{done.kind === 'LEFTOVER' ? `Volta ao estoque com ${fmtKg(done.weight)}, mesmo CUB. Cole a nova etiqueta.` : 'Consumo total registrado. O CUB não pode mais ser usado.'}</p>
@@ -91,10 +92,10 @@ export default function CoilUsePage() {
       <div className="no-print">
         <div className="page-head">
           <div>
+            {coil && <button type="button" className="back-btn" onClick={reset}>← Voltar aos usos</button>}
             <div className="eyebrow">Operação</div>
             <h1>Uso de bobina</h1>
           </div>
-          {coil && <button className="btn ghost big" onClick={reset}>Trocar bobina</button>}
         </div>
 
         {!coil && (

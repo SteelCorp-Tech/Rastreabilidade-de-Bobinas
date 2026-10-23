@@ -508,3 +508,5 @@ button.chip:hover { border-color: var(--teal-600); }
 .delete-box p { margin: 0 0 10px; color: var(--texto); font-weight: 500; }
 .delete-box .actions-row { margin-top: 10px; }
 .danger-zone { border: 1px solid var(--vermelho-100); }
+
+.use-page .back-btn { min-height: 48px; font-size: 16px; padding: 0 12px; }
