@@ -2,7 +2,7 @@
 .print-only { display: none; }
 
 @media print {
-  @page { margin: 14mm; }
+  @page { margin: 12mm; }
   body { background: #fff; font-size: 12pt; }
   .sidebar, .topbar, .no-print { display: none !important; }
   html, body, #root { height: auto; }
