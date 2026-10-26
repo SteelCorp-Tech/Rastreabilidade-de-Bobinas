@@ -85,3 +85,11 @@ Decisões do projeto, com motivo e data. Atualize junto com o `CLAUDE.md`.
 6. Etiqueta: A4 com 2 colunas, e térmica 100×50 mm como opção.
 7. Nomes reais de obras e fornecedores dentro do JS publicado: ok só se o portal for interno.
 8. Dois planos de corte para a mesma bobina mãe (duas passadas, cada uma com uma parte do peso) — 21/10/2026. Hoje há um plano vigente por mãe; versões são só histórico. Nada foi alterado. A proposta (várias passadas por mãe, cada uma com nome, peso em kg, linhas, status e versões; refilo e balanço somando as passadas; soma dos pesos ≤ peso líquido) aguarda validação com a operação. Perguntas: (a) dividir por kg ou por %; (b) enviar as passadas juntas ou cada uma separada.
+
+## Backend (proposta)
+
+### 26/10/2026 — Proposta de schema PostgreSQL (branch `backend-schema`)
+- `db/schema.sql`: 26 tabelas, 6 views, gatilhos e dados de referência, no schema `bobinas`. Só desenho: o app continua no navegador.
+- Escolhas (padrões que adotei enquanto não houver decisão): `id bigint`; exclusão do administrador como `DELETE` de verdade, barrada por chave estrangeira quando há uso; sem `tenant_id` (multiempresa fora do protótipo); banco começa no marco zero, com `cub_sequence` 2026 em 575.
+- Diferenças em relação ao formato do navegador: bloqueio separado do status (`blocked_at`); certificado em tabela própria; dados derivados (lote, fornecedor, certificado, contagem de usos e última obra do CUB) saem de views; resultados do plano gravados com o limite usado.
+- Validado com `db/validate.mjs` (PGlite, PostgreSQL 16.4): 73 verificações, 0 falhas. Ainda não rodou num servidor PostgreSQL.
