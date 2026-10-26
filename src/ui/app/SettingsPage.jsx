@@ -9,7 +9,7 @@ import { parseDecimal } from '../format.js'
 
 export default function SettingsPage() {
   const { can } = useProfile()
-  const { state, restoreSeed, run } = useStore()
+  const { state, resetAll, run } = useStore()
   const editable = can('settings.edit')
   const cfg = { ...DEFAULT_CONFIG, ...state.config }
   const [form, setForm] = useState(null)
@@ -126,9 +126,9 @@ export default function SettingsPage() {
       </form>
 
       <div className="card panel">
-        <h2>Dados de exemplo</h2>
+        <h2>Dados</h2>
         <p className="muted">
-          Gerados da planilha de controle (amostra de lotes com peso e largura da mãe). Os pesos dos CUBs são estimados pela fórmula do plano de corte.
+          Tudo fica guardado neste navegador. "Apagar todos os dados" remove bobinas mãe, planos, entregas, CUBs, usos, cadastros, catálogo, anexos e auditoria. Ficam as configurações, as permissões e a numeração do CUB (o próximo CUB continua depois do último já emitido).
         </p>
         <ul className="stat-list">
           {counts.map(([k, v]) => (
@@ -137,17 +137,17 @@ export default function SettingsPage() {
         </ul>
         <button
           className="btn"
-          disabled={!can('seed.restore')}
-          title={can('seed.restore') ? '' : 'Somente o administrador'}
+          disabled={!can('data.reset')}
+          title={can('data.reset') ? '' : 'Somente o administrador'}
           onClick={async () => {
-            if (!window.confirm('Restaurar os dados de exemplo? O que foi lançado nesta máquina será substituído. A auditoria é mantida.')) return
-            await restoreSeed()
+            if (!window.confirm('Apagar TODOS os dados deste navegador? Isso não pode ser desfeito.')) return
+            await resetAll()
             setRestored(true)
           }}
         >
-          Restaurar dados de exemplo
+          Apagar todos os dados
         </button>
-        {restored && <p className="ok-msg">Dados restaurados.</p>}
+        {restored && <p className="ok-msg">Todos os dados foram apagados.</p>}
       </div>
     </>
   )

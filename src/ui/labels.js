@@ -35,6 +35,6 @@ export const AUDIT_ACTIONS = {
   'motherCoil.delete': 'Bobina mãe excluída',
   'cuttingPlan.delete': 'Plano de corte excluído',
   'delivery.delete': 'Recebimento excluído',
-  'seed.restore': 'Dados de exemplo restaurados',
+  'data.reset': 'Todos os dados apagados',
 }
 export const auditLabel = (action) => AUDIT_ACTIONS[action] ?? action

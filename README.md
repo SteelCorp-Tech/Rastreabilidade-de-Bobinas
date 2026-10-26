@@ -49,3 +49,9 @@ O cenário completo roda só com o domínio em `src/domain/acceptance.test.js` (
 Em `docs/manual/`: `manual-rastreabilidade-bobinas.pdf` (para ler ou imprimir) e `index.html` (mesmo conteúdo, com as imagens em `img/`). São 16 capítulos e 65 telas com setas numeradas.
 
 Os prints são gerados por `scripts/manual/capture.mjs`, que percorre o sistema como um usuário num Edge (ou Chrome) invisível, com perfil temporário (não toca no seu navegador) e desenha as setas por cima de cada tela. A legenda de cada figura vem do mesmo roteiro, então texto e imagem não se desencontram. O texto está em `scripts/manual/content.mjs`. Quando uma tela mudar: `npm run build`, `npm run preview`, `npm run manual:capture`, `npm run manual:build` e `npm run manual:pdf`.
+
+## Dados
+
+O app **começa vazio** (desde 26/10/2026): nenhuma bobina, cadastro ou catálogo. Os dados ficam no navegador (`localStorage` e anexos em IndexedDB). Em Configurações, o administrador tem **"Apagar todos os dados"**, que zera tudo e mantém só configurações, permissões e a numeração do CUB (o próximo CUB continua depois do último já emitido, a partir de CUB-2026-00576).
+
+`npm run seed` ainda lê a planilha de controle, mas grava em `scripts/out/` (fora do git) e o app não carrega esse resultado; ele fica como base para a futura importação.

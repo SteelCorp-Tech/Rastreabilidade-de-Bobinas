@@ -75,6 +75,11 @@ export async function ensureSeedAttachments(ref) {
   await putAttachment(blob, { id: ref.id, name: ref.name })
 }
 
+/** Apaga todos os anexos guardados neste navegador. */
+export async function clearAttachments() {
+  await tx('readwrite', (s) => s.clear())
+}
+
 export async function deleteAttachment(id) {
   await tx('readwrite', (s) => s.delete(id))
 }

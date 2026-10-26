@@ -1,16 +1,15 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { createLocalStorageRepository, STATE_KEY } from '../../persistence/localStorageRepository.js'
 import { createCommandRunner } from '../../persistence/commandRunner.js'
-import { ensureSeedAttachments } from '../../persistence/attachmentStore.js'
+import { clearAttachments } from '../../persistence/attachmentStore.js'
 import { OverridesContext, useProfile } from './ProfileContext.jsx'
 
 const StoreContext = createContext(null)
 const USER = 'Gustavo Oliveira'
 
-/** O seed vai num pacote separado, carregado só na primeira vez. */
+/** Estado inicial: vazio (sem dados; só configurações padrão e a numeração do CUB). */
 async function loadSeed() {
-  const [{ default: seed }, { CERT_MODEL }] = await Promise.all([import('../../persistence/seed/seed.json'), import('../../persistence/certModel.js')])
-  await ensureSeedAttachments(CERT_MODEL).catch(() => {})
+  const { default: seed } = await import('../../persistence/seed/seed.json')
   return structuredClone(seed)
 }
 
@@ -43,11 +42,13 @@ export function StoreProvider({ children }) {
     [runner],
   )
 
-  const restoreSeed = useCallback(async () => {
-    setState(await runner.restoreSeed({ role: roleRef.current, user: USER }))
+  const resetAll = useCallback(async () => {
+    const next = await runner.resetAll({ role: roleRef.current, user: USER })
+    await clearAttachments().catch(() => {})
+    setState(next)
   }, [runner])
 
-  const value = useMemo(() => ({ state, run, restoreSeed, error }), [state, run, restoreSeed, error])
+  const value = useMemo(() => ({ state, run, resetAll, error }), [state, run, resetAll, error])
   if (error) return <div className="placeholder">Não foi possível abrir os dados: {String(error.message ?? error)}</div>
   if (!state) return <div className="placeholder">Carregando dados…</div>
   return (

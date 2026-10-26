@@ -1,4 +1,6 @@
-// Gera src/persistence/seed/seed.json e scripts/seed-report.md a partir do Excel de controle.
+// Gera scripts/out/seed-excel.json e scripts/out/seed-report.md a partir do Excel de controle.
+// Desde 26/10/2026 o app começa vazio: este resultado NÃO é carregado pelo app (e fica fora do git);
+// serve de base para uma futura importação.
 // Uso: npm run seed   (o .xlsx fica na raiz do projeto e não vai para o git)
 import { writeFileSync, mkdirSync } from 'node:fs'
 import readXlsxFile from 'read-excel-file/node'
@@ -333,7 +335,8 @@ for (const m of state.motherCoils.filter((x) => x.status === 'RECEIVED')) {
 
 // ---------------------------------------------------------------- saída
 mkdirSync('src/persistence/seed', { recursive: true })
-writeFileSync('src/persistence/seed/seed.json', JSON.stringify(state))
+mkdirSync('scripts/out', { recursive: true })
+writeFileSync('scripts/out/seed-excel.json', JSON.stringify(state))
 
 const L = []
 L.push('# Relatório do seed', '', `Gerado de \`${XLSX}\` por \`npm run seed\`. Não editar à mão.`, '')
@@ -351,8 +354,8 @@ for (const [, { title, items }] of issues) {
   L.push(`### ${title} (${items.length})`, '', ...items.slice(0, 40).map((i) => `- ${i}`), ...(items.length > 40 ? [`- … e mais ${items.length - 40}`] : []), '')
 }
 L.push('## Balanço de massa por lote (estimativa)', '', '| Lote | Líquido (kg) | CUBs (kg) | Refilo (kg) | Diferença (kg) | 1% |', '|---|---|---|---|---|---|', ...balanceRows.map((r) => `| ${r.join(' | ')} |`), '')
-writeFileSync('scripts/seed-report.md', L.join('\n'))
+writeFileSync('scripts/out/seed-report.md', L.join('\n'))
 
 console.log(`seed: ${state.motherCoils.length} mães, ${state.coils.length} CUBs, ${state.deliveries.length} entregas, ${state.uses.length} usos, ${state.projects.length} obras`)
 console.log(`descartados: ${testRows} linhas de teste, ${dupRows} duplicados, ${skippedForeign - testRows} usos de CUBs fora da amostra`)
-console.log('relatório: scripts/seed-report.md')
+console.log('saída: scripts/out/seed-excel.json e scripts/out/seed-report.md (fora do git; o app não carrega)')

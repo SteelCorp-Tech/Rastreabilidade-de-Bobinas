@@ -71,7 +71,8 @@ Papéis no sistema: Almoxarifado, PCP, Produção, Qualidade, Suprimentos, Admin
 | O prestador de slitagem não entra no app. | Decisão do dono do produto. |
 | Protótipo só em React, sem backend, banco, Supabase ou Vercel. | Decisão do dono do produto. |
 | **JavaScript puro, sem TypeScript.** | Decisão do dono do produto. |
-| **Hospedagem: página própria no portal SteelApps** (HashRouter, `base: "./"`, chaves `bobinas:v1:`). Leitura de QR pela câmera do tablet (exige HTTPS). Seed gerado do Excel real. Git local, um commit por incremento. | Decisões do dono do produto em 20/10/2026. |
+| **Hospedagem: página própria no portal SteelApps** (HashRouter, `base: "./"`, chaves `bobinas:v1:`). Leitura de QR pela câmera do tablet (exige HTTPS). Git local, um commit por incremento. | Decisões do dono do produto em 20/10/2026. |
+| **O app começa vazio**: sem dados de exemplo; "Apagar todos os dados" (Administrador) zera tudo e mantém só configurações, permissões e a numeração do CUB. | Decisão do dono do produto, 26/10/2026 (antes havia um seed gerado do Excel real). |
 | **O certificado de qualidade tem lugar no app**: número e arquivo anexado por bobina mãe, obrigatórios por padrão. | Decisão do dono do produto. É a prova central da auditoria (hoje 513 de 826 CUBs estão sem certificado válido). |
 
 ---
@@ -153,7 +154,7 @@ Entradas: largura da mãe `W`, peso líquido `P`, limite por bobina `L` (padrão
 7. **Consulta e rastreabilidade** — busca universal (CUB, lote, NF, OP, obra, certificado, código ERP, dimensão) e **ficha da bobina com a cadeia de elos**: fornecedor e usina → bobina mãe (NF, certificado) → lote e OP do prestador → entrega → CUB → usos (OP e obra) → sobra. O certificado abre direto da ficha (visualizar e baixar), inclusive na ficha do CUB, herdado da mãe.
 8. **Recall e relatórios** — dado um lote ou certificado: CUBs, saldo atual, obras e OPs que consumiram. **Balanço de massa por lote**: peso líquido da mãe contra soma dos pesos recebidos mais refilo. **Pendências de certificado**: bobinas mãe sem arquivo anexado. Exportar CSV e imprimir ("dossiê de rastreabilidade" por obra e por lote).
 9. **Bloqueio e liberação** — o **Administrador** (padrão desde 23/10/2026; concedível a outros perfis na tela Permissões) bloqueia ou libera um CUB ou lote inteiro, com motivo obrigatório e registro na auditoria. O módulo só aparece no menu para quem tem a permissão.
-10. **Importação inicial** (depois da fatia v1; o catálogo e o estoque iniciais entram pelo seed) — carga do estoque a partir de CSV, com **relatório de inconsistências** (seção 9).
+10. **Importação inicial** (depois da fatia v1; o catálogo e o estoque iniciais entrarão por aqui, já que o app começa vazio) — carga do estoque a partir de CSV, com **relatório de inconsistências** (seção 9).
 11. **Auditoria** — consulta do AuditLog.
 12. **Configurações** — limite de peso, faixa de refilo, formato do CUB, campos obrigatórios (inclui `certificate_required`), tema.
 13. **Permissões** (Administrador) — para cada perfil, quais telas aparecem no menu e quais ações pode fazer. Travas: o Administrador sempre pode tudo, o Auditor nunca recebe ações, e configurações, permissões e exclusões não podem ser concedidas a outros perfis. Cada mudança vai para a auditoria e há "restaurar padrão" por perfil.
@@ -166,7 +167,7 @@ Backend e banco, autenticação real, multiempresa, API e webhooks, integração
 
 ## 8. Requisitos transversais
 
-**8.1 Sem backend.** Os dados vivem no navegador: estado em memória com persistência em `localStorage`; os **anexos (certificado, NF, romaneio) ficam em IndexedDB**, que o navegador já oferece e comporta PDFs sem estourar o limite do `localStorage`. Há **dados de exemplo (seed)** e um botão "Restaurar dados de exemplo". Sem login real.
+**8.1 Sem backend.** Os dados vivem no navegador: estado em memória com persistência em `localStorage`; os **anexos (certificado, NF, romaneio) ficam em IndexedDB**, que o navegador já oferece e comporta PDFs sem estourar o limite do `localStorage`. O app começa **vazio** (sem dados de exemplo desde 26/10/2026) e há o botão "Apagar todos os dados" (Administrador), que mantém configurações, permissões e a numeração do CUB. Sem login real.
 
 **8.2 Perfis simulados.** Um seletor de perfil no rodapé do menu lateral, como no portal SteelApps (Almoxarifado, PCP, Produção, Qualidade, Suprimentos, Administrador, Auditor) muda o que cada pessoa vê e pode fazer:
 - Almoxarifado: cadastrar bobina mãe (inclusive anexar o certificado) e entregas, gerar etiquetas.
@@ -191,7 +192,7 @@ Backend e banco, autenticação real, multiempresa, API e webhooks, integração
 
 ---
 
-## 9. Evidências dos dados reais (use como regras de validação e como seed)
+## 9. Evidências dos dados reais (use como regras de validação)
 
 Cliente de referência, controle de 2026 (Excel):
 - 575 CUBs em 47 lotes (mediana de 11 CUBs por lote, máximo 20).

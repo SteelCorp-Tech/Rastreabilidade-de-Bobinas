@@ -75,6 +75,13 @@ Decisões do projeto, com motivo e data. Atualize junto com o `CLAUDE.md`.
 - **Impressão das etiquetas cortada à direita** (23/10/2026): a largura útil da folha A4 (cerca de 688 px) caía na regra de celular (até 700 px) e ganhava margens e `overflow: hidden`. As regras responsivas agora valem só para tela (`@media screen`), e a margem de impressão passou de 14 mm para 12 mm (as duas colunas de 89 mm + 3 mm de vão precisam de 181 mm).
 - **Uso de bobina sem medição de espessura** (23/10/2026): saíram o campo "Espessura medida", a diferença para a nominal e o alerta de ±0,05 mm. O domínio deixou de exigir e de gravar `measured_thickness`, `nominal_thickness` e `thickness_delta` no uso (a regra de espessura do recebimento, que confere com a bobina mãe, continua). O seed foi regenerado sem esses campos; dados antigos salvos no navegador que os tenham são simplesmente ignorados.
 
+### 26/10/2026 — App sem dados (zerado) e correção dos identificadores internos
+- **O app começa vazio.** `seed.json` agora é só o estado inicial: listas vazias, configuração padrão e `cub_floor` 2026 = 575 (as etiquetas físicas já vão até o CUB-2026-00575; zerar isso faria o próximo CUB repetir uma etiqueta colada).
+- **"Restaurar dados de exemplo" virou "Apagar todos os dados"** (permissão `data.reset`, só Administrador): apaga bobinas mãe, planos, entregas, CUBs, usos, cadastros, catálogo, anexos (IndexedDB) e auditoria. Mantém configurações, permissões e a numeração do CUB, que sobe até o maior CUB já emitido no navegador. A auditoria recomeça com um evento `data.reset` que registra quem apagou e quanto havia.
+- `npm run seed` grava em `scripts/out/` (no `.gitignore`); `scripts/seed-report.md`, que tinha nomes reais, saiu do repositório. **O histórico do git ainda contém o seed antigo com nomes reais** (e os prints do manual mostram dados reais): apagar isso exige reescrever o histórico, o que não foi feito.
+- **Bug corrigido:** os identificadores internos de bobina mãe, plano, entrega, CUB e uso eram "quantidade + 1" e se repetiam depois de uma exclusão do administrador (o histórico do registro excluído apareceria no novo). Agora usam o maior número já usado + 1, e as exclusões guardam o maior número removido em `id_seq`. Testes em `src/domain/ids.test.js`.
+- O manual (`npm run manual:capture`) dependia dos dados de exemplo e precisa de um roteiro que cadastre os dados antes das capturas.
+
 ## Em aberto (padrão adotado até decidirem)
 
 1. Nome do produto: "Bobinas" ao lado da marca SteelCorp.

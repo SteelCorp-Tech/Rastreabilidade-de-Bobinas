@@ -1,4 +1,5 @@
 import { appendAudit } from '../domain/audit.js'
+import { parseCub } from '../domain/cub.js'
 
 export const LOCK_NAME = 'bobinas:v1:write'
 
@@ -50,18 +51,29 @@ export function createCommandRunner({ repo, loadSeed, locks = browserLocks(), cl
       })
     },
 
-    /** Restaura os dados de exemplo, preservando o AuditLog (que só cresce) e registrando o evento. */
-    async restoreSeed(actor) {
+    /**
+     * Apaga todos os dados: volta ao estado inicial (vazio). Ficam só as regras do app (configurações e
+     * permissões) e a numeração do CUB, que nunca volta atrás (as etiquetas já impressas continuam valendo).
+     * A auditoria recomeça com o registro de quem apagou, quando e quanto havia.
+     */
+    async resetAll(actor) {
       return locks.run(async () => {
         const old = repo.load()
-        const seed = await loadSeed()
+        const blank = await loadSeed()
+        const cub_floor = { ...blank.cub_floor }
+        for (const [year, floor] of Object.entries(old?.cub_floor ?? {})) cub_floor[year] = Math.max(cub_floor[year] ?? 0, floor)
+        for (const c of old?.coils ?? []) {
+          const p = parseCub(c.cub)
+          if (p) cub_floor[p.year] = Math.max(cub_floor[p.year] ?? 0, p.seq)
+        }
+        const keys = ['motherCoils', 'cuttingPlans', 'deliveries', 'coils', 'uses', 'suppliers', 'mills', 'projects', 'machines', 'materials', 'auditLog']
+        const before = old ? Object.fromEntries(keys.map((k) => [k, old[k]?.length ?? 0])) : null
         const state = {
-          ...seed,
-          auditLog: appendAudit(
-            old?.auditLog ?? [],
-            { actor, action: 'seed.restore', entity: 'System', entity_id: 'seed', after: { motherCoils: seed.motherCoils.length, coils: seed.coils.length } },
-            clock(),
-          ),
+          ...blank,
+          config: old?.config ?? blank.config,
+          ...(old?.permissions ? { permissions: old.permissions } : {}),
+          cub_floor,
+          auditLog: appendAudit([], { actor, action: 'data.reset', entity: 'System', entity_id: 'all', before, after: null }, clock()),
         }
         repo.save(state)
         return state

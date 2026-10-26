@@ -44,7 +44,7 @@ export const ACTIONS = [
   { id: 'delivery.delete', label: 'Excluir recebimento', group: 'Administração', adminOnly: true },
   { id: 'settings.edit', label: 'Alterar configurações', group: 'Administração', adminOnly: true },
   { id: 'permissions.edit', label: 'Alterar permissões dos perfis', group: 'Administração', adminOnly: true },
-  { id: 'seed.restore', label: 'Restaurar dados de exemplo', group: 'Administração', adminOnly: true },
+  { id: 'data.reset', label: 'Apagar todos os dados', group: 'Administração', adminOnly: true },
 ]
 
 /** Telas (módulos do menu). `fixed`: todos veem; `adminOnly`: só o administrador. */
@@ -84,7 +84,7 @@ export const PERMISSIONS = {
   'delivery.delete': [],
   'settings.edit': [],
   'permissions.edit': [],
-  'seed.restore': [],
+  'data.reset': [],
 }
 
 const COMMON_VIEWS = ['home', 'search', 'stock', 'reports']

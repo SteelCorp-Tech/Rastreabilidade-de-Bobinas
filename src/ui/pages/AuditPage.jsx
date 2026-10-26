@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { Fragment, useMemo, useState } from 'react'
 import SortTh from '../components/SortTh.jsx'
 import { useSort } from '../sortRows.js'
 import { useStore } from '../app/StoreContext.jsx'
@@ -48,18 +48,18 @@ export default function AuditPage() {
           <thead><tr><SortTh k="at" sort={sort} onSort={toggle}>Quando</SortTh><SortTh k="who" sort={sort} onSort={toggle}>Quem</SortTh><SortTh k="action" sort={sort} onSort={toggle}>Ação</SortTh><SortTh k="target" sort={sort} onSort={toggle}>Alvo</SortTh><SortTh k="reason" sort={sort} onSort={toggle}>Motivo</SortTh><th /></tr></thead>
           <tbody>
             {sorted.slice(0, 300).map((a) => (
-              <>
-                <tr key={a.id} className="click" onClick={() => setOpen(open === a.id ? null : a.id)}>
+              <Fragment key={a.id}>
+                <tr className="click" onClick={() => setOpen(open === a.id ? null : a.id)}>
                   <td className="mono">{fmtDateTime(a.at)}</td><td>{a.actor.user} <small className="muted">({a.actor.role})</small></td>
                   <td><b>{auditLabel(a.action)}</b></td><td className="mono">{a.entity} {a.entity_id}</td><td>{a.reason ?? ''}</td><td className="actions"><span className="link">{open === a.id ? 'Ocultar' : 'Detalhes'}</span></td>
                 </tr>
                 {open === a.id && (
-                  <tr key={a.id + 'd'}><td colSpan={6} className="audit-detail">
+                  <tr><td colSpan={6} className="audit-detail">
                     <div><span className="eyebrow">Antes</span><pre>{pretty(a.before)}</pre></div>
                     <div><span className="eyebrow">Depois</span><pre>{pretty(a.after)}</pre></div>
                   </td></tr>
                 )}
-              </>
+              </Fragment>
             ))}
             {!rows.length && <tr><td colSpan={6} className="empty-row">Nenhum evento. Faça uma operação (ex.: registrar uma bobina) e volte aqui.</td></tr>}
           </tbody>

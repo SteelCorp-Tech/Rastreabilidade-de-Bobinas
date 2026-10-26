@@ -89,14 +89,33 @@ describe('executor de comandos', () => {
     expect(s.auditLog.map((a) => a.action)).toEqual(['motherCoil.create', 'motherCoil.create', 'delivery.receive', 'delivery.receive'])
   })
 
-  it('restaurar o seed preserva o AuditLog e registra o evento', async () => {
+  it('apagar todos os dados: zera tudo, mantém configuração e permissões e não reaproveita número de CUB', async () => {
     const repo = createMemoryRepository()
     const runner = make(repo, fakeLocks())
     await runner.init()
     await runner.run(registerMotherCoil, lote(1), ALMOX)
-    await runner.restoreSeed({ role: 'ADMIN', user: 'admin' })
+    await runner.run(receiveDelivery, {
+      delivery: { slitter_invoice_number: 'P1', declared_coil_count: 3 },
+      lines: Array.from({ length: 3 }, () => ({ mother_coil: 'mc-1', measured_weight: 800, width: 166 })),
+    }, ALMOX)
+    repo.save({ ...repo.load(), config: { ...repo.load().config, weight_limit: 650 }, permissions: { PCP: { actions: [], views: ['home', 'search'] } } })
+
+    await runner.resetAll({ role: 'ADMIN', user: 'admin' })
     const s = repo.load()
-    expect(s.motherCoils).toHaveLength(0)
-    expect(s.auditLog.map((a) => a.action)).toEqual(['motherCoil.create', 'seed.restore'])
+    for (const k of ['motherCoils', 'cuttingPlans', 'deliveries', 'coils', 'uses', 'suppliers', 'mills', 'projects', 'machines', 'materials']) {
+      expect(s[k], k).toEqual([])
+    }
+    expect(s.config.weight_limit).toBe(650)
+    expect(s.permissions.PCP.actions).toEqual([])
+    expect(s.auditLog).toHaveLength(1)
+    expect(s.auditLog[0]).toMatchObject({ action: 'data.reset', before: { motherCoils: 1, coils: 3, auditLog: 2 } })
+
+    // CUB-2026-00001 a 00003 já foram emitidos: o próximo é o 00004
+    await runner.run(registerMotherCoil, lote(2), ALMOX)
+    await runner.run(receiveDelivery, {
+      delivery: { slitter_invoice_number: 'P2', declared_coil_count: 1 },
+      lines: [{ mother_coil: 'mc-1', measured_weight: 800, width: 166 }],
+    }, ALMOX)
+    expect(repo.load().coils.map((c) => c.cub)).toEqual(['CUB-2026-00004'])
   })
 })
