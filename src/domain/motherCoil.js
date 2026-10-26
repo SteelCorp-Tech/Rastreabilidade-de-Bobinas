@@ -1,3 +1,4 @@
+import { nextIdNumber } from './ids.js'
 import { DomainError, ensure } from './errors.js'
 
 /**
@@ -48,7 +49,7 @@ export function lacksCertificate(mc) {
  * @param {object} input @param {MotherCoil[]} existing @param {import('./config.js').Config} config
  * @returns {MotherCoil}
  */
-export function buildMotherCoil(input, existing, config, now) {
+export function buildMotherCoil(input, existing, config, now, idFloor = 0) {
   ensure(!blank(input.slitter_lot), 'MOTHER_LOT_REQUIRED', 'Informe o lote do prestador de slitagem.')
   ensure(!blank(input.supplier), 'MOTHER_SUPPLIER_REQUIRED', 'Informe o fornecedor.')
   ensure(!blank(input.supplier_invoice_number), 'MOTHER_INVOICE_REQUIRED', 'Informe a NF do fornecedor.')
@@ -69,7 +70,7 @@ export function buildMotherCoil(input, existing, config, now) {
   }
   const hasCert = !blank(input.certificate_number) && !!input.certificate_file
   return {
-    id: `mc-${existing.length + 1}`,
+    id: `mc-${nextIdNumber(existing, idFloor)}`,
     slitter_lot: String(input.slitter_lot).trim(),
     mill_coil_number: input.mill_coil_number ?? '',
     supplier: input.supplier,

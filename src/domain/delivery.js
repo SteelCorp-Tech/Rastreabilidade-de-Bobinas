@@ -1,3 +1,4 @@
+import { nextIdNumber } from './ids.js'
 import { ensure } from './errors.js'
 import { assertCanEnterStock } from './coil.js'
 import { generateCubs } from './cub.js'
@@ -46,7 +47,8 @@ export function buildDelivery({ delivery: d, lines }, state, config, actor, now)
 
   const year = yearInSaoPaulo(now)
   const cubs = generateCubs(state.coils, year, lines.length, config, state.cub_floor?.[year] ?? 0)
-  const deliveryId = `dl-${state.deliveries.length + 1}`
+  const deliveryId = `dl-${nextIdNumber(state.deliveries, state.id_seq?.dl)}`
+  const firstCoilNumber = nextIdNumber(state.coils, state.id_seq?.coil)
   const receivedDate = d.received_date ?? dateInSaoPaulo(now)
 
   const coils = lines.map((line, i) => {
@@ -65,7 +67,7 @@ export function buildDelivery({ delivery: d, lines }, state, config, actor, now)
       `Linha ${i + 1} (${cubs[i]}): espessura ${line.thickness} mm diverge da mãe (${mc.thickness} mm).`,
     )
     const coil = {
-      id: `coil-${state.coils.length + i + 1}`,
+      id: `coil-${firstCoilNumber + i}`,
       cub: cubs[i],
       mother_coil: mc.id,
       delivery: deliveryId,

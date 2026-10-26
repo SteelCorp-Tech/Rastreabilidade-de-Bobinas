@@ -1,3 +1,4 @@
+import { nextIdNumber } from './ids.js'
 import { DomainError, ensure } from './errors.js'
 import { roundKg } from './units.js'
 
@@ -93,7 +94,7 @@ export function openUse(coil, input, uses, actor, now) {
   ensure(!blank(input.project), 'USE_PROJECT_REQUIRED', 'Informe a obra.')
   ensure(!blank(input.machine), 'USE_MACHINE_REQUIRED', 'Informe a perfiladeira.')
   const use = {
-    id: `use-${uses.length + 1}`,
+    id: `use-${nextIdNumber(uses)}`,
     coil: coil.id,
     production_order: String(input.production_order).trim(),
     project: input.project,

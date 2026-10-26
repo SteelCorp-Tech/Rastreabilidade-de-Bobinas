@@ -3,6 +3,7 @@ import { DomainError, ensure } from './errors.js'
 import { can } from './permissions.js'
 import { appendAudit } from './audit.js'
 import { calcCuttingPlan, checkTrim } from './cuttingPlan.js'
+import { nextIdNumber } from './ids.js'
 import { advanceMotherCoil, buildMotherCoil, withCertificate } from './motherCoil.js'
 import { buildDelivery } from './delivery.js'
 import { blockCoil, closeUse, openUse, unblockCoil } from './coil.js'
@@ -57,7 +58,7 @@ export const audit = (state, ctx, entry) => ({ ...state, auditLog: appendAudit(s
 
 export function registerMotherCoil(state, input, ctx) {
   authorize(ctx, 'motherCoil.create')
-  const mc = buildMotherCoil({ ...input, actor: ctx.user }, state.motherCoils, state.config, ctx.now)
+  const mc = buildMotherCoil({ ...input, actor: ctx.user }, state.motherCoils, state.config, ctx.now, state.id_seq?.mc)
   const next = audit({ ...state, motherCoils: [...state.motherCoils, mc] }, ctx, {
     action: 'motherCoil.create', entity: 'MotherCoil', entity_id: mc.id, after: mc,
   })
@@ -100,7 +101,7 @@ export function savePlan(state, { mother_coil_id, lines, expected_delivery_date 
   }
 
   const plan = {
-    id: `plan-${state.cuttingPlans.length + 1}`,
+    id: `plan-${nextIdNumber(state.cuttingPlans, state.id_seq?.plan)}`,
     mother_coil: mc.id,
     version: previous.length + 1,
     lines,

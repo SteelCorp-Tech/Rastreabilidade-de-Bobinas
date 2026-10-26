@@ -1,5 +1,6 @@
 import { ensure } from './errors.js'
 import { audit, authorize } from './commands.js'
+import { withRemovedIds } from './ids.js'
 
 /**
  * Exclusões (só o administrador).
@@ -26,7 +27,7 @@ export function deleteCuttingPlans(state, { mother_coil_id }, ctx) {
     ? replace(state.motherCoils, mc.id, { ...mc, status: 'REGISTERED' })
     : state.motherCoils
   const next = audit(
-    { ...state, cuttingPlans: state.cuttingPlans.filter((p) => p.mother_coil !== mc.id), motherCoils },
+    { ...state, cuttingPlans: state.cuttingPlans.filter((p) => p.mother_coil !== mc.id), motherCoils, id_seq: withRemovedIds(state.id_seq, 'plan', plans) },
     ctx,
     { action: 'cuttingPlan.delete', entity: 'CuttingPlan', entity_id: mc.id, before: { slitter_lot: mc.slitter_lot, plans }, after: null },
   )
@@ -59,7 +60,10 @@ export function deleteDelivery(state, { delivery_id }, ctx) {
     return { ...m, status: sent ? 'PLANNED' : 'REGISTERED' }
   })
   const next = audit(
-    { ...state, coils: remainingCoils, deliveries: state.deliveries.filter((x) => x.id !== d.id), cub_floor, motherCoils },
+    {
+      ...state, coils: remainingCoils, deliveries: state.deliveries.filter((x) => x.id !== d.id), cub_floor, motherCoils,
+      id_seq: withRemovedIds(withRemovedIds(state.id_seq, 'dl', [d]), 'coil', coils),
+    },
     ctx,
     { action: 'delivery.delete', entity: 'Delivery', entity_id: [d.id, ...d.mother_coils].join(','), before: { delivery: d, coils }, after: null },
   )
@@ -82,6 +86,7 @@ export function deleteMotherCoil(state, { mother_coil_id }, ctx) {
       ...state,
       motherCoils: state.motherCoils.filter((m) => m.id !== mc.id),
       cuttingPlans: state.cuttingPlans.filter((p) => p.mother_coil !== mc.id),
+      id_seq: withRemovedIds(withRemovedIds(state.id_seq, 'mc', [mc]), 'plan', plans),
     },
     ctx,
     { action: 'motherCoil.delete', entity: 'MotherCoil', entity_id: mc.id, before: { motherCoil: mc, plans }, after: null },
