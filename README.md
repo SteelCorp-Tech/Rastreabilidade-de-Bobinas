@@ -44,6 +44,10 @@ scripts/           geração do seed a partir do Excel
 
 O cenário completo roda só com o domínio em `src/domain/acceptance.test.js` (`npm test`). Pela interface, siga: Almoxarifado registra o lote 8948 (0,95 × 1.200 mm, 12.195 kg, certificado e NF anexados; sem certificado é recusado) → PCP salva o plano 7 × 166 mm e envia → Almoxarifado recebe a entrega de 14 CUBs (pré-preencher pelo plano) e imprime as etiquetas → Produção abre o uso de um CUB (OP X, obra Y), fecha com sobra de 300 kg, reabre para a obra Z e consome → Qualidade consulta o lote em Recall e relatórios → Qualidade bloqueia o lote e a Produção é recusada → Auditor vê tudo em Auditoria. Depois, Configurações → Restaurar dados de exemplo.
 
+## Banco de dados (proposta para o backend)
+
+`db/schema.sql` traz o modelo em PostgreSQL para quando houver backend (tabelas, regras, views e dados de referência). O protótipo continua sem banco. Explicação, decisões e validação (`db/validate.mjs`) em [db/README.md](db/README.md).
+
 ## Manual do usuário
 
 Em `docs/manual/`: `manual-rastreabilidade-bobinas.pdf` (para ler ou imprimir) e `index.html` (mesmo conteúdo, com as imagens em `img/`). São 16 capítulos e 65 telas com setas numeradas.
