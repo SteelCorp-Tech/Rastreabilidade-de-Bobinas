@@ -1,0 +1,15 @@
+{
+  "name": "bobinas-dominio",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Regras da rastreabilidade de bobinas: puras, sem dependência, usadas pelo frontend (e pelo backend, quando existir).",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "verificar": "npm run test"
+  },
+  "devDependencies": {
+    "vitest": "^5.0.5"
+  }
+}

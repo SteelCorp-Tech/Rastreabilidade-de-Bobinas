@@ -82,6 +82,13 @@ Decisões do projeto, com motivo e data. Atualize junto com o `CLAUDE.md`.
 - **Bug corrigido:** os identificadores internos de bobina mãe, plano, entrega, CUB e uso eram "quantidade + 1" e se repetiam depois de uma exclusão do administrador (o histórico do registro excluído apareceria no novo). Agora usam o maior número já usado + 1, e as exclusões guardam o maior número removido em `id_seq`. Testes em `src/domain/ids.test.js`.
 - O manual (`npm run manual:capture`) dependia dos dados de exemplo e precisa de um roteiro que cadastre os dados antes das capturas.
 
+### 27/10/2026 — Repositório separado em frontend, compartilhado e backend
+- Mesma organização do FinanceiroEstrategico: `compartilhado/dominio/` (antes `src/domain/`), `frontend/` (antes `index.html`, `vite.config.js`, `src/` e os scripts do HTTPS e do manual), `backend/` (antes `db/`, `scripts/build-seed.mjs` e `src/persistence/certModel.js`) e `docs/`. Arquivos movidos com `git mv` (o histórico de cada um continua).
+- Sem workspaces: cada pasta tem o próprio `package.json` e `node_modules`; o `package.json` da raiz só tem atalhos (`instalar`, `verificar`, `dev`, `build`, `preview`, `test`). Nenhuma dependência nova: o leitor de Excel foi do front para o backend, e o compartilhado usa o mesmo Vitest.
+- O front importa o domínio por `@dominio/...` (apelido no `vite.config.js`, que também libera o servidor de desenvolvimento a servir `../compartilhado`).
+- A persistência no navegador (localStorage, IndexedDB, executor de comandos) ficou no frontend: é o "banco" do protótipo; o backend de verdade a substitui depois.
+- Testes: 77 no domínio e 14 no frontend (os mesmos 91 de antes); build e schema (73 verificações) conferidos depois da mudança.
+
 ## Em aberto (padrão adotado até decidirem)
 
 1. Nome do produto: "Bobinas" ao lado da marca SteelCorp.

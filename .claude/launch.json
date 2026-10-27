@@ -5,6 +5,8 @@
       "name": "bobinas-dev",
       "runtimeExecutable": "npm",
       "runtimeArgs": [
+        "--prefix",
+        "frontend",
         "run",
         "dev",
         "--",
@@ -18,6 +20,8 @@
       "name": "bobinas-preview",
       "runtimeExecutable": "npm",
       "runtimeArgs": [
+        "--prefix",
+        "frontend",
         "run",
         "preview",
         "--",

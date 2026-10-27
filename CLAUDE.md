@@ -72,6 +72,7 @@ Papéis no sistema: Almoxarifado, PCP, Produção, Qualidade, Suprimentos, Admin
 | Protótipo só em React, sem backend, banco, Supabase ou Vercel. | Decisão do dono do produto. |
 | **JavaScript puro, sem TypeScript.** | Decisão do dono do produto. |
 | **Hospedagem: página própria no portal SteelApps** (HashRouter, `base: "./"`, chaves `bobinas:v1:`). Leitura de QR pela câmera do tablet (exige HTTPS). Git local, um commit por incremento. | Decisões do dono do produto em 20/10/2026. |
+| **Repositório separado em `compartilhado/` (domínio), `frontend/` e `backend/`**, no padrão do FinanceiroEstrategico. | Decisão do dono do produto, 27/10/2026. |
 | **O app começa vazio**: sem dados de exemplo; "Apagar todos os dados" (Administrador) zera tudo e mantém só configurações, permissões e a numeração do CUB. | Decisão do dono do produto, 26/10/2026 (antes havia um seed gerado do Excel real). |
 | **O certificado de qualidade tem lugar no app**: número e arquivo anexado por bobina mãe, obrigatórios por padrão. | Decisão do dono do produto. É a prova central da auditoria (hoje 513 de 826 CUBs estão sem certificado válido). |
 
@@ -128,7 +129,7 @@ Entradas: largura da mãe `W`, peso líquido `P`, limite por bobina `L` (padrão
 | Peso estimado por CUB (kg) | `t_i / bobinas por tira` |
 | CUBs previstos | `Σ n_i × bobinas por tira_i` |
 
-> **Atenção (22/10/2026):** os números abaixo valem para o limite de 1.000 kg e sem regra de refilo (`CASO_8948` em `src/domain/test-helpers.js`). Com o padrão atual (700 kg; refilo de 14 a 30 mm), o 7 × 166 mm do lote 8948 seria recusado (refilo de 38 mm) e, se fosse aceito, daria 21 CUBs de ≈ 562,3 kg.
+> **Atenção (22/10/2026):** os números abaixo valem para o limite de 1.000 kg e sem regra de refilo (`CASO_8948` em `compartilhado/dominio/test-helpers.js`). Com o padrão atual (700 kg; refilo de 14 a 30 mm), o 7 × 166 mm do lote 8948 seria recusado (refilo de 38 mm) e, se fosse aceito, daria 21 CUBs de ≈ 562,3 kg.
 
 **Caso de teste obrigatório (lote real 8948):** mãe 0,95 × 1.200 mm, 12.195 kg; 7 tiras de 166 mm.
 - Largura utilizada 1.162 mm; refilo 38 mm = **386,2 kg**; aproveitamento ≈ 96,8%.
@@ -187,6 +188,8 @@ Backend e banco, autenticação real, multiempresa, API e webhooks, integração
 **8.6 Qualidade e FVM.** O sistema **não** faz checklist nem trata não conformidade. Ele oferece: (a) campo `fvm_number` na entrega e no CUB; (b) bloqueio e liberação manuais pela Qualidade, com motivo; (c) um botão de teste "simular evento da FVM" que bloqueia ou libera um CUB ou lote, só para demonstrar como a integração futura se comportaria.
 
 **8.7 Arquitetura.** Separe em três camadas: **domínio puro** (funções JavaScript (módulos ES) sem React: cálculo do plano de corte, regras de estado do CUB, balanço de massa, validações), **persistência** (um repositório atrás de uma interface, hoje `localStorage`, para poder trocar por um backend depois) e **interface** (React). As regras da seção 5.2 vivem no domínio e têm testes.
+
+**Pastas** (padrão dos módulos do SteelApps, como o FinanceiroEstrategico; sem workspaces, cada pasta com o próprio `package.json`): `compartilhado/dominio/` (domínio puro, importado pelo front como `@dominio/...` e, no futuro, pelo backend), `frontend/` (interface React e persistência no navegador), `backend/` (schema PostgreSQL em `db/` e scripts; ainda sem servidor), `docs/` (manual). Na raiz, `package.json` só com atalhos.
 
 **8.8 Importação.** Upload de CSV no navegador, mapeamento de colunas, validação linha a linha e relatório de erros antes de gravar.
 

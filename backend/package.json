@@ -1,0 +1,15 @@
+{
+  "name": "bobinas-backend",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Rastreabilidade de bobinas: base do backend. Hoje só o schema PostgreSQL (db/) e a leitura da planilha de controle (scripts/); ainda não há servidor.",
+  "scripts": {
+    "seed": "node scripts/build-seed.mjs",
+    "validar-schema": "node db/validate.mjs",
+    "verificar": "node -e \"process.exit(0)\""
+  },
+  "devDependencies": {
+    "read-excel-file": "^9.3.12"
+  }
+}

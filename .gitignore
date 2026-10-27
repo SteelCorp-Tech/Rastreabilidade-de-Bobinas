@@ -3,4 +3,4 @@ dist
 *.xlsx
 *.log
 .DS_Store
-scripts/out/
+backend/scripts/out/
